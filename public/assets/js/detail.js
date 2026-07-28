@@ -58,10 +58,7 @@
   function placeholder(path) {
     const box = el('div', 'media-placeholder');
     box.appendChild(el('p', 'ph-title', '화면 / 영상 준비 중'));
-    if (path) {
-      box.appendChild(el('p', 'ph-path', path));
-      box.appendChild(el('p', 'ph-hint', '이 경로에 파일을 넣으면 자동으로 표시됩니다.'));
-    }
+    if (path) box.appendChild(el('p', 'ph-path', path));
     return box;
   }
 

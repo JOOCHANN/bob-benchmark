@@ -506,41 +506,157 @@ tr.is-parity .dot {
   margin: 0 2px;
 }
 
-/* --------------------------------------------------------- 상세 페이지 */
+/* --------------------------------------------------------- 상단 바 */
 
-.detail-nav {
-  border-bottom: 1px solid var(--border-subtle);
-  background: var(--bg);
+.topbar {
   position: sticky;
   top: 0;
-  z-index: 5;
+  z-index: 20;
+  border-bottom: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
 }
-.detail-nav .wrap {
+@supports not (background: color-mix(in srgb, red 50%, blue)) {
+  .topbar {
+    background: var(--bg);
+  }
+}
+.topbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding-top: 14px;
-  padding-bottom: 14px;
-  font-size: 13.5px;
-}
-.nav-side {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  color: var(--text-helper);
-}
-.nav-side a[aria-disabled='true'] {
-  color: var(--text-helper);
-  pointer-events: none;
+  gap: 24px;
+  padding-top: 13px;
+  padding-bottom: 13px;
 }
 
-.detail-header .wrap {
-  padding-top: 48px;
-  padding-bottom: 8px;
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+}
+.brand:hover {
+  text-decoration: none;
+  color: var(--text-primary);
+}
+.brand-mark {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  background: var(--bob-accent);
+}
+.brand-name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.topbar-link {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.topbar-link:hover {
+  color: var(--interactive);
+}
+
+/* --------------------------------------------------------- 상세 레이아웃 */
+
+.layout {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+  padding-top: 44px;
+  padding-bottom: 72px;
+}
+
+/* 좌측 항목 목록 */
+.sidenav {
+  position: sticky;
+  top: 88px;
+}
+.sidenav-toggle {
+  display: none;
+}
+
+.nav-group + .nav-group {
+  margin-top: 26px;
+}
+.nav-group-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.nav-group-question {
+  font-size: 11.5px;
+  color: var(--text-helper);
+  margin-top: 1px;
+  margin-bottom: 8px;
+}
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  margin-left: -1px;
+  border-left: 2px solid transparent;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+.nav-item:hover {
+  color: var(--text-primary);
+  background: var(--layer);
+  text-decoration: none;
+  border-left-color: var(--border-strong);
+}
+.nav-item.is-active {
+  color: var(--interactive);
+  font-weight: 600;
+  border-left-color: var(--bob-accent);
+  background: var(--bob-tint);
+}
+.nav-item-tag {
+  font-size: 10px;
+  color: var(--text-helper);
+  border: 1px solid var(--border-subtle);
+  padding: 0 4px;
+  flex: none;
+  font-weight: 400;
+}
+
+/* 본문 */
+.detail-main {
+  min-width: 0;
+}
+
+.detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.detail-category {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-helper);
 }
 .detail-title {
-  font-size: 32px;
+  font-size: 34px;
+  letter-spacing: -0.03em;
   margin-bottom: 12px;
 }
 .detail-summary {
@@ -560,18 +676,16 @@ tr.is-parity .dot {
   line-height: 1.7;
 }
 .detail-why h2 {
-  font-size: 11.5px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-helper);
   margin-bottom: 6px;
 }
 
-.detail-section .wrap {
-  padding-top: 0;
-}
 .detail-section .section-title {
-  margin: 56px 0 16px;
+  display: block;
+  margin: 48px 0 14px;
 }
 
 /* 도구별 카드 */
@@ -681,13 +795,20 @@ tr.is-parity .dot {
 }
 
 .verdict {
-  margin-top: 16px;
   padding: 24px;
   background: var(--layer);
   border-left: 3px solid var(--bob-accent);
   font-size: 15px;
   line-height: 1.75;
   max-width: 80ch;
+}
+
+.badge-dot {
+  font-size: 10px;
+  line-height: 1;
+}
+.ph-hint {
+  font-size: 12px;
 }
 
 /* --------------------------------------------------------- 푸터 */
@@ -745,6 +866,73 @@ tr.is-parity .dot {
   }
 }
 
+/* 좁은 화면에서는 좌측 목록을 접어 버튼으로 연다. */
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding-top: 20px;
+  }
+  .sidenav {
+    position: sticky;
+    top: 53px;
+    z-index: 10;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border-subtle);
+    margin: 0 -32px;
+    padding: 0 32px;
+  }
+  .sidenav-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 0;
+    background: none;
+    border: 0;
+    font: inherit;
+    color: var(--text-primary);
+    cursor: pointer;
+    text-align: left;
+  }
+  .sidenav-toggle-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-helper);
+    flex: none;
+  }
+  .sidenav-toggle-current {
+    font-size: 14px;
+    font-weight: 600;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .chev {
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-right: 1.5px solid var(--text-secondary);
+    border-bottom: 1.5px solid var(--text-secondary);
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform 0.15s ease;
+  }
+  .sidenav.is-open .chev {
+    transform: rotate(-135deg) translate(-2px, -2px);
+  }
+  .sidenav-panel {
+    display: none;
+    padding-bottom: 20px;
+  }
+  .sidenav.is-open .sidenav-panel {
+    display: block;
+  }
+}
+
 @media (max-width: 900px) {
   .cards {
     grid-template-columns: 1fr;
@@ -778,6 +966,10 @@ tr.is-parity .dot {
   }
   .cat-question {
     display: none;
+  }
+  .sidenav {
+    margin: 0 -16px;
+    padding: 0 16px;
   }
 }
 

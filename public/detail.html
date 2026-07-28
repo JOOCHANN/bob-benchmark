@@ -3,25 +3,41 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>상세 비교 — IBM Bob 비교 장표</title>
+    <title>상세 비교 — AI 코딩 도구 역량 비교</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
-    <nav class="detail-nav">
-      <div class="wrap">
-        <a href="index.html">← 장표로 돌아가기</a>
-        <div class="nav-side" id="pager"></div>
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">AI 코딩 도구 역량 비교</span>
+        </a>
+        <a class="topbar-link" href="index.html">비교 장표로 돌아가기</a>
       </div>
-    </nav>
+    </header>
 
-    <main id="content"></main>
+    <div class="wrap layout">
+      <aside class="sidenav">
+        <button class="sidenav-toggle" type="button" aria-expanded="false" aria-controls="navlist">
+          <span class="sidenav-toggle-label">항목 이동</span>
+          <span class="sidenav-toggle-current" id="toggle-current"></span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+        <nav class="sidenav-panel" id="navlist" aria-label="항목 목록"></nav>
+      </aside>
+
+      <main class="detail-main" id="content"></main>
+    </div>
 
     <footer class="site-footer">
       <div class="wrap">
-        <p style="margin: 0 0 6px">
-          IBM 사내 검토용 비교 자료 · <span id="foot-date"></span> 기준 조사
+        <p class="foot-strong">
+          이 자료는 가안입니다. 판정 결과는 공개 문서를 근거로 작성했으나 아직 검증 전이며, 화면과
+          영상은 자리만 잡아둔 상태입니다.
         </p>
-        <p style="margin: 0">
+        <p><span id="foot-date"></span> 기준 조사</p>
+        <p>
           <a href="https://github.com/JOOCHANN/bob-benchmark">github.com/JOOCHANN/bob-benchmark</a>
         </p>
       </div>

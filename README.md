@@ -54,6 +54,20 @@ PLAN.md                    전체 계획과 배포 방법
 **화면 / 영상**은 `public/assets/img/<slug>/<도구 id>.<png|mp4>`에 넣으면 상세 페이지의
 "준비 중" 자리 표시가 자동으로 바뀝니다. 도구 id는 `bob`, `claude`, `codex`, `cursor`입니다.
 
+**도구 로고**는 현재 브랜드 색 글자 마크로 대체돼 있습니다. 각 벤더의 공식 SVG를
+`public/assets/img/logo/<도구 id>.svg`에 넣으면 자동으로 교체됩니다. 파일이 없으면 글자 마크가
+그대로 남으므로 넣기 전에도 화면은 깨지지 않습니다.
+
+```
+public/assets/img/logo/bob.svg
+public/assets/img/logo/claude.svg
+public/assets/img/logo/codex.svg
+public/assets/img/logo/cursor.svg
+```
+
+로고는 28×28 정사각 영역에 `object-fit: contain`으로 들어갑니다. 여백이 없는 심볼 마크가
+가장 잘 맞습니다.
+
 **판정 규칙 두 가지**
 
 - `full`·`partial`로 적은 칸에는 `source`를 반드시 넣습니다. 근거를 못 찾으면 `unknown`으로 둡니다.

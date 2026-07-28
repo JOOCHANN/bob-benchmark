@@ -3,22 +3,6 @@
 (function () {
   'use strict';
 
-  function el(tag, className, text) {
-    const node = document.createElement(tag);
-    if (className) node.className = className;
-    if (text != null) node.textContent = text;
-    return node;
-  }
-
-  function isParity(feature) {
-    const levels = TOOLS.map(function (t) {
-      return (feature.tools[t.id] || {}).level;
-    });
-    return levels.every(function (lv) {
-      return lv === levels[0];
-    });
-  }
-
   const slug = new URLSearchParams(window.location.search).get('f');
   const index = FEATURES.findIndex(function (f) {
     return f.slug === slug;
@@ -28,61 +12,13 @@
 
   document.getElementById('foot-date').textContent = META.checkedAt;
 
-  /* --- 좌측 항목 목록 --------------------------------------------------
-     카테고리별로 묶어 어느 항목이든 한 번에 이동할 수 있게 한다. */
-
-  function renderSideNav() {
-    const nav = document.getElementById('navlist');
-    let currentCategory = null;
-    let list = null;
-
-    FEATURES.forEach(function (item) {
-      if (item.category !== currentCategory) {
-        currentCategory = item.category;
-
-        const group = el('div', 'nav-group');
-        const title = el('p', 'nav-group-title', currentCategory);
-        group.appendChild(title);
-
-        const question = CATEGORIES[currentCategory];
-        if (question) group.appendChild(el('p', 'nav-group-question', question));
-
-        list = el('ul', 'nav-list');
-        group.appendChild(list);
-        nav.appendChild(group);
-      }
-
-      const li = el('li');
-      const active = item.slug === slug;
-      const link = el('a', 'nav-item' + (active ? ' is-active' : ''));
-      link.href = 'detail.html?f=' + encodeURIComponent(item.slug);
-      link.appendChild(el('span', 'nav-item-name', item.name));
-      if (isParity(item)) link.appendChild(el('span', 'nav-item-tag', '동일'));
-      if (active) link.setAttribute('aria-current', 'page');
-      li.appendChild(link);
-      list.appendChild(li);
-    });
-  }
-
-  /** 좁은 화면에서는 목록을 접어두고 버튼으로 연다. */
-  function setupToggle() {
-    const aside = document.querySelector('.sidenav');
-    const button = document.querySelector('.sidenav-toggle');
-    const current = document.getElementById('toggle-current');
-
-    current.textContent = feature ? feature.name : '항목 목록';
-
-    button.addEventListener('click', function () {
-      const open = aside.classList.toggle('is-open');
-      button.setAttribute('aria-expanded', String(open));
-    });
-  }
+  const nav = document.getElementById('navlist');
 
   /* --- 없는 항목 -------------------------------------------------------- */
 
   if (!feature) {
-    renderSideNav();
-    setupToggle();
+    renderSideNav(nav, null);
+    setupNavToggle('항목 목록');
     document.title = '항목을 찾을 수 없습니다 — AI 코딩 도구 역량 비교';
 
     const empty = el('div', 'empty-state');
@@ -169,15 +105,11 @@
     const card = el('article', 'card' + (tool.highlight ? ' is-bob' : ''));
 
     const head = el('div', 'card-head');
-    head.appendChild(el('span', 'tool-mark', tool.mark));
-    const names = el('div', 'tool-names');
-    names.appendChild(el('span', 'tool-name', tool.name));
-    names.appendChild(el('span', 'tool-vendor', tool.vendor));
-    head.appendChild(names);
+    head.appendChild(toolIdentity(tool));
     head.appendChild(el('span', 'spacer'));
 
     const badge = el('span', 'badge ' + lv.className);
-    badge.appendChild(el('span', 'badge-dot', lv.symbol));
+    badge.appendChild(levelIndicator(cell.level));
     badge.appendChild(el('span', null, lv.label));
     head.appendChild(badge);
     card.appendChild(head);
@@ -230,8 +162,8 @@
     content.appendChild(section);
   }
 
-  renderSideNav();
-  setupToggle();
+  renderSideNav(nav, slug);
+  setupNavToggle(feature.name);
   renderHeader();
   renderCards();
   renderVerdict();

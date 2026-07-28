@@ -115,6 +115,10 @@ p {
   margin: 0 auto;
   padding: 0 32px;
 }
+/* 장표는 표 폭이 필요해 더 넓게 쓴다. */
+.wrap-wide {
+  max-width: 1560px;
+}
 
 .sr-only {
   position: absolute;
@@ -205,10 +209,6 @@ p {
 
 /* --------------------------------------------------------- 결론 카드 */
 
-.takeaways .wrap {
-  padding-top: 40px;
-  padding-bottom: 8px;
-}
 .takeaway-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -255,15 +255,25 @@ p {
   gap: 5px;
 }
 
-.dot {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 14px;
-  font-size: 11px;
-  line-height: 1;
+/* 판정 표시. 글리프 대신 CSS 도형이라 크기와 정렬이 어긋나지 않는다. */
+.ind {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
   flex: none;
+  border: 1.5px solid currentColor;
+  box-sizing: border-box;
 }
+.ind.lv-full {
+  background: currentColor;
+}
+.ind.lv-partial {
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+.ind.lv-unknown {
+  border-style: dotted;
+}
+
 .lv-full {
   color: var(--support-success);
 }
@@ -279,17 +289,70 @@ p {
 
 /* --------------------------------------------------------- 비교 표 */
 
-.board .wrap {
-  padding-top: 40px;
-  padding-bottom: 56px;
+.matrix-section {
+  margin-top: 44px;
 }
 
 .board-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 20px;
   margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.board-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* 차이 나는 항목만 보기 */
+.toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 10px;
+  background: none;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+}
+.toggle-btn:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+.toggle-box {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  border: 1.5px solid var(--border-strong);
+  box-sizing: border-box;
+  position: relative;
+}
+.toggle-btn.is-on {
+  border-color: var(--interactive);
+  color: var(--interactive);
+  background: var(--bob-tint);
+}
+.toggle-btn.is-on .toggle-box {
+  border-color: var(--interactive);
+  background: var(--interactive);
+}
+.toggle-btn.is-on .toggle-box::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0px;
+  width: 3px;
+  height: 7px;
+  border-right: 1.5px solid #fff;
+  border-bottom: 1.5px solid #fff;
+  transform: rotate(45deg);
 }
 
 .table-scroll {
@@ -337,29 +400,53 @@ thead th {
   min-width: 160px;
 }
 
-.tool-head {
+/* 도구 식별: 마크 + 이름. 표 헤더와 상세 카드가 같은 모양을 쓴다. */
+.tool-id {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+}
+.tool-head {
   padding: 14px 18px;
 }
+
 .tool-mark {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   flex: none;
-  background: var(--text-primary);
-  color: var(--bg);
+  background: var(--mk-bg, #161616);
+  color: var(--mk-ink, #ffffff);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.01em;
+  overflow: hidden;
 }
-.tool-head.is-bob .tool-mark {
-  background: var(--bob-accent);
-  color: #ffffff;
+@media (prefers-color-scheme: dark) {
+  .tool-mark {
+    background: var(--mk-bg-d, #f4f4f4);
+    color: var(--mk-ink-d, #161616);
+  }
 }
+/* 공식 로고 파일이 들어오면 글자 마크를 덮고 배경도 비운다. */
+.tool-mark.has-logo {
+  background: none;
+}
+.tool-mark-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.tool-mark.has-logo .tool-mark-letter {
+  visibility: hidden;
+}
+
 .tool-names {
   min-width: 0;
 }
@@ -479,13 +566,55 @@ tr.feat-row:hover td.is-bob {
 
 .mark {
   display: flex;
-  align-items: baseline;
-  gap: 7px;
+  align-items: flex-start;
+  gap: 8px;
+}
+.mark .ind {
+  margin-top: 4px;
 }
 .mark-note {
   font-size: 13px;
   line-height: 1.45;
   color: var(--text-primary);
+}
+
+/* 합계 행 */
+tfoot td {
+  padding: 14px 18px;
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 0;
+  background: var(--layer);
+  vertical-align: top;
+}
+tfoot td.is-bob {
+  background: var(--bob-tint);
+}
+.sum-main {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+.sum-count {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.sum-caveat {
+  font-size: 11.5px;
+  color: var(--text-helper);
+  margin-top: 3px;
+  max-width: 30ch;
+}
+.sum-unit {
+  font-size: 12px;
+  color: var(--text-helper);
+}
+.sum-sub {
+  font-size: 11.5px;
+  color: var(--text-helper);
+  margin-top: 2px;
+  min-height: 1.4em;
 }
 
 /* 네 도구가 모두 같은 항목은 눈이 지나가도록 낮춰 둔다. */
@@ -569,6 +698,10 @@ tr.is-parity .dot {
   align-items: start;
   padding-top: 44px;
   padding-bottom: 72px;
+}
+/* 장표 쪽은 상단 바가 없어 목록이 더 위에 붙는다. */
+.layout--board .sidenav {
+  top: 32px;
 }
 
 /* 좌측 항목 목록 */
@@ -803,10 +936,6 @@ tr.is-parity .dot {
   max-width: 80ch;
 }
 
-.badge-dot {
-  font-size: 10px;
-  line-height: 1;
-}
 .ph-hint {
   font-size: 12px;
 }
@@ -930,6 +1059,9 @@ tr.is-parity .dot {
   }
   .sidenav.is-open .sidenav-panel {
     display: block;
+  }
+  .layout--board .sidenav {
+    top: 0;
   }
 }
 

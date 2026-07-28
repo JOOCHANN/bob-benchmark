@@ -17,11 +17,45 @@ const META = {
   status: 'draft',
 };
 
+/**
+ * logo: 공식 로고 파일 경로. 파일이 있으면 글자 마크 대신 그것을 쓴다.
+ *       (없어도 동작한다 — 각 벤더의 공식 SVG를 받아 이 경로에 넣으면 자동 반영)
+ * brand: 로고가 없을 때 쓰는 글자 마크의 색. 라이트/다크 모드용을 따로 둔다.
+ */
 const TOOLS = [
-  { id: 'bob', name: 'IBM Bob', vendor: 'IBM', mark: 'B', highlight: true },
-  { id: 'claude', name: 'Claude Code', vendor: 'Anthropic', mark: 'C' },
-  { id: 'codex', name: 'OpenAI Codex', vendor: 'OpenAI', mark: 'O' },
-  { id: 'cursor', name: 'Cursor', vendor: 'Anysphere', mark: 'Cu' },
+  {
+    id: 'bob',
+    name: 'IBM Bob',
+    vendor: 'IBM',
+    mark: 'B',
+    logo: 'assets/img/logo/bob.svg',
+    brand: { bg: '#0f62fe', ink: '#ffffff', bgDark: '#4589ff', inkDark: '#ffffff' },
+    highlight: true,
+  },
+  {
+    id: 'claude',
+    name: 'Claude Code',
+    vendor: 'Anthropic',
+    mark: 'C',
+    logo: 'assets/img/logo/claude.svg',
+    brand: { bg: '#d97757', ink: '#ffffff', bgDark: '#d97757', inkDark: '#ffffff' },
+  },
+  {
+    id: 'codex',
+    name: 'OpenAI Codex',
+    vendor: 'OpenAI',
+    mark: 'O',
+    logo: 'assets/img/logo/codex.svg',
+    brand: { bg: '#0d0d0d', ink: '#ffffff', bgDark: '#f4f4f4', inkDark: '#161616' },
+  },
+  {
+    id: 'cursor',
+    name: 'Cursor',
+    vendor: 'Anysphere',
+    mark: 'Cu',
+    logo: 'assets/img/logo/cursor.svg',
+    brand: { bg: '#4d4d4d', ink: '#ffffff', bgDark: '#c6c6c6', inkDark: '#161616' },
+  },
 ];
 
 const LEVELS = {

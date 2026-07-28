@@ -12,7 +12,7 @@
   </head>
   <body>
     <header class="site-header">
-      <div class="wrap">
+      <div class="wrap wrap-wide">
         <p class="eyebrow">사내 검토용 도입 판단 자료</p>
         <div class="header-grid">
           <div>
@@ -27,37 +27,55 @@
       </div>
     </header>
 
-    <section class="takeaways">
-      <div class="wrap">
-        <h2 class="section-title">결론 먼저</h2>
-        <div class="takeaway-grid" id="takeaways"></div>
-      </div>
-    </section>
+    <div class="wrap wrap-wide layout layout--board">
+      <aside class="sidenav">
+        <button class="sidenav-toggle" type="button" aria-expanded="false" aria-controls="navlist">
+          <span class="sidenav-toggle-label">항목 이동</span>
+          <span class="sidenav-toggle-current"></span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+        <nav class="sidenav-panel" id="navlist" aria-label="항목 목록"></nav>
+      </aside>
 
-    <main class="board">
-      <div class="wrap">
-        <div class="board-head">
-          <h2 class="section-title" style="margin: 0">항목별 비교</h2>
-          <div class="legend" id="legend"></div>
-        </div>
+      <main class="board">
+        <section class="takeaways">
+          <h2 class="section-title">결론 먼저</h2>
+          <div class="takeaway-grid" id="takeaways"></div>
+        </section>
 
-        <div class="table-scroll">
-          <table class="matrix" id="matrix">
-            <caption>
-              AI 코딩 도구 항목별 비교표. 항목 이름을 누르면 상세 비교 페이지로 이동합니다.
-            </caption>
-          </table>
-        </div>
+        <section class="matrix-section">
+          <div class="board-head">
+            <h2 class="section-title">항목별 비교</h2>
+            <div class="board-controls">
+              <button class="toggle-btn" type="button" id="filter-btn" aria-pressed="false">
+                <span class="toggle-box" aria-hidden="true"></span>
+                차이 나는 항목만
+              </button>
+              <div class="legend" id="legend"></div>
+            </div>
+          </div>
 
-        <p class="board-note">
-          네 도구가 모두 같은 수준인 항목은 <span class="chip chip-parity">동일</span> 로 표시했습니다.
-          도구 선택의 근거가 되지 않는 항목이라는 뜻입니다.
-        </p>
-      </div>
-    </main>
+          <div class="table-scroll">
+            <table class="matrix" id="matrix">
+              <caption>
+                AI 코딩 도구 항목별 비교표. 항목 이름을 누르면 상세 비교 페이지로 이동합니다.
+              </caption>
+            </table>
+          </div>
+
+          <p class="board-note">
+            네 도구가 모두 같은 수준인 항목은 <span class="chip chip-parity">동일</span> 로
+            표시했습니다. 도구 선택의 근거가 되지 않는 항목이라는 뜻입니다. 맨 아래 집계는 판정
+            개수일 뿐이며, 항목마다 조직에 걸리는 무게가 다르므로 총점으로 우열을 판단하지
+            마십시오. 도입 여부는 <a href="detail.html?f=deployment">배포 형태</a> 처럼 요건에
+            직접 걸리는 항목으로 먼저 판단하는 것이 맞습니다.
+          </p>
+        </section>
+      </main>
+    </div>
 
     <footer class="site-footer">
-      <div class="wrap">
+      <div class="wrap wrap-wide">
         <p class="foot-strong">
           이 자료는 가안입니다. 판정 결과는 공개 문서를 근거로 작성했으나 아직 검증 전이며, 화면과
           영상은 자리만 잡아둔 상태입니다.
@@ -73,6 +91,7 @@
     </footer>
 
     <script src="assets/js/data.js"></script>
+    <script src="assets/js/ui.js"></script>
     <script src="assets/js/table.js"></script>
   </body>
 </html>

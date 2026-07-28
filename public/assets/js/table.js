@@ -1,28 +1,10 @@
-/* 장표(index.html) 렌더 — data.js만 참조한다. */
+/* 장표(index.html) 렌더 — data.js와 ui.js만 참조한다. */
 
 (function () {
   'use strict';
 
-  function el(tag, className, text) {
-    const node = document.createElement(tag);
-    if (className) node.className = className;
-    if (text != null) node.textContent = text;
-    return node;
-  }
-
-  function levelOf(key) {
-    return LEVELS[key] || LEVELS.unknown;
-  }
-
-  /** 네 도구의 판정이 모두 같으면 변별력이 없는 항목이다. */
-  function isParity(feature) {
-    const levels = TOOLS.map(function (t) {
-      return (feature.tools[t.id] || {}).level;
-    });
-    return levels.every(function (lv) {
-      return lv === levels[0];
-    });
-  }
+  const table = document.getElementById('matrix');
+  let filterOn = false;
 
   /* --- 상단 지표 -------------------------------------------------------- */
 
@@ -46,8 +28,6 @@
     });
   }
 
-  /* --- 결론 카드 -------------------------------------------------------- */
-
   function renderTakeaways() {
     const grid = document.getElementById('takeaways');
     TAKEAWAYS.forEach(function (item) {
@@ -58,22 +38,19 @@
     });
   }
 
-  /* --- 범례 ------------------------------------------------------------- */
-
   function renderLegend() {
     const legend = document.getElementById('legend');
     ['full', 'partial', 'none', 'unknown'].forEach(function (key) {
-      const lv = LEVELS[key];
       const item = el('span', 'legend-item');
-      item.appendChild(el('span', 'dot ' + lv.className, lv.symbol));
-      item.appendChild(el('span', null, lv.label));
+      item.appendChild(levelIndicator(key));
+      item.appendChild(el('span', null, LEVELS[key].label));
       legend.appendChild(item);
     });
   }
 
   /* --- 표 헤더 ---------------------------------------------------------- */
 
-  function renderHead(table) {
+  function renderHead() {
     const thead = el('thead');
     const tr = el('tr');
 
@@ -85,16 +62,9 @@
     TOOLS.forEach(function (tool) {
       const th = el('th', 'col-tool' + (tool.highlight ? ' is-bob' : ''));
       th.scope = 'col';
-
-      const head = el('div', 'tool-head' + (tool.highlight ? ' is-bob' : ''));
-      head.appendChild(el('span', 'tool-mark', tool.mark));
-
-      const names = el('div', 'tool-names');
-      names.appendChild(el('span', 'tool-name', tool.name));
-      names.appendChild(el('span', 'tool-vendor', tool.vendor));
-      head.appendChild(names);
-
-      th.appendChild(head);
+      const id = toolIdentity(tool);
+      id.classList.add('tool-head');
+      th.appendChild(id);
       tr.appendChild(th);
     });
 
@@ -108,6 +78,7 @@
     const href = 'detail.html?f=' + encodeURIComponent(feature.slug);
     const parity = isParity(feature);
     const tr = el('tr', 'feat-row' + (parity ? ' is-parity' : ''));
+    tr.dataset.parity = String(parity);
 
     const td = el('td', 'feat-cell');
     const top = el('div', 'feat-top');
@@ -124,19 +95,12 @@
 
     TOOLS.forEach(function (tool) {
       const cell = feature.tools[tool.id] || { level: 'unknown' };
-      const lv = levelOf(cell.level);
+      const lv = LEVELS[cell.level] || LEVELS.unknown;
 
       const mark = el('td', 'mark-cell' + (tool.highlight ? ' is-bob' : ''));
       const box = el('div', 'mark');
-
-      const dot = el('span', 'dot ' + lv.className, lv.symbol);
-      dot.setAttribute('aria-hidden', 'true');
-      box.appendChild(dot);
-
-      // 기호만으로 판별하지 않도록 판정값을 텍스트로도 남긴다.
-      box.appendChild(el('span', 'sr-only', lv.label + '. '));
+      box.appendChild(levelIndicator(cell.level));
       box.appendChild(el('span', 'mark-note', cell.label || lv.label));
-
       mark.appendChild(box);
       tr.appendChild(mark);
     });
@@ -150,10 +114,7 @@
     return tr;
   }
 
-  /* --- 본문 ------------------------------------------------------------- */
-
-  function renderBody(table) {
-    const colspan = TOOLS.length + 1;
+  function renderBody() {
     let currentCategory = null;
     let tbody = null;
 
@@ -164,7 +125,7 @@
 
         const catRow = el('tr', 'cat-row');
         const catCell = el('td');
-        catCell.colSpan = colspan;
+        catCell.colSpan = TOOLS.length + 1;
         catCell.appendChild(el('span', 'cat-name', currentCategory));
         const question = CATEGORIES[currentCategory];
         if (question) catCell.appendChild(el('span', 'cat-question', question));
@@ -177,10 +138,89 @@
     });
   }
 
+  /* --- 합계 행 ----------------------------------------------------------
+     표를 끝까지 읽지 않는 사람을 위한 집계. 필터 상태에 따라 다시 센다. */
+
+  function renderFoot() {
+    const tfoot = el('tfoot');
+    const tr = el('tr');
+
+    const label = el('td', 'sum-label');
+    label.appendChild(el('span', 'head-label', '‘지원’ 판정 수'));
+    label.appendChild(el('p', 'sum-caveat', '항목별 중요도를 반영하지 않은 단순 집계입니다.'));
+    tr.appendChild(label);
+
+    TOOLS.forEach(function (tool) {
+      const td = el('td', 'sum-cell' + (tool.highlight ? ' is-bob' : ''));
+      td.dataset.tool = tool.id;
+      tr.appendChild(td);
+    });
+
+    tfoot.appendChild(tr);
+    table.appendChild(tfoot);
+    updateFoot();
+  }
+
+  function updateFoot() {
+    const scope = FEATURES.filter(function (f) {
+      return !filterOn || !isParity(f);
+    });
+
+    TOOLS.forEach(function (tool) {
+      const counts = { full: 0, partial: 0, none: 0, unknown: 0 };
+      scope.forEach(function (f) {
+        const key = (f.tools[tool.id] || {}).level || 'unknown';
+        counts[key] = (counts[key] || 0) + 1;
+      });
+
+      const td = table.querySelector('tfoot td[data-tool="' + tool.id + '"]');
+      td.textContent = '';
+
+      const main = el('div', 'sum-main');
+      main.appendChild(el('span', 'sum-count', String(counts.full)));
+      main.appendChild(el('span', 'sum-unit', '/ ' + scope.length + '개 항목'));
+      td.appendChild(main);
+
+      const rest = [];
+      if (counts.partial) rest.push('부분 ' + counts.partial);
+      if (counts.none) rest.push('미지원 ' + counts.none);
+      if (counts.unknown) rest.push('확인 필요 ' + counts.unknown);
+      td.appendChild(el('div', 'sum-sub', rest.join(' · ') || ' '));
+    });
+  }
+
+  /* --- 필터 ------------------------------------------------------------- */
+
+  function applyFilter() {
+    table.querySelectorAll('tbody').forEach(function (tbody) {
+      let visible = 0;
+      tbody.querySelectorAll('tr.feat-row').forEach(function (row) {
+        const hide = filterOn && row.dataset.parity === 'true';
+        row.hidden = hide;
+        if (!hide) visible += 1;
+      });
+      tbody.hidden = visible === 0;
+    });
+    updateFoot();
+  }
+
+  function setupFilter() {
+    const button = document.getElementById('filter-btn');
+    button.addEventListener('click', function () {
+      filterOn = !filterOn;
+      button.setAttribute('aria-pressed', String(filterOn));
+      button.classList.toggle('is-on', filterOn);
+      applyFilter();
+    });
+  }
+
   renderStats();
   renderTakeaways();
   renderLegend();
-  const table = document.getElementById('matrix');
-  renderHead(table);
-  renderBody(table);
+  renderSideNav(document.getElementById('navlist'), null);
+  setupNavToggle('전체 항목');
+  renderHead();
+  renderBody();
+  renderFoot();
+  setupFilter();
 })();

@@ -217,8 +217,6 @@
   renderStats();
   renderTakeaways();
   renderLegend();
-  renderSideNav(document.getElementById('navlist'), null);
-  setupNavToggle('전체 항목');
   renderHead();
   renderBody();
   renderFoot();

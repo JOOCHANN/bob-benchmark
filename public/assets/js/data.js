@@ -13,7 +13,7 @@
  */
 
 const META = {
-  checkedAt: '2026-07-28',
+  checkedAt: '2026-07-29',
   status: 'draft',
 };
 
@@ -70,6 +70,7 @@ const CATEGORIES = {
   'SDLC 커버리지': '어디까지 자동화되는가',
   '엔지니어링 기반': '실제 개발에서 버티는가',
   '엔터프라이즈 통제': '도입해도 안전한가',
+  '비용 구조': '얼마가, 어떻게 드는가',
   '도입 조건': '우리 환경에서 쓸 수 있는가',
 };
 
@@ -82,8 +83,8 @@ const TAKEAWAYS = [
   },
   {
     kind: 'pro',
-    title: '차이는 딜리버리 조율과 통제에서 벌어진다',
-    body: 'Bob은 배포 파이프라인 연계, 레거시 현대화, 정책 집행, 감사 추적에서 앞선다. 개별 기능이 아니라 개발 프로세스 전체를 묶는다는 점이 차별점이다.',
+    title: '차이는 통제와 비용 구조에서 벌어진다',
+    body: 'Bob은 정책 집행, 감사 추적, 리뷰 결과 관리에서 앞서고, 작업별 모델 라우팅으로 단가를 낮추면서 그 지출을 대시보드로 드러낸다. 개별 기능이 아니라 개발 프로세스와 그 비용을 함께 묶는다는 점이 차별점이다.',
   },
   {
     kind: 'con',
@@ -102,6 +103,39 @@ const SRC = {
   codex: { text: 'OpenAI Codex 문서', url: 'https://developers.openai.com/codex/' },
   cursor: { text: 'Cursor 문서', url: 'https://cursor.com/docs' },
   mcp: { text: 'Model Context Protocol', url: 'https://modelcontextprotocol.io/' },
+
+  /* 2026-07 확장 발표와 요금 관련 출처. */
+  bobJul: {
+    text: 'IBM Bob 멀티에이전트·비용 분석 발표 (2026-07-09)',
+    url: 'https://newsroom.ibm.com/2026-07-09-ibm-advances-enterprise-ai-software-development-with-multi-agent-capabilities-and-specialized-modernization-workflows',
+  },
+  bobJava: {
+    text: 'IBM Bob Premium Package for Java 발표',
+    url: 'https://www.ibm.com/new/announcements/announcing-ibm-bob-premium-package-for-java-modernization',
+  },
+  bobZ: {
+    text: 'IBM Bob Premium Package for Z 발표',
+    url: 'https://www.ibm.com/new/announcements/announcing-the-ibm-bob-premium-package-for-z',
+  },
+  bobReview: {
+    text: 'IBM Bob 리뷰 모드 · Findings 해설',
+    url: 'https://betterstack.com/community/guides/ai/ai-development/ibm-bob-ai/',
+  },
+  bobRouting: {
+    text: 'IBM Bob 멀티모델 라우팅 (VentureBeat)',
+    url: 'https://venturebeat.com/orchestration/ibm-launches-bob-with-multi-model-routing-and-human-checkpoints-to-turn-ai-coding-into-a-secure-production-system',
+  },
+  bobCoin: {
+    text: 'IBM Bob 요금제와 Bobcoin 해설',
+    url: 'https://www.nicklitten.com/ibm-bob-pricing-explained-free-trial-bobcoins-and-pro-plans-on-ibm-i/',
+  },
+  bobRisk: {
+    text: '프리뷰 단계 프롬프트 인젝션 보고 (The Register, 2026-01-07)',
+    url: 'https://www.theregister.com/2026/01/07/ibm_bob_vulnerability/',
+  },
+  claudePrice: { text: 'Claude 요금제', url: 'https://claude.com/pricing' },
+  cursorPrice: { text: 'Cursor 요금제', url: 'https://www.cursor.com/pricing' },
+  codexPrice: { text: 'OpenAI Codex 요금 정리 (CloudZero)', url: 'https://www.cloudzero.com/blog/openai-codex-pricing/' },
 };
 
 const FEATURES = [
@@ -201,6 +235,58 @@ const FEATURES = [
   },
 
   {
+    slug: 'code-review',
+    category: 'SDLC 커버리지',
+    name: '코드 리뷰 · 취약점 진단',
+    summary: '작성된 코드에서 결함과 보안 취약점을 찾아내고 수정까지 잇는 단계',
+    why:
+      '에이전트가 코드를 빠르게 쏟아낼수록 병목은 작성이 아니라 리뷰로 옮겨간다. ' +
+      '다만 "리뷰 기능이 있는가"로 물으면 네 도구가 모두 있다고 답하게 되므로 변별이 되지 않는다. ' +
+      '판정 기준은 지적 사항이 대화나 PR 코멘트로 흩어지는가, 아니면 목록으로 남아 처리 상태를 추적할 수 있는가로 잡았다. ' +
+      '팀 규모가 커질수록 이 차이가 리뷰 누락으로 직결된다.',
+    tools: {
+      bob: {
+        level: 'full',
+        label: 'Findings 목록',
+        bullets: [
+          '/review로 코드베이스를 훑어 취약점·하드코딩된 비밀키·OWASP 위반·널 위험을 Findings 패널에 누적',
+          '항목마다 위치와 영향도를 붙이고, 수정 적용 → 변경분 승인 → 회귀 테스트까지 한 흐름으로 연결',
+        ],
+        media: { src: 'assets/img/code-review/bob.png', caption: 'Bob의 Findings 패널' },
+        source: SRC.bobReview,
+      },
+      claude: {
+        level: 'partial',
+        label: '리뷰 명령 제공',
+        bullets: [
+          '코드 리뷰·보안 리뷰 명령으로 변경분을 점검',
+          '결과가 세션 출력이나 PR 코멘트로 남아, 미처리 항목을 목록으로 관리하는 구조는 아님',
+        ],
+        media: { src: 'assets/img/code-review/claude.png', caption: 'Claude Code의 리뷰' },
+        source: SRC.claude,
+      },
+      codex: {
+        level: 'partial',
+        label: 'PR 리뷰 중심',
+        bullets: ['저장소에 붙어 PR 단위로 리뷰 코멘트를 남김', '지적 사항의 처리 상태는 PR 도구 쪽에서 관리'],
+        media: { src: 'assets/img/code-review/codex.png', caption: 'Codex의 PR 리뷰' },
+        source: SRC.codex,
+      },
+      cursor: {
+        level: 'partial',
+        label: 'Bugbot',
+        bullets: ['Bugbot이 PR에 결함을 코멘트로 남김', '에디터 안에 축적되는 진단 목록과는 층위가 다름'],
+        media: { src: 'assets/img/code-review/cursor.png', caption: 'Cursor의 Bugbot' },
+        source: SRC.cursor,
+      },
+    },
+    verdict:
+      '리뷰를 실행하는 능력 자체는 네 도구가 모두 갖췄다. Bob의 차이는 결과를 "목록"이라는 상태 있는 자산으로 남긴다는 점이며, ' +
+      '이 형태 덕분에 무엇이 남았는지를 사람이 세지 않아도 된다. 다만 진단 품질은 형태와 별개 문제다. ' +
+      '우리 코드베이스에서 오탐률이 어느 정도인지는 파일럿으로 직접 재야 하며, 그 전까지 이 항목의 우위는 UX 우위로만 읽는 것이 맞다.',
+  },
+
+  {
     slug: 'delivery',
     category: 'SDLC 커버리지',
     name: '배포 · 파이프라인 연계',
@@ -257,13 +343,15 @@ const FEATURES = [
     tools: {
       bob: {
         level: 'full',
-        label: '전용 워크플로',
+        label: '플랫폼별 전용 패키지',
         bullets: [
-          '코드·테스트·문서·배포 파이프라인에 걸쳐 에이전트를 조율해 일괄 업그레이드',
+          'Premium Package for Java: Java 8 이하 → 25 업그레이드, Liberty 전환, 의존성 분석, 보안 개선을 묶은 워크플로',
+          'Z용(COBOL·PL/I·JCL)과 IBM i용(RPG·CL·DDS) 패키지를 따로 제공 — 타 도구에 대응물이 없는 영역',
           '사례: 통상 30일 걸리던 Java 업그레이드를 3일에 완료, 160시간 이상 절감',
+          '단, Premium Package는 기본 구독에 포함되지 않는 별도 계약 대상',
         ],
         media: { src: 'assets/img/modernization/bob.png', caption: 'Bob의 현대화 워크플로' },
-        source: SRC.bobNews,
+        source: SRC.bobJava,
       },
       claude: {
         level: 'partial',
@@ -288,8 +376,10 @@ const FEATURES = [
       },
     },
     verdict:
-      '네 도구 모두 마이그레이션을 "할 수는" 있다. 차이는 전용 워크플로와 검증 자산이 준비돼 있는지다. ' +
-      '다만 인용된 절감 수치는 IBM이 제시한 단일 고객 사례이므로 우리 코드베이스에 그대로 적용될 값으로 읽어서는 안 된다. 파일럿으로 확인할 대상이다.',
+      '네 도구 모두 마이그레이션을 "할 수는" 있다. 차이는 전용 워크플로와 검증 자산이 준비돼 있는지이며, ' +
+      'COBOL·PL/I·RPG처럼 범용 도구가 학습 데이터로만 아는 영역에서는 이 격차가 특히 크다. 우리 조직의 자산 구성상 가장 값이 큰 항목일 수 있다. ' +
+      '다만 두 가지를 함께 봐야 한다. 인용된 절감 수치는 IBM이 제시한 단일 고객 사례라 우리 코드베이스의 기대치로 옮길 수 없고, ' +
+      'Premium Package는 유료 애드온이므로 이 강점은 기본 구독 가격이 아니라 추가 비용을 전제로 계산해야 한다.',
   },
 
   /* ===== B. 엔지니어링 기반 ========================================= */
@@ -468,7 +558,9 @@ const FEATURES = [
     },
     verdict:
       'Bob의 차별점이 가장 뚜렷한 항목이다. 다른 도구가 권한·샌드박스로 위험 범위를 좁히는 접근이라면 Bob은 정책 집행을 파이프라인 안에 넣는다. ' +
-      '다만 이 차이는 규제 요건이 있는 조직에서만 체감되며, 소규모 팀에는 과한 장치다.',
+      '다만 이 차이는 규제 요건이 있는 조직에서만 체감되며, 소규모 팀에는 과한 장치다. ' +
+      '또한 이 항목의 근거는 현재 벤더 발표가 전부다. 프리뷰 단계에서 프롬프트 인젝션으로 승인 장치를 우회한 사례가 외부에 보고된 적이 있고, ' +
+      'IBM은 GA 전 조치를 밝혔으나 조치 결과가 공개 검증된 자료는 확인하지 못했다. 도입 판단에서는 이 칸을 파일럿에서 실제로 뚫어 보고 확정해야 한다.',
   },
 
   {
@@ -517,7 +609,174 @@ const FEATURES = [
       'Bob이 말하는 것은 제3자가 사후에 경위를 재구성하는 기록이다. 규제 대응이 목적이라면 이 구분이 핵심이다.',
   },
 
-  /* ===== D. 도입 조건 =============================================== */
+  /* ===== D. 비용 구조 =============================================== */
+  {
+    slug: 'pricing',
+    category: '비용 구조',
+    name: '과금 구조',
+    summary: '무엇을 단위로 돈이 나가는지 — 좌석인지, 사용량인지, 선불 크레딧인지',
+    why:
+      '이 항목은 어느 도구가 싼지를 가리지 않는다. 정가는 계약 조건에 따라 달라지고, 네 도구 모두 대량 계약은 협상 대상이라 정가 비교는 오해만 만든다. ' +
+      '대신 판정 기준을 "조직이 월 비용을 사전에 예측하고 상한을 걸 수 있는가"로 잡았다. ' +
+      '수천 명 규모에서 예측 불가능한 변동비는 금액 자체보다 예산 편성에서 더 큰 문제가 된다.',
+    tools: {
+      bob: {
+        level: 'partial',
+        label: '선불 크레딧(Bobcoin)',
+        bullets: [
+          'Bobcoin 선불 크레딧으로 과금(1코인 = $0.50 고정). 코드 생성·명령 실행·파일 조작 등 행위 단위로 차감',
+          '개인 요금제는 Pro 월 $20(40코인)부터 Ultra 월 $200(500코인)까지',
+          '선불이라 상한은 명확하지만, 같은 작업의 코인 소모량이 변동해 좌석당 월 비용을 고정하기 어려움',
+          'Premium Package(Java·Z·i)는 이 구독과 별개 계약이므로 총소유비용에 따로 더해야 함',
+        ],
+        media: { src: 'assets/img/pricing/bob.png', caption: 'Bob의 요금제와 Bobcoin' },
+        source: SRC.bobCoin,
+      },
+      claude: {
+        level: 'full',
+        label: '좌석에 사용량 포함',
+        bullets: [
+          '좌석 요금에 사용량이 포함되는 구조 — Team 표준 좌석 월 $20~25, 프리미엄 좌석 월 $100~125',
+          'Claude Code가 모든 요금제에 포함돼 별도 라인 아이템이 없음',
+          '네 도구 중 좌석당 월 비용을 사전에 고정하기 가장 쉬움',
+        ],
+        media: { src: 'assets/img/pricing/claude.png', caption: 'Claude 요금제' },
+        source: SRC.claudePrice,
+      },
+      codex: {
+        level: 'partial',
+        label: '토큰 크레딧',
+        bullets: [
+          '2026-04부터 메시지 단위가 아닌 토큰 크레딧 방식으로 전환',
+          'Enterprise는 좌석별 한도 대신 조직 공용 크레딧 풀 — 사용량이 고르지 않은 팀에 유리하나 좌석 고정비 개념이 약함',
+        ],
+        media: { src: 'assets/img/pricing/codex.png', caption: 'Codex의 크레딧 과금' },
+        source: SRC.codexPrice,
+      },
+      cursor: {
+        level: 'partial',
+        label: '좌석 + 초과분 후불',
+        bullets: [
+          '좌석에 포함 사용량을 주고 초과분은 후불로 청구(Teams 좌석 월 $40 기준)',
+          '초과분이 월별로 변동해 상한을 걸려면 별도 관리가 필요',
+        ],
+        media: { src: 'assets/img/pricing/cursor.png', caption: 'Cursor 요금제' },
+        source: SRC.cursorPrice,
+      },
+    },
+    verdict:
+      'Bob이 앞서지 않는 항목이다. 선불 크레딧은 상한 관리에는 유리하지만 예산 편성에는 불리하고, ' +
+      'Premium Package가 별도 계약이라 레거시 현대화를 노리고 도입할수록 총소유비용이 정가에서 멀어진다. ' +
+      '여기 적은 금액은 모두 공개 정가이므로 실제 판단은 우리 계약 조건으로 다시 계산해야 한다. ' +
+      'Bob의 비용 경쟁력은 이 표의 단가가 아니라 아래 두 항목, 즉 작업당 모델 단가를 낮추는 라우팅과 그 지출을 드러내는 가시성에서 나온다.',
+  },
+
+  {
+    slug: 'model-choice',
+    category: '비용 구조',
+    name: '모델 라우팅 · 단가 최적화',
+    summary: '작업마다 어느 모델을 쓸지 정해 품질을 지키면서 토큰 단가를 낮추는 구조',
+    why:
+      '모든 작업에 최상위 모델을 쓰면 비용이 감당되지 않고, 저가 모델만 쓰면 품질이 무너진다. ' +
+      '수천 명 규모에서는 이 선택을 개인 판단에 맡길지 정책으로 강제할지가 비용 구조 자체를 바꾼다. ' +
+      '부수적으로 특정 벤더에 묶이는지도 이 항목에서 함께 드러난다. 모델 시장의 변화 속도를 보면 종속성도 비용 위험의 일종이다.',
+    tools: {
+      bob: {
+        level: 'full',
+        label: '멀티벤더 자동 라우팅',
+        bullets: [
+          'IBM Granite, Anthropic Claude, Mistral을 작업 성격에 따라 자동 선택 — 단순 완성은 소형 Granite, 복잡한 추론은 프런티어 모델',
+          '정확도·지연시간·비용 기준의 규칙 엔진이 라우팅을 결정하며, 선택 기준을 개발자가 아니라 조직이 정책으로 잡음',
+          '프런티어 모델을 직접 호출할 때와 비교해 동일 작업 단가가 3분의 1~절반 수준이라는 수치가 제시됨 (벤더 측 주장, 검증 필요)',
+        ],
+        media: { src: 'assets/img/model-choice/bob.png', caption: 'Bob의 모델 라우팅' },
+        source: SRC.bobRouting,
+      },
+      claude: {
+        level: 'partial',
+        label: '자사 모델 내 선택',
+        bullets: [
+          '등급별 모델 선택과 작업별 자동 전환을 지원해 단가를 조절',
+          '타사 모델을 섞는 구조가 아니므로 절감 폭이 자사 등급 범위로 제한됨',
+        ],
+        media: { src: 'assets/img/model-choice/claude.png', caption: 'Claude Code의 모델 선택' },
+        source: SRC.claude,
+      },
+      codex: {
+        level: 'partial',
+        label: '자사 모델 내 선택',
+        bullets: ['자사 모델 계열 안에서 추론 강도를 조절해 비용을 낮춤', '벤더 종속성이 가장 높은 편'],
+        media: { src: 'assets/img/model-choice/codex.png', caption: 'Codex의 모델 설정' },
+        source: SRC.codex,
+      },
+      cursor: {
+        level: 'full',
+        label: '멀티벤더 선택',
+        bullets: [
+          '여러 벤더 모델을 등록하고 자동 선택 모드를 제공',
+          '선택 기준이 대체로 개발자와 제품 기본값에 맡겨져, 조직이 정책으로 강제하는 층위는 아님',
+        ],
+        media: { src: 'assets/img/model-choice/cursor.png', caption: 'Cursor의 모델 선택' },
+        source: SRC.cursor,
+      },
+    },
+    verdict:
+      'Cursor도 멀티벤더 선택을 제공하므로 "여러 모델을 쓴다"는 것만으로는 구분되지 않는다. ' +
+      'Bob의 실질적 차이는 두 가지다. 선택 기준을 개발자가 아니라 조직이 정책으로 통제한다는 점, ' +
+      '그리고 선택지에 자체 모델이 포함돼 단가의 하한을 벤더가 직접 통제한다는 점이다. ' +
+      '다만 인용된 절감 폭은 작업 구성에 따라 달라지는 값이므로, 우리 워크로드를 얼마간 흘려 보고 실제 라우팅 분포로 다시 재야 한다.',
+  },
+
+  {
+    slug: 'cost-visibility',
+    category: '비용 구조',
+    name: '비용 가시성 · 통제',
+    summary: '누가 무엇에 얼마를 썼는지 조직이 보고, 새어 나가기 전에 막을 수 있는지',
+    why:
+      '사용량 기반 과금에서는 지출을 청구서로 확인하는 시점에 이미 늦다. 2026년 들어 토큰 비용이 경영 안건으로 올라온 이유가 이것이다. ' +
+      '사용량 분석을 "도입 이후의 운영 지표"로 미루기 쉽지만, 지출을 사전에 보고 상한을 걸 수 있는지는 계약 시점에 확인해야 하는 조건이다. ' +
+      '앞 항목의 단가 절감 주장을 검증할 수단이기도 하다.',
+    tools: {
+      bob: {
+        level: 'full',
+        label: '내장 비용 분석',
+        bullets: [
+          'Bobalytics로 사용량과 비용을 대시보드에 노출',
+          '2026-07 업데이트에서 AI 비용·사용 분석을 제품에 내장해 팀·프로젝트 단위 지출 추적을 강화',
+          '라우팅으로 절감한 결과를 청구서가 아니라 제품 안에서 확인할 수 있음',
+        ],
+        media: { src: 'assets/img/cost-visibility/bob.png', caption: 'Bobalytics 비용 대시보드' },
+        source: SRC.bobJul,
+      },
+      claude: {
+        level: 'partial',
+        label: '콘솔 사용량 확인',
+        bullets: ['콘솔에서 사용량을 확인할 수 있음', '조직 단위 지출 배부와 상한 정책은 별도로 구성해야 함'],
+        media: { src: 'assets/img/cost-visibility/claude.png', caption: 'Claude의 사용량 확인' },
+        source: SRC.claude,
+      },
+      codex: {
+        level: 'partial',
+        label: '크레딧 소진 현황',
+        bullets: ['조직 공용 크레딧 풀의 소진 현황 확인이 중심', '작업 유형별 원가 분해와는 층위가 다름'],
+        media: { src: 'assets/img/cost-visibility/codex.png', caption: 'Codex의 크레딧 현황' },
+        source: SRC.codex,
+      },
+      cursor: {
+        level: 'partial',
+        label: '팀 관리자 화면',
+        bullets: ['팀 관리자 화면에서 멤버별 사용량을 확인', '초과 과금 억제는 요금제 선택으로 간접 통제'],
+        media: { src: 'assets/img/cost-visibility/cursor.png', caption: 'Cursor의 팀 사용량' },
+        source: SRC.cursor,
+      },
+    },
+    verdict:
+      '앞의 두 항목과 묶어서 볼 때만 의미가 산다. 라우팅으로 단가를 낮추고, 가시성으로 그 절감을 증명하는 구조다. ' +
+      '반대로 이 항목이 없으면 라우팅의 절감 주장은 확인할 방법이 없으므로, Bob을 비용 근거로 도입한다면 이 두 칸은 함께 검증해야 한다. ' +
+      '다만 대시보드가 있다는 것과 우리 조직의 부서별 배부 기준에 맞는다는 것은 다른 문제다. 파일럿에서 실제 정산에 쓸 수 있는 형태인지 확인해야 한다.',
+  },
+
+  /* ===== E. 도입 조건 =============================================== */
   {
     slug: 'deployment',
     category: '도입 조건',
@@ -565,51 +824,5 @@ const FEATURES = [
     verdict:
       '네 도구 중 Bob이 유일하게 뒤처지는 항목이다. 앞의 거버넌스 강점은 "SaaS 경계를 받아들일 수 있는 조직"이라는 전제 위에서만 성립한다. ' +
       '망 분리 환경이 대상이라면 온프렘 로드맵 시점을 IBM에 먼저 확인해야 하며, 그 답에 따라 검토 순서가 달라진다.',
-  },
-
-  {
-    slug: 'model-choice',
-    category: '도입 조건',
-    name: '모델 선택권 · 종속성',
-    summary: '어떤 모델을 쓸지 조직이 정할 수 있는지, 특정 벤더에 묶이는지',
-    why:
-      '모든 작업에 최상위 모델을 쓰면 비용이 감당되지 않고 저가 모델만 쓰면 품질이 무너진다. ' +
-      '수천 명 규모에서는 이 선택을 개인 판단에 맡길지 정책으로 강제할지가 비용 구조를 바꾼다. 모델 시장의 변화 속도를 보면 종속성 자체도 위험 요인이다.',
-    tools: {
-      bob: {
-        level: 'full',
-        label: '멀티벤더 자동 라우팅',
-        bullets: [
-          'IBM Granite, Anthropic Claude, Mistral을 작업에 따라 자동 선택',
-          '정확도·지연시간·비용 기준으로 규칙 엔진이 라우팅을 결정',
-        ],
-        media: { src: 'assets/img/model-choice/bob.png', caption: 'Bob의 모델 라우팅' },
-        source: SRC.bobNews,
-      },
-      claude: {
-        level: 'partial',
-        label: '자사 모델 내 선택',
-        bullets: ['등급별 모델 선택과 작업별 자동 전환 지원', '타사 모델을 섞는 구조는 아님'],
-        media: { src: 'assets/img/model-choice/claude.png', caption: 'Claude Code의 모델 선택' },
-        source: SRC.claude,
-      },
-      codex: {
-        level: 'partial',
-        label: '자사 모델 내 선택',
-        bullets: ['자사 모델 계열 안에서 추론 강도를 조절', '벤더 종속성이 가장 높은 편'],
-        media: { src: 'assets/img/model-choice/codex.png', caption: 'Codex의 모델 설정' },
-        source: SRC.codex,
-      },
-      cursor: {
-        level: 'full',
-        label: '멀티벤더 선택',
-        bullets: ['여러 벤더 모델을 등록하고 자동 선택 모드 제공', '개발자가 직접 지정하는 것도 가능'],
-        media: { src: 'assets/img/model-choice/cursor.png', caption: 'Cursor의 모델 선택' },
-        source: SRC.cursor,
-      },
-    },
-    verdict:
-      'Cursor도 멀티벤더 선택을 제공하므로 "여러 모델을 쓴다"는 것만으로는 구분되지 않는다. ' +
-      'Bob의 실질적 차이는 선택 기준을 개발자가 아니라 조직이 정책으로 통제한다는 점, 그리고 선택지에 IBM 자체 모델이 포함된다는 점이다.',
   },
 ];

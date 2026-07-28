@@ -179,7 +179,7 @@
   }
 
   function renderCards() {
-    const section = el('section');
+    const section = el('section', 'detail-section');
     const wrap = el('div', 'wrap');
     wrap.appendChild(el('h2', 'section-title', '도구별 비교'));
 
@@ -197,7 +197,7 @@
 
   function renderVerdict() {
     if (!feature.verdict) return;
-    const section = el('section');
+    const section = el('section', 'detail-section');
     const wrap = el('div', 'wrap');
     wrap.appendChild(el('h2', 'section-title', '정리'));
     wrap.appendChild(el('p', 'verdict', feature.verdict));

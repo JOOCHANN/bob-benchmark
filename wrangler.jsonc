@@ -1,0 +1,9 @@
+{
+  // 순수 정적 사이트. Worker 스크립트가 없어도 배포된다.
+  // public/ 안의 파일만 업로드되므로 README.md, PLAN.md 등은 배포에 포함되지 않는다.
+  "name": "bob-benchmark",
+  "compatibility_date": "2026-07-28",
+  "assets": {
+    "directory": "./public"
+  }
+}

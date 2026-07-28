@@ -7,7 +7,7 @@ IBM Bob과 Claude Code, OpenAI Codex, Cursor를 기능별로 비교하는 사내
 ## 로컬에서 보기
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory public
 # http://localhost:8000
 ```
 
@@ -15,14 +15,19 @@ python3 -m http.server 8000
 
 ## 구조
 
+배포되는 파일은 전부 `public/` 안에 있습니다. 그 바깥의 문서 파일은 배포에 포함되지 않습니다.
+
 ```
-index.html          장표 (메인)
-detail.html         기능별 상세 비교 (?f=<slug>)
-assets/css/style.css
-assets/js/data.js   ← 비교 데이터 단일 소스
-assets/js/table.js  장표 렌더
-assets/js/detail.js 상세 렌더
-assets/img/         화면 캡처 / 영상
+public/
+├── index.html          장표 (메인)
+├── detail.html         기능별 상세 비교 (?f=<slug>)
+└── assets/
+    ├── css/style.css
+    ├── js/data.js      ← 비교 데이터 단일 소스
+    ├── js/table.js     장표 렌더
+    ├── js/detail.js    상세 렌더
+    └── img/            화면 캡처 / 영상
+wrangler.jsonc          Cloudflare 배포 설정
 ```
 
 빌드 도구가 없습니다. 파일을 고치고 새로고침하면 끝입니다.
@@ -66,25 +71,44 @@ assets/img/         화면 캡처 / 영상
 
 ## 화면 / 영상 추가하기
 
-파일명 규칙: `assets/img/<기능 slug>/<도구 id>.<png|mp4>`
+파일명 규칙: `public/assets/img/<기능 slug>/<도구 id>.<png|mp4>`
 
 ```
-assets/img/plan-mode/bob.png
-assets/img/plan-mode/cursor.mp4
+public/assets/img/plan-mode/bob.png
+public/assets/img/plan-mode/cursor.mp4
 ```
+
+`data.js`에 적는 경로는 `public/`을 뺀 `assets/img/plan-mode/bob.png` 형태입니다.
 
 규칙대로 파일을 넣으면 상세 페이지의 "준비 중" 자리 표시가 자동으로 실제 화면으로 바뀝니다.
 도구 id는 `bob`, `claude`, `codex`, `cursor`입니다.
 
-## 배포 (Cloudflare Pages)
+## 배포 (Cloudflare)
 
-빌드가 없으므로 설정이 단순합니다.
+빌드 단계가 없습니다. 두 가지 방법 중 하나를 쓰면 됩니다.
+
+### 방법 1 — Git 연동 (권장)
 
 1. Cloudflare Dashboard → Workers & Pages → Create → Pages → Connect to Git
 2. `JOOCHANN/bob-benchmark` 선택
-3. Framework preset **None** / Build command **비움** / Build output directory **`/`**
+3. Framework preset **None** / Build command **비움** / Build output directory **`public`**
 
 `main` 브랜치에 push하면 자동으로 재배포됩니다.
+
+### 방법 2 — wrangler
+
+```bash
+npx wrangler login   # 최초 1회
+npx wrangler deploy
+```
+
+[wrangler.jsonc](wrangler.jsonc)가 `public/`만 업로드하도록 지정하고 있습니다. Worker 코드는
+필요 없습니다. 정적 자산만으로 배포됩니다.
+
+> 대시보드의 드래그 앤 드롭 업로더에 뜨는
+> "This uploader currently only supports static assets (HTML, CSS, and JS files)" 문구는
+> 오류가 아니라 업로더에 항상 표시되는 안내입니다. 이 프로젝트는 HTML/CSS/JS만 쓰므로
+> 해당 업로더로도 문제없이 올라갑니다. 단, 올릴 대상은 저장소 루트가 아니라 `public/` 폴더입니다.
 
 ## 남은 작업
 

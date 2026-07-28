@@ -143,21 +143,26 @@ const FEATURES = [
 
 ## 5. 파일 구조
 
+배포되는 파일은 `public/` 안에만 둔다. 문서 파일이 배포에 섞여 들어가지 않게 하기 위함이며,
+Cloudflare 설정에서도 이 폴더 하나만 가리키면 된다.
+
 ```
 bob-benchmark/
-├── index.html            # 장표
-├── detail.html           # 상세 템플릿 (?f=slug)
-├── assets/
-│   ├── css/style.css     # 전체 스타일 (파일 1개)
-│   ├── js/
-│   │   ├── data.js       # 단일 데이터 소스
-│   │   ├── table.js      # 장표 렌더
-│   │   └── detail.js     # 상세 렌더
-│   └── img/
-│       ├── logo/         # bob.svg, claude.svg, codex.svg, cursor.svg
-│       └── <slug>/       # plan-mode/bob.png, plan-mode/cursor.mp4 ...
+├── public/                   # ← 배포 대상은 이 폴더뿐
+│   ├── index.html            # 장표
+│   ├── detail.html           # 상세 템플릿 (?f=slug)
+│   └── assets/
+│       ├── css/style.css     # 전체 스타일 (파일 1개)
+│       ├── js/
+│       │   ├── data.js       # 단일 데이터 소스
+│       │   ├── table.js      # 장표 렌더
+│       │   └── detail.js     # 상세 렌더
+│       └── img/
+│           ├── logo/         # bob.svg, claude.svg, codex.svg, cursor.svg
+│           └── <slug>/       # plan-mode/bob.png, plan-mode/cursor.mp4 ...
+├── wrangler.jsonc            # Cloudflare 배포 설정 (public/만 업로드)
 ├── PLAN.md
-├── README.md             # 자료 갱신 방법 (data.js 편집법, 이미지 추가법)
+├── README.md                 # 자료 갱신 방법 (data.js 편집법, 이미지 추가법)
 └── .gitignore
 ```
 
@@ -208,16 +213,28 @@ bob-benchmark/
 
 ---
 
-## 8. 배포 (Cloudflare Pages)
+## 8. 배포 (Cloudflare)
 
-빌드 없는 정적 사이트이므로 설정이 단순하다.
+빌드 없는 정적 사이트이므로 설정이 단순하다. 두 경로 모두 열어둔다.
+
+**Git 연동 (권장)**
 
 1. Cloudflare Dashboard → Workers & Pages → Create → Pages → Connect to Git
 2. `JOOCHANN/bob-benchmark` 선택
-3. 설정: **Framework preset = None / Build command = 비움 / Build output directory = `/`**
+3. 설정: **Framework preset = None / Build command = 비움 / Build output directory = `public`**
 4. `main` 브랜치 push마다 자동 재배포
 
-주의: 상세 페이지를 쿼리스트링(`?f=slug`) 방식으로 하므로 SPA 라우팅 설정이나 `_redirects` 파일이 필요 없다.
+**wrangler**
+
+`npx wrangler deploy` — `wrangler.jsonc`의 `assets.directory`가 `./public`을 가리킨다.
+Worker 스크립트는 필요 없다. 정적 자산만으로 배포된다.
+
+주의할 점 두 가지:
+
+- 상세 페이지가 쿼리스트링(`?f=slug`) 방식이므로 SPA 라우팅 설정이나 `_redirects`가 필요 없다.
+- 대시보드 업로더의 "This uploader currently only supports static assets" 문구는 오류가 아니라
+  상시 표시되는 안내다. 이 프로젝트는 HTML/CSS/JS만 쓰므로 해당 업로더의 지원 범위 안에 있다.
+  동적 애플리케이션으로 전환할 이유가 되지 않는다.
 
 ---
 

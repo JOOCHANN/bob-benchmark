@@ -652,6 +652,281 @@ tr.is-parity .dot {
   margin: 0 2px;
 }
 
+/* ------------------------------------------- 강점·약점 (장표 요약 + 분석 페이지) */
+
+.analysis-section {
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-subtle);
+}
+.analysis-more {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.analysis-lead {
+  margin-top: 4px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  max-width: 88ch;
+}
+
+.sw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.sw-col {
+  border-top: 3px solid var(--border-strong);
+  padding-top: 14px;
+}
+.sw-col.sw-pro {
+  border-top-color: var(--support-success);
+}
+.sw-col.sw-con {
+  border-top-color: var(--support-warning);
+}
+
+.sw-col-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.sw-col-label {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.sw-col-count {
+  font-size: 12px;
+  color: var(--text-helper);
+  font-variant-numeric: tabular-nums;
+}
+
+.sw-col-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sw-col-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sw-col-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.sw-col-sub {
+  font-size: 12.5px;
+  color: var(--text-helper);
+  line-height: 1.55;
+}
+
+/* 블록 전체가 링크. 표 아래에서 다음 행동을 한 곳으로 모은다. */
+.analysis-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+  padding: 16px 20px;
+  border: 1px solid var(--border-subtle);
+  background: var(--layer);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background 0.12s, border-color 0.12s;
+}
+.analysis-cta:hover {
+  background: var(--layer-hover);
+  border-color: var(--border-strong);
+  text-decoration: none;
+}
+.analysis-cta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+.analysis-cta-main {
+  font-size: 15px;
+  font-weight: 600;
+}
+.analysis-cta-sub {
+  font-size: 12.5px;
+  color: var(--text-helper);
+}
+.analysis-cta-go {
+  font-size: 18px;
+  color: var(--interactive);
+}
+
+/* --- 분석 페이지 본문 --- */
+
+.sw-group-desc {
+  margin-top: -4px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+.sw-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.sw-item {
+  border-left: 3px solid var(--border-strong);
+  padding: 2px 0 2px 20px;
+}
+.sw-item.sw-pro {
+  border-left-color: var(--support-success);
+}
+.sw-item.sw-con {
+  border-left-color: var(--support-warning);
+}
+
+.sw-item-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.sw-item-head h3 {
+  font-size: 18px;
+  letter-spacing: -0.015em;
+}
+.sw-num {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-helper);
+  font-variant-numeric: tabular-nums;
+  padding-top: 3px;
+}
+.sw-summary {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.ev-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.ev-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-helper);
+  margin-right: 2px;
+}
+.ev {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 9px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg);
+  font-size: 12.5px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: border-color 0.12s, background 0.12s;
+}
+.ev:hover {
+  border-color: var(--interactive);
+  background: var(--layer);
+  text-decoration: none;
+}
+.ev-name {
+  font-weight: 600;
+}
+.ev-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 7px;
+  border-left: 1px solid var(--border-subtle);
+  font-size: 11.5px;
+  color: var(--text-helper);
+}
+
+.sw-body {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sw-body p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 84ch;
+}
+
+.sw-caveat {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--layer);
+  border-left: 2px solid var(--border-strong);
+  max-width: 84ch;
+}
+.sw-caveat-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-helper);
+  margin-bottom: 4px;
+}
+.sw-caveat p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* --- 조건별 판단 --- */
+
+.cond-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border-subtle);
+  border: 1px solid var(--border-subtle);
+}
+.cond {
+  display: grid;
+  grid-template-columns: minmax(220px, 34%) 1fr;
+  gap: 20px;
+  padding: 16px 18px;
+  background: var(--bg);
+}
+.cond-when {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-left: 12px;
+  border-left: 3px solid var(--border-strong);
+}
+.cond-pro .cond-when {
+  border-left-color: var(--support-success);
+}
+.cond-con .cond-when {
+  border-left-color: var(--support-warning);
+}
+.cond-then {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
 /* --------------------------------------------------------- 상단 바 */
 
 .topbar {
@@ -1129,6 +1404,17 @@ tr.is-parity .dot {
   .sidenav {
     margin: 0 -16px;
     padding: 0 16px;
+  }
+  /* 좁은 화면에서는 조건 표를 한 줄씩 쌓는다. */
+  .cond {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .sw-item {
+    padding-left: 14px;
+  }
+  .analysis-cta {
+    padding: 14px 16px;
   }
 }
 

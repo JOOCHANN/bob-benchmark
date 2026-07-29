@@ -72,6 +72,19 @@ function renderSideNav(container, activeSlug) {
   let currentCategory = null;
   let list = null;
 
+  // 강점·약점 분석은 항목이 아니므로 카테고리 밖에 따로 둔다.
+  const lead = el('div', 'nav-group');
+  const leadList = el('ul', 'nav-list');
+  const leadLink = el('a', 'nav-item' + (activeSlug === 'analysis' ? ' is-active' : ''));
+  leadLink.href = 'analysis.html';
+  leadLink.appendChild(el('span', 'nav-item-name', 'Bob의 강점과 약점'));
+  if (activeSlug === 'analysis') leadLink.setAttribute('aria-current', 'page');
+  const leadLi = el('li');
+  leadLi.appendChild(leadLink);
+  leadList.appendChild(leadLi);
+  lead.appendChild(leadList);
+  container.appendChild(lead);
+
   FEATURES.forEach(function (item) {
     if (item.category !== currentCategory) {
       currentCategory = item.category;

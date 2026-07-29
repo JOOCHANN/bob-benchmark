@@ -189,6 +189,40 @@
     });
   }
 
+  /* --- 강점·약점 요약 ---------------------------------------------------
+     상세는 analysis.html에 있고, 여기서는 제목과 한 줄 요약만 싣는다. */
+
+  function renderAnalysisSummary() {
+    document.getElementById('analysis-lead').textContent = ANALYSIS.boardLead;
+
+    const grid = document.getElementById('analysis-summary');
+
+    [
+      { kind: 'pro', label: '강점', items: ANALYSIS.strengths },
+      { kind: 'con', label: '약점', items: ANALYSIS.weaknesses },
+    ].forEach(function (group) {
+      const col = el('div', 'sw-col sw-' + group.kind);
+      const head = el('p', 'sw-col-head');
+      head.appendChild(el('span', 'sw-col-label', group.label));
+      head.appendChild(el('span', 'sw-col-count', group.items.length + '개'));
+      col.appendChild(head);
+
+      const list = el('ul', 'sw-col-list');
+      group.items.forEach(function (item) {
+        const li = el('li');
+        li.appendChild(el('span', 'sw-col-title', item.title));
+        li.appendChild(el('span', 'sw-col-sub', item.summary));
+        list.appendChild(li);
+      });
+      col.appendChild(list);
+      grid.appendChild(col);
+    });
+
+    const total = ANALYSIS.strengths.length + ANALYSIS.weaknesses.length;
+    document.getElementById('analysis-cta-sub').textContent =
+      total + '개 항목의 근거와 유보 조건, 그리고 우리 조건별 판단까지';
+  }
+
   /* --- 필터 ------------------------------------------------------------- */
 
   function applyFilter() {
@@ -221,4 +255,5 @@
   renderBody();
   renderFoot();
   setupFilter();
+  renderAnalysisSummary();
 })();

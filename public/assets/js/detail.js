@@ -122,13 +122,16 @@
     card.appendChild(body);
 
     const foot = el('div', 'card-foot');
-    if (cell.source) {
+    if (cell.source && cell.source.url) {
       foot.appendChild(el('span', null, '출처 '));
       const a = el('a', null, cell.source.text + ' ↗');
       a.href = cell.source.url;
       a.target = '_blank';
       a.rel = 'noopener';
       foot.appendChild(a);
+    } else if (cell.source) {
+      // 사내 자료처럼 링크가 없는 출처. 이름만 남긴다.
+      foot.appendChild(el('span', null, '출처 ' + cell.source.text));
     } else {
       foot.textContent = '출처 미확인 — 검증 필요';
     }

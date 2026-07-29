@@ -87,13 +87,18 @@ const TAKEAWAYS = [
   },
   {
     kind: 'pro',
-    title: 'Bob의 값은 SDLC 산출물과 조직 통제에 있다',
-    body: 'Bob은 요구사항 명세서·설계서·의사결정 기록을 단계별 산출물로 정의해 남기고, 권한·사용 한도를 조직 단위로 통제하며, COBOL·PL/I·RPG 전용 현대화 패키지를 가진 유일한 도구다. 개별 기능이 아니라 개발 프로세스 자체를 제품이 규정한다는 점이 차별점이다.',
+    title: 'Bob의 값은 레거시 현대화와 비용 거버넌스다',
+    body: 'COBOL·PL/I·RPG·Java 전용 현대화 워크플로를 가진 유일한 도구이고, Bobalytics로 팀·개인 지출을 보면서 팀 예산과 개인 한도까지 걸 수 있다. 리뷰 결과를 Findings 목록으로 남기는 것도 Bob뿐이다. 이 셋은 공식 문서로 확인된다.',
   },
   {
     kind: 'con',
     title: '단, Bob은 개발자 책상 위에서만 돈다',
-    body: '실행 표면이 IDE와 터미널 둘뿐이다. 나머지 세 도구는 웹·모바일·Slack에서 작업을 맡기고, 예약 실행과 클라우드 에이전트로 사람이 없는 시간에도 일한다. Bob에서 이에 대응하는 기능은 공식 문서·발표자료 어디에서도 확인되지 않았다.',
+    body: '실행 표면이 IDE와 터미널 둘뿐이다. 나머지 세 도구는 웹·모바일·Slack에서 작업을 맡기고, 예약 실행과 클라우드 에이전트로 사람이 없는 시간에도 일한다. Bob에서 이에 대응하는 기능은 공식 문서 전체와 발표자료 어디에서도 확인되지 않았다.',
+  },
+  {
+    kind: 'con',
+    title: '발표자료의 주장 절반은 공식 문서에 없다',
+    body: 'SDLC 단계별 산출물과 Phase gate, 조직 차원의 Task 권한 정책, 민감정보 자동 스캔, 모델 라우팅은 모두 발표자료에만 있고 제품 문서에는 없다. 반대로 문서에만 있는 것도 있었다 — Bob Shell의 샌드박스와 CADF 감사 로그다. 어느 쪽도 한 자료만 보고는 알 수 없다.',
   },
   {
     kind: 'neutral',
@@ -102,22 +107,37 @@ const TAKEAWAYS = [
   },
 ];
 
+/**
+ * 출처 목록. 참조 라이브러리이므로 지금 어느 칸에도 걸려 있지 않은 항목도 있다
+ * (불릿 본문에서만 근거로 쓰는 문서들). 판정에 쓰는 것은 `source`에 건 것뿐이다.
+ *
+ * 등급: `공식 문서` > `사내 발표자료`·`벤더 발표` > `보도`.
+ * 지금 Bob 23칸 중 19칸이 1차 문서, 1칸이 보도(모델 라우팅), 1칸이 벤더 발표(배포 형태),
+ * 2칸이 확인 필요다. `bobDeck`은 어느 판정에도 걸려 있지 않다 — 의도된 상태다.
+ */
 const SRC = {
-  /* ── Bob: 1차 제품 문서 ─────────────────────────────────────────── */
+  /* ── Bob: 1차 제품 문서 ───────────────────────────────────────────
+     판정은 이 등급을 우선한다. 발표자료의 주장과 어긋나면 문서를 따른다. */
   bob: { text: 'IBM Bob 공식 문서 (IDE)', url: 'https://bob.ibm.com/docs/ide' },
   bobShell: { text: 'IBM Bob 공식 문서 (Bob Shell)', url: 'https://bob.ibm.com/docs/shell' },
   bobLog: {
     text: 'IBM Bob 공식 체인지로그 (v1.0.1~v2.0.1)',
     url: 'https://bob.ibm.com/docs/ide/changelog',
   },
-  bobSec: {
-    text: 'IBM Bob 공식 보안 가이드',
-    url: 'https://bob.ibm.com/docs/ide/security/bob-security-guidance',
+  bobInstall: {
+    text: 'IBM Bob 공식 문서 (설치·시스템 요건)',
+    url: 'https://bob.ibm.com/docs/ide/getting-started/install',
   },
-  bobCoins: {
-    text: 'IBM Bob 공식 문서 (Bobcoins)',
-    url: 'https://bob.ibm.com/docs/ide/account/bobcoins',
+  bobModes: { text: 'IBM Bob 공식 문서 (모드)', url: 'https://bob.ibm.com/docs/ide/features/modes' },
+  bobSubagents: {
+    text: 'IBM Bob 공식 문서 (서브에이전트)',
+    url: 'https://bob.ibm.com/docs/ide/features/subagents',
   },
+  bobReviews: {
+    text: 'IBM Bob 공식 문서 (코드 리뷰)',
+    url: 'https://bob.ibm.com/docs/ide/features/code-reviews',
+  },
+  bobSkills: { text: 'IBM Bob 공식 문서 (Skills)', url: 'https://bob.ibm.com/docs/ide/features/skills' },
   bobSlash: {
     text: 'IBM Bob 공식 문서 (슬래시 커맨드)',
     url: 'https://bob.ibm.com/docs/ide/features/slash-commands',
@@ -126,9 +146,67 @@ const SRC = {
     text: 'IBM Bob 공식 문서 (커스텀 규칙)',
     url: 'https://bob.ibm.com/docs/ide/configuration/rules',
   },
+  bobTools: {
+    text: 'IBM Bob 공식 문서 (도구)',
+    url: 'https://bob.ibm.com/docs/ide/core-concepts/tools',
+  },
+  bobalytics: {
+    text: 'IBM Bob 공식 문서 (Bobalytics)',
+    url: 'https://bob.ibm.com/docs/ide/features/bobalytics',
+  },
+  bobEnterprise: {
+    text: 'IBM Bob 공식 문서 (엔터프라이즈 개요)',
+    url: 'https://bob.ibm.com/docs/ide/enterprise/enterprise-index',
+  },
+  bobTeams: {
+    text: 'IBM Bob 공식 문서 (팀·예산 설정)',
+    url: 'https://bob.ibm.com/docs/ide/enterprise/getting-started/teams',
+  },
+  bobUsers: {
+    text: 'IBM Bob 공식 문서 (사용자·역할·좌석)',
+    url: 'https://bob.ibm.com/docs/ide/enterprise/getting-started/users',
+  },
+  bobIdp: {
+    text: 'IBM Bob 공식 문서 (SAML IdP)',
+    url: 'https://bob.ibm.com/docs/ide/enterprise/getting-started/identity-providers',
+  },
+  bobActivityLog: {
+    text: 'IBM Bob 공식 문서 (활동 로그 · CADF)',
+    url: 'https://bob.ibm.com/docs/ide/enterprise/getting-started/activity-log',
+  },
+  bobSec: {
+    text: 'IBM Bob 공식 보안 가이드',
+    url: 'https://bob.ibm.com/docs/ide/security/bob-security-guidance',
+  },
+  bobIgnore: {
+    text: 'IBM Bob 공식 문서 (.bobignore)',
+    url: 'https://bob.ibm.com/docs/ide/configuration/bobignore',
+  },
+  bobSandbox: {
+    text: 'IBM Bob 공식 문서 (Bob Shell 샌드박스)',
+    url: 'https://bob.ibm.com/docs/shell/security/sandboxing',
+  },
+  bobTrust: {
+    text: 'IBM Bob 공식 문서 (신뢰 폴더)',
+    url: 'https://bob.ibm.com/docs/shell/security/trusted-folders',
+  },
+  bobHeadless: {
+    text: 'IBM Bob 공식 문서 (비대화형 세션)',
+    url: 'https://bob.ibm.com/docs/shell/getting-started/start-bobshell-non-interactive',
+  },
+  bobCoins: {
+    text: 'IBM Bob 공식 문서 (Bobcoins)',
+    url: 'https://bob.ibm.com/docs/ide/account/bobcoins',
+  },
+  bobJavaWorkflows: {
+    text: 'IBM Bob 공식 문서 (Java 현대화 워크플로)',
+    url: 'https://bob.ibm.com/docs/ide/premium-packages/java-modernization/workflows',
+  },
 
-  /* ── Bob: 사내 발표자료 (링크 없음. 1차 문서보다 낮은 등급으로 다룬다) ── */
-  bobDeck: { text: 'IBM Bob 발표자료 (사내, 2026)', url: null },
+  /* ── Bob: 사내 발표자료 (링크 없음) ───────────────────────────────
+     공식 문서에 대응 근거가 있으면 그것을 쓴다. 이 자료만이 근거인 주장은
+     판정을 올리는 데 쓰지 않고, 문서와 어긋나는 지점을 드러내는 데만 쓴다. */
+  bobDeck: { text: 'IBM Bob 발표자료 (사내, 2026) — 공식 문서 미확인', url: null },
 
   /* ── Bob: 벤더 발표와 보도 ──────────────────────────────────────── */
   bobNews: {
@@ -154,10 +232,6 @@ const SRC = {
   bobPrice: {
     text: 'Bob 요금제 상세 (IT Jungle, 2026-06-01)',
     url: 'https://www.itjungle.com/2026/06/01/big-blue-unveils-bob-premium-pack-for-ibm-i/',
-  },
-  bobSelfDoc: {
-    text: 'BobShell 자기 문서화 (DevOps.com, IBM 주장 인용)',
-    url: 'https://devops.com/ibm-bob-takes-ai-coding-assistants-to-the-next-level/',
   },
 
   /* ── Claude Code: 1차 제품 문서 ─────────────────────────────────── */
@@ -196,6 +270,10 @@ const SRC = {
 
   /* ── Codex ─────────────────────────────────────────────────────── */
   codex: { text: 'OpenAI Codex 문서', url: 'https://learn.chatgpt.com/docs' },
+  codexGov: {
+    text: 'Codex 문서 (엔터프라이즈 거버넌스·감사 로그)',
+    url: 'https://developers.openai.com/codex/enterprise/governance',
+  },
   codexUpgrades: {
     text: 'Codex 업데이트 발표 (OpenAI)',
     url: 'https://openai.com/index/introducing-upgrades-to-codex/',
@@ -236,12 +314,13 @@ const FEATURES = [
         level: 'full',
         label: 'Plan 모드',
         bullets: [
-          'Agent / Ask / Plan 세 모드를 명시적으로 분리해 제공',
-          'Plan 모드의 산출물이 대화가 아니라 문서다 — 요구사항 명세서(SRS)와 상세 설계(SDD), 컴포넌트 단위 우선순위와 검증 기준까지 작성',
-          '영향도 분석으로 변경 요청의 수정 대상·리스크·작업량을 먼저 산정',
+          'Agent / Ask / Plan 세 모드를 내장 모드로 분리해 제공하고, 모드별로 사용 가능한 도구를 다르게 지정',
+          'Plan 모드는 create-plan 스킬로 맥락을 모아 계획을 만들고, 사용자가 검토·승인한 뒤 다른 모드로 넘어가게 설계됨',
+          '계획이 준비되면 Bob이 Plan → Agent로 모드를 스스로 전환해 이어서 진행',
+          'Ask 모드는 파일 수정 없이 코드베이스 질의에만 쓰여 계획 단계의 안전장치로 동작',
         ],
         media: { src: 'assets/img/plan-design/bob.png', caption: 'Bob의 Plan 모드' },
-        source: SRC.bobDeck,
+        source: SRC.bobModes,
       },
       claude: {
         level: 'full',
@@ -273,9 +352,10 @@ const FEATURES = [
       },
     },
     verdict:
-      '계획 모드 자체는 세 도구가 갖췄으므로 있고 없음으로는 갈리지 않는다. 실제 차이는 계획의 산출물 형태다. ' +
-      '나머지 셋은 계획을 대화 맥락으로 다루고, Bob은 SRS·SDD라는 정해진 문서로 떨어뜨린다. ' +
-      '문서 기반 승인 절차가 이미 있는 조직에서는 이 차이가 크고, 그런 절차가 없는 팀에는 오히려 마찰로 느껴질 수 있다.',
+      '계획 모드 자체는 세 도구가 갖췄고, 공식 문서로 보면 동작 범위도 사실상 같다 — 조사 후 계획을 제시하고 승인받은 뒤 구현으로 넘어간다. ' +
+      '초안은 Bob만 SRS·SDD 같은 정해진 문서를 만든다고 적었으나 공식 문서에 그런 내용이 없어 삭제했다. ' +
+      'Bob 쪽에서 실제로 확인되는 차이는 두 가지로 작다. 계획 수립이 create-plan 스킬로 구현돼 있어 조직이 그 스킬을 수정할 수 있고, ' +
+      '계획이 준비되면 모드를 스스로 Agent로 바꿔 이어간다. 도입 판단을 가를 만한 차이는 아니다.',
   },
 
   {
@@ -289,16 +369,17 @@ const FEATURES = [
       '산출물이 정해져 있으면 개발자 개인 편차가 줄고 온보딩과 지식 이전이 문서로 이뤄진다. 정해져 있지 않으면 문서는 만들 때마다 다른 모양이 된다.',
     tools: {
       bob: {
-        level: 'full',
-        label: '단계별 산출물 정의',
+        level: 'partial',
+        label: '직접 구성해야 함',
         bullets: [
-          '요구사항 분석(프로젝트 정의서·요구사항 명세서), 설계(설계 명세서), 개발(개발 표준), 테스트(품질 검증서)를 단계별 산출물로 정의',
-          '추적·거버넌스 단계에 진행 기록서와 의사결정 기록서를 두고 Phase gate를 수행',
-          '각 단계 산출물을 AI가 다음 단계의 근거로 참고하게 해 일관된 품질을 노림',
-          '커스텀 모드로 팀 코딩 표준과 반복 워크플로를 저장해 조직에 확산',
+          'Skills로 체크리스트·템플릿·참고 자료를 포함한 반복 워크플로를 정의하고 버전 관리로 팀에 공유',
+          '커스텀 모드로 도구 접근·파일 권한·행동 지침을 묶어 단계별 역할을 만들 수 있고, 감사 보고서·아키텍처 다이어그램 생성 튜토리얼을 제공',
+          '단, SDLC 단계별 산출물 목록이나 Phase gate는 제품이 정의하지 않는다 — 공식 문서에 요구사항 명세서(SRS)·설계 명세서(SDD)·의사결정 기록서·추적성이라는 개념이 등장하지 않음',
+          'Plan 모드의 문서화된 동작은 create-plan 스킬로 계획을 만들어 승인받는 것까지이며, 이는 경쟁 도구의 계획 모드와 같은 범위다',
+          '사내 발표자료는 단계별 산출물과 Phase gate를 제시하지만, 이는 커스텀 모드로 구현하는 방법론이며 내장 기능이 아니다',
         ],
-        media: { src: 'assets/img/artifacts/bob.png', caption: 'Bob의 단계별 산출물' },
-        source: SRC.bobDeck,
+        media: { src: 'assets/img/artifacts/bob.png', caption: 'Bob의 Skills와 커스텀 모드' },
+        source: SRC.bobSkills,
       },
       claude: {
         level: 'partial',
@@ -332,10 +413,12 @@ const FEATURES = [
       },
     },
     verdict:
-      '이 표에서 Bob이 가장 뚜렷하게 앞서는 항목이며, 앞의 감사 추적 항목보다 근거가 구체적이다. ' +
-      '다만 값은 조직 조건에 강하게 의존한다. 산출물 기반 개발 프로세스를 이미 운영하는 조직에는 도구가 프로세스를 대신 지키는 효과가 나오지만, ' +
-      '문서를 형식으로만 남기는 조직에서는 산출물이 하나 더 늘어나는 것으로 끝난다. ' +
-      '또한 이 항목의 근거는 IBM 발표자료이므로, 산출물 템플릿을 실제로 우리 표준으로 바꿀 수 있는지는 파일럿에서 확인해야 한다.',
+      '이 자료에서 판정이 가장 크게 내려간 항목이다. 직전 판은 이 축을 "Bob이 가장 뚜렷하게 앞서는 항목"으로 적었는데, ' +
+      '근거가 IBM 발표자료뿐이었고 공식 문서를 확인하자 뒷받침되지 않았다. SRS·SDD·Phase gate·의사결정 기록서·추적성은 문서에 한 번도 등장하지 않는다. ' +
+      '발표자료의 단계별 산출물 체계는 제품 기능이 아니라 커스텀 모드로 구현하는 방법론이며, 그 방법론은 네 도구 모두에서 같은 방식으로 구현할 수 있다. ' +
+      '결과적으로 네 도구가 동일 수준이다 — 규칙·스킬·템플릿을 파일로 정의해 저장소에 커밋하는 수단은 넷 다 갖췄고, 단계 체계를 정의하는 일은 넷 다 조직 몫이다. ' +
+      '실무적 의미는 남는다. IBM이 방법론과 커스텀 모드 예시를 함께 제공한다면 착수 비용이 줄어들 수 있으므로, ' +
+      '파일럿에서 확인할 것은 "기능이 있는가"가 아니라 "IBM이 우리 산출물 표준에 맞춘 모드를 함께 만들어 주는가"다. 이건 제품 사양이 아니라 계약 조건 문제다.',
   },
 
   {
@@ -348,14 +431,14 @@ const FEATURES = [
     tools: {
       bob: {
         level: 'full',
-        label: '유저 스토리 기반 생성',
+        label: '테스트 워크플로',
         bullets: [
-          'Agent 모드에서 유저 스토리를 근거로 테스트 케이스를 생성하고 커버리지를 보장한다고 명시',
-          '테스트 문서와 테스트 코드를 함께 산출물로 다룸',
-          '사례: Java 현대화 과정에서 자동화 테스트 커버리지를 0에서 92%까지 확보 (Blue Pearl)',
+          'Premium Package for Java에 단위 테스트 생성 워크플로를 두어, 실행 전에 테스트 전략을 구조화해 일관되고 측정 가능한 커버리지를 확보',
+          'Agent 모드가 Execute 도구로 테스트를 직접 실행하고 Todo 도구로 진행을 추적',
+          '사례: Java 현대화 과정에서 자동화 테스트 커버리지를 0에서 92%까지 확보 (Blue Pearl, IBM 제시 사례)',
         ],
-        media: { src: 'assets/img/testing/bob.png', caption: 'Bob의 테스트 생성' },
-        source: SRC.bobDeck,
+        media: { src: 'assets/img/testing/bob.png', caption: 'Bob의 테스트 워크플로' },
+        source: SRC.bobJavaWorkflows,
       },
       claude: {
         level: 'full',
@@ -404,13 +487,13 @@ const FEATURES = [
         level: 'full',
         label: 'Findings 목록',
         bullets: [
-          '/review로 코드베이스를 훑어 취약점·코드 품질 이슈를 심각도별로 Findings 패널에 누적. 항목마다 위치·원인·영향을 함께 제시',
-          'SQL Injection, XSS 등을 탐지하고 수정 코드까지 제안한다고 명시',
-          '내장 코드 리뷰 워크플로가 v2.0.0(2026-06)에 추가되고 v2.0.1에서 Findings 아이콘 심각도 색상 구분이 붙음',
-          '단, 리뷰는 IDE 안에서 사람이 실행하는 방식이다 — PR마다 자동으로 도는 구조는 확인되지 않음',
+          '/review로 선택한 브랜치 간 diff를 분석해 Findings 패널에 이슈를 심각도별로 누적. GitHub과 GitLab 브랜치 비교를 지원',
+          'GitHub 이슈 URL을 함께 주면 변경이 그 요구사항을 충족하는지 검증 (이슈 검증은 GitHub 전용)',
+          '리뷰는 자동 승인으로 진행돼 분석 단계마다 확인을 요구하지 않음. v2.0.1에서 Findings 아이콘에 심각도 색상 구분이 붙음',
+          '단, 문서가 "리뷰 워크플로는 전적으로 IDE 안에서 돈다"고 명시한다 — 커밋 전 로컬 점검이며 PR마다 자동으로 도는 구조가 아니다',
         ],
         media: { src: 'assets/img/code-review/bob.png', caption: 'Bob의 Findings 패널' },
-        source: SRC.bobLog,
+        source: SRC.bobReviews,
       },
       claude: {
         level: 'partial',
@@ -448,8 +531,10 @@ const FEATURES = [
     },
     verdict:
       '판정 기준을 "목록으로 남는가"로 잡으면 Bob이 앞서지만, 이 결론은 기준에 의존한다는 점을 분명히 해야 한다. ' +
-      '기준을 "사람이 잊어도 리뷰가 도는가"로 바꾸면 순위가 뒤집힌다 — 나머지 셋은 PR마다 자동으로 리뷰하고 Bob은 개발자가 /review를 쳐야 한다. ' +
-      '조직 관점에서 리뷰 누락을 막는 것은 목록보다 자동 실행이므로, 이 항목은 Bob의 우위로 읽기보다 두 방식이 서로를 대체하지 못한다고 읽는 편이 정확하다. ' +
+      '기준을 "사람이 잊어도 리뷰가 도는가"로 바꾸면 순위가 뒤집힌다. Bob 공식 문서가 리뷰 워크플로는 전적으로 IDE 안에서 돈다고 명시하므로 이건 추정이 아니라 확인된 사실이다 — ' +
+      '나머지 셋은 PR마다 자동으로 리뷰하고 Bob은 개발자가 /review를 쳐야 한다. ' +
+      '조직 관점에서 리뷰 누락을 막는 것은 목록보다 자동 실행이므로, 두 방식이 서로를 대체하지 못한다고 읽는 편이 정확하다. ' +
+      'Bob의 위치는 "커밋 전 로컬 게이트"이고 경쟁 도구는 "머지 전 PR 게이트"다. 둘 다 필요한 조직이라면 Bob만으로는 후자가 비게 된다. ' +
       '진단 품질은 형태와 별개이며, 우리 코드베이스의 오탐률은 파일럿으로 직접 재야 한다.',
   },
 
@@ -467,12 +552,13 @@ const FEATURES = [
         level: 'partial',
         label: 'Shell 비대화형 실행',
         bullets: [
-          'Bob Shell이 비대화형 세션을 지원해 스크립트와 CI 환경에서 호출 가능',
-          '발표자료는 "Bob을 CI/CD 및 GitHub 워크플로에 내재화"를 도입 3단계 목표로 제시',
+          'Bob Shell의 비대화형 세션(bob -p)으로 스크립트·배치 처리에서 호출하고, 파이프 입력과 출력 리다이렉트를 지원',
+          '공식 문서가 Bob Shell의 용도로 "CI/CD 통합"을 명시',
+          '비대화형 세션은 IBMid가 아니라 API 키 인증을 써야 하고 최초 실행 전 라이선스 동의가 필요 — CI 구성 시 확인할 조건',
           '다만 GitHub Actions·GitLab CI용 전용 통합이나 마켓플레이스 액션은 공식 문서에서 확인되지 않음',
         ],
-        media: { src: 'assets/img/delivery/bob.png', caption: 'Bob Shell의 CI 실행' },
-        source: SRC.bobShell,
+        media: { src: 'assets/img/delivery/bob.png', caption: 'Bob Shell의 비대화형 실행' },
+        source: SRC.bobHeadless,
       },
       claude: {
         level: 'full',
@@ -507,10 +593,11 @@ const FEATURES = [
       },
     },
     verdict:
-      '초안에서 이 항목은 Bob이 앞서는 것으로 판정돼 있었으나, 근거를 다시 보면 유지되지 않는다. ' +
-      'Bob 쪽 근거는 "계획부터 배포까지 조율한다"는 발표 문구이고, 나머지 셋은 벤더가 관리하는 CI 통합 경로를 문서로 갖고 있다. ' +
-      '"AI 코딩 보조에서 AI 딜리버리로"라는 표현은 SDLC 산출물과 모드 체계에 대한 주장으로는 성립하지만, ' +
-      '파이프라인 연계라는 기계적 항목에서는 Bob이 오히려 뒤처져 있다. 이 칸은 우리 CI 환경에서 Bob Shell을 실제로 돌려 보고 확정해야 한다.',
+      '초안에서 이 항목은 Bob이 앞서는 것으로 판정돼 있었으나 유지되지 않는다. ' +
+      'Bob도 공식 문서가 Bob Shell의 용도로 CI/CD 통합을 명시하므로 "못 한다"는 아니다. 차이는 성숙도다 — ' +
+      '나머지 셋은 벤더가 관리하는 액션·통합을 제공하고 Bob은 CLI를 직접 부르는 수준이다. ' +
+      '실무에서 걸릴 지점이 하나 더 있다. 비대화형 세션은 IBMid가 아니라 API 키 인증을 요구하므로, ' +
+      'CI에서 쓰려면 키 발급·보관·회전 절차를 따로 세워야 한다. 우리 CI 환경에서 실제로 돌려 보고 확정할 항목이다.',
   },
 
   {
@@ -526,13 +613,13 @@ const FEATURES = [
         level: 'full',
         label: '플랫폼별 전용 패키지',
         bullets: [
-          'Premium Package for Java: Java 8 이하 → 25 업그레이드, Liberty 전환, 의존성 분석, 보안 개선을 묶은 워크플로. IBM Application Modernization Accelerator와 통합',
+          'Premium Package for Java에 네 개 워크플로가 문서화돼 있다 — Java 버전 업그레이드(AI 검증과 에이전트 수정 사이클), WebSphere→Liberty 리플랫포밍(IBM AMA 마이그레이션 플랜 기반), UI 현대화, 단위 테스트 생성',
           'Z용(COBOL·PL/I·JCL)과 IBM i용(RPG·CL·DDS) 패키지를 따로 제공 — 타 도구에 대응물이 없는 영역',
           '고객 사례: Blue Pearl이 Java 11→25 전환과 지원 종료 API 127개 해소를 30일 이상 → 약 3일로 단축. APIS IT가 .NET Core 3.1→8 전환을 4~5시간에 완료, 20년 된 EGL/CICS 문서화 10배 가속',
           '단, Premium Package는 기본 구독에 포함되지 않는 별도 계약 대상',
         ],
         media: { src: 'assets/img/modernization/bob.png', caption: 'Bob의 현대화 워크플로' },
-        source: SRC.bobJava,
+        source: SRC.bobJavaWorkflows,
       },
       claude: {
         level: 'partial',
@@ -579,11 +666,12 @@ const FEATURES = [
         label: '생성·리팩터링·분석',
         bullets: [
           '코드 생성, 리팩터링, 디버깅, 코드베이스 질의응답을 기본 제공',
+          'Agent 모드가 Read·Edit·Execute·MCP·Skill·Todo·Subtask 도구를 모두 쓰며, 모드별로 도구 접근 범위가 다르게 지정됨',
           'v2.0.0에서 컨텍스트 창을 200K → 270K로 확장하고 긴 작업의 자동 압축을 추가',
           '.docx·.pdf·.xlsx 읽기와 구조화된 grep 결과 지원',
         ],
         media: { src: 'assets/img/codebase/bob.png', caption: 'Bob의 코드베이스 분석' },
-        source: SRC.bobLog,
+        source: SRC.bobTools,
       },
       claude: {
         level: 'full',
@@ -629,13 +717,13 @@ const FEATURES = [
         level: 'full',
         label: '역할 기반 서브에이전트',
         bullets: [
-          'v2.0.0(2026-06)에 서브에이전트가 추가되어 복잡한 작업을 병렬 워크스트림으로 분해. 실행 전 사용자 승인 필요',
-          '파일 읽기·검색 같은 탐색 단계를 서브에이전트에 격리해 컨텍스트와 비용을 관리',
-          '모델이 한 턴에 여러 도구를 요청해 함께 실행하는 병렬 도구 호출 지원',
-          '경쟁 도구 대비 늦게 도입된 기능이다 — Claude Code는 그 이전부터 제공',
+          '서브에이전트가 독립 컨텍스트 창에서 지정된 작업을 수행하고 결과 요약만 본 대화로 돌려줌. 생성 전 사용자 승인 필요',
+          '문서가 강조하는 용도는 병렬 처리보다 컨텍스트 오염 방지 — 코드베이스 탐색처럼 맥락을 많이 먹는 작업을 격리',
+          '모델이 한 턴에 여러 도구를 요청해 함께 실행하는 병렬 도구 호출을 별도로 지원',
+          'v2.0.0(2026-06)에 추가된 기능으로 Claude Code보다 늦게 도입됐다',
         ],
-        media: { src: 'assets/img/orchestration/bob.png', caption: 'Bob의 서브에이전트 분기' },
-        source: SRC.bobLog,
+        media: { src: 'assets/img/orchestration/bob.png', caption: 'Bob의 서브에이전트' },
+        source: SRC.bobSubagents,
       },
       claude: {
         level: 'full',
@@ -735,14 +823,14 @@ const FEATURES = [
         level: 'partial',
         label: '규칙 · 커맨드 · Skills',
         bullets: [
-          '커스텀 규칙으로 코딩 스타일·문서화 방식·판단 기준을 지정',
-          '마크다운 파일로 커스텀 슬래시 커맨드를 만들어 반복 작업을 자동화',
-          '커스텀 모드로 도구 접근·파일 권한·행동 지침을 묶어 새 어시스턴트를 정의하고, v2.0.0에서 워크스페이스 범위 모드 관리와 Skills 설정 탭 추가',
-          '발표자료는 Rules·Skills·AGENTS.md를 팀 표준의 코드 관리 수단으로 제시',
-          '다만 에디터 이벤트에 스크립트를 걸어 규칙을 강제하는 훅은 공식 문서에서 확인되지 않음',
+          '커스텀 규칙을 전역(~/.bob/rules/)과 워크스페이스(.bob/)로 나눠 지정. 프로젝트 규칙은 코드와 함께 버전 관리되어 clone하면 팀원에게 전파되고 변경이 코드 리뷰를 거침',
+          '마크다운 파일로 커스텀 슬래시 커맨드를 만들고, Bob IDE와 Bob Shell에서 동일하게 동작',
+          'Skills로 체크리스트·템플릿 등 supporting file을 포함한 워크플로를 정의. 활성화 시 기본적으로 사용자 승인을 요구',
+          '커스텀 모드로 도구 접근·파일 권한·행동 지침을 묶어 팀 표준을 강제하는 전용 어시스턴트를 정의',
+          '다만 에디터·커밋 이벤트에 스크립트를 걸는 훅이 공식 문서 전체에서 한 건도 확인되지 않는다 — 규칙은 프롬프트로 전달되며 코드로 차단되지 않는다',
         ],
-        media: { src: 'assets/img/extensibility/bob.png', caption: 'Bob의 커스텀 규칙과 모드' },
-        source: SRC.bobRules,
+        media: { src: 'assets/img/extensibility/bob.png', caption: 'Bob의 커스텀 규칙과 Skills' },
+        source: SRC.bobSkills,
       },
       claude: {
         level: 'full',
@@ -799,12 +887,12 @@ const FEATURES = [
         level: 'partial',
         label: 'Shell 비대화형',
         bullets: [
-          'Bob Shell의 비대화형 세션으로 스크립트·자동화에서 호출 가능',
-          '에이전트를 우리 코드에 임베딩하는 별도 SDK는 공식 문서에서 확인되지 않음',
+          'Bob Shell의 비대화형 세션(bob -p)으로 스크립트·자동화에서 호출하고 파이프로 입력을 넘길 수 있음',
+          '에이전트를 우리 코드에 임베딩하는 SDK는 공식 문서 전체에서 확인되지 않음 — 자동화의 형태가 셸 호출로 제한된다',
           'watsonx Orchestrate SDK 연동은 Bob으로 다른 에이전트를 만드는 용도이며 Bob 자체를 임베딩하는 수단이 아님',
         ],
         media: { src: 'assets/img/embedding/bob.png', caption: 'Bob Shell 비대화형 실행' },
-        source: SRC.bobShell,
+        source: SRC.bobHeadless,
       },
       claude: {
         level: 'full',
@@ -855,12 +943,13 @@ const FEATURES = [
         level: 'partial',
         label: 'IDE + 터미널',
         bullets: [
-          'Bob-IDE(VS Code 포크)와 Bob Shell(터미널) 두 표면. 발표자료도 "깃, 터미널 등 개발 환경"으로 범위를 설명',
-          'v2.0.1에서 bob.ibm.com 통합 로그인과 워크스페이스 간 작업 조회가 추가됐으나, 웹에서 작업을 실행하는 기능은 아님',
-          'JetBrains 플러그인, 웹 앱, 모바일 앱, Slack 연동은 공식 문서·발표자료 어디에서도 확인되지 않음',
+          'Bob IDE는 독립 애플리케이션으로 설치된다 — macOS .pkg, Windows .exe, Debian·RedHat 패키지를 받아 설치하고 응용 프로그램 메뉴에서 실행',
+          'Bob Shell이 터미널 표면을 담당하며 두 환경에서 슬래시 커맨드가 동일하게 동작',
+          'bob.ibm.com 웹 포털은 있으나 용도가 관리·Bobalytics·다운로드이며 여기서 코딩 작업을 실행하지는 않음',
+          'JetBrains 플러그인, 웹 코딩 세션, 모바일 앱, Slack 연동은 공식 문서와 사이트맵 전체에서 확인되지 않음',
         ],
-        media: { src: 'assets/img/surfaces/bob.png', caption: 'Bob-IDE와 Bob Shell' },
-        source: SRC.bobLog,
+        media: { src: 'assets/img/surfaces/bob.png', caption: 'Bob IDE와 Bob Shell' },
+        source: SRC.bobInstall,
       },
       claude: {
         level: 'full',
@@ -1035,12 +1124,13 @@ const FEATURES = [
         level: 'unknown',
         label: null,
         bullets: [
-          '엔터프라이즈 플랜에 팀 관리·역할 지정·Bobcoin 배분이 있으나 이는 관리 기능이며 비개발자가 작업을 맡기는 표면은 아님',
-          '발표자료가 Product Owner·PM·Business Analyst·QA 등 13개 역할을 대상으로 그리지만, 그 역할들이 접근하는 표면은 제시되지 않음',
+          '엔터프라이즈 역할이 User와 Admin 두 종류이며, 둘 다 좌석을 소비하고 Bob 자체는 IDE·터미널로만 쓴다',
+          '팀·좌석·예산 관리는 잘 갖춰져 있으나 이는 관리 기능이며 비개발자가 작업을 맡기는 표면이 아님',
+          '발표자료가 Product Owner·PM·Business Analyst·QA 등 13개 직무를 대상으로 그리지만, 그 직무들이 접근하는 표면은 문서에 제시되지 않음',
           '비개발자용 표면 존재 여부 IBM 확인 필요',
         ],
         media: null,
-        source: SRC.bobDeck,
+        source: SRC.bobUsers,
       },
       claude: {
         level: 'full',
@@ -1092,16 +1182,17 @@ const FEATURES = [
       '개발자가 설정을 바꿀 수 있으면 그것은 기본값이지 정책이 아니다.',
     tools: {
       bob: {
-        level: 'full',
-        label: '역할 · Task 권한 정책',
+        level: 'partial',
+        label: '좌석·예산 통제 중심',
         bullets: [
-          '사용자별 접근 권한과 Task 권한 정책을 조직 차원에서 통제하고, 개인·팀 단위 사용 한도를 설정',
-          '작업 유형별로 수동 승인과 자동 통과를 나누는 거버넌스 체크포인트',
-          '자동 승인 대상을 파일 편집·명령 실행·MCP 사용·파일 읽기별로 구분하되, 공식 문서는 이 설정이 검토 기회를 줄인다고 경고',
-          'v1.0.2에 API 키 관리 어드민 UI, SAML 로그인 지원',
+          'SAML IdP를 이메일 도메인 단위로 연결하고, DNS TXT 레코드로 도메인 소유를 검증한 뒤 SSO를 강제',
+          '역할은 User와 Admin 두 종류. Admin은 사용자·팀 관리와 관리 대시보드 접근 권한을 가짐',
+          '팀별 Bobcoin 예산과 개인별 지출 한도를 관리자가 설정하고, 프리미엄 패키지 접근 권한을 사용자 단위로 통제',
+          '다만 통제 대상이 좌석·예산·접근이며 에이전트 행위가 아니다 — 관리자가 배포하고 개인이 재정의할 수 없는 설정에 해당하는 기능이 문서에 없음',
+          '규칙·모드는 "공유 저장소를 만들어 팀원이 각자 ~/.bob/rules/로 clone" 하는 관례로 배포되며, 자동 승인은 채팅 위 툴바에서 개인이 켜는 설정이다',
         ],
-        media: { src: 'assets/img/policy-control/bob.png', caption: 'Bob의 권한 정책' },
-        source: SRC.bobDeck,
+        media: { src: 'assets/img/policy-control/bob.png', caption: 'Bob의 관리자 대시보드' },
+        source: SRC.bobEnterprise,
       },
       claude: {
         level: 'full',
@@ -1138,10 +1229,12 @@ const FEATURES = [
       },
     },
     verdict:
-      '초안은 이 항목을 "Bob의 차별점이 가장 뚜렷한 항목"으로 봤으나, 근거를 같은 기준으로 맞추면 Bob·Claude·Codex가 동급이다. ' +
-      'Bob의 권한 정책과 사용 한도는 실재하고 조직 단위로 동작한다. 다만 Claude의 MDM 관리 설정과 Codex의 RBAC도 같은 요건을 충족한다. ' +
-      '초안의 판정 차이는 기능 차이가 아니라 근거 등급 차이에서 나왔다 — Bob은 발표 자료로, 경쟁 도구는 문서 첫 페이지로 판정했기 때문이다. ' +
-      '실제 변별은 이 축이 아니라 아래 샌드박스 항목에서 나온다.',
+      '공식 문서로 다시 세우자 Bob이 이 축에서 앞서지 않는다. Bob의 관리자 기능은 실재하고 잘 문서화돼 있으나 통제 대상이 다르다 — ' +
+      '누가 쓸 수 있고 얼마를 쓸 수 있는지는 촘촘하게 통제되지만, 에이전트가 무엇을 해도 되는지는 개발자 손에 남는다. ' +
+      'Claude는 MDM으로 배포한 설정을 사용자가 재정의할 수 없고, Codex는 managed configuration을 제공한다. 이 축의 기준은 후자다. ' +
+      '실무적으로 이것이 뜻하는 바는 분명하다. 자동 승인을 조직이 금지할 수단이 문서에 없으므로, ' +
+      '"Bob은 승인 체크포인트로 통제된다"는 주장은 개발자가 그 체크포인트를 켜 둔다는 가정 위에서만 성립한다. ' +
+      '차선책은 프로젝트 `settings.json`을 표준화해 저장소에 커밋하는 것이며, 이는 강제가 아니라 합의에 의존한다.',
   },
 
   {
@@ -1160,11 +1253,12 @@ const FEATURES = [
         bullets: [
           'IBM 발표는 프롬프트 정규화, 민감 데이터 스캔, 실시간 정책 집행을 실행 시점에 적용한다고 명시',
           '그러나 공식 보안 가이드는 민감정보 스캔을 자동 기능으로 문서화하지 않고, 비밀값을 Bob에 주지 말고 .gitignore와 .bobignore에 넣으라고 사용자 책임으로 안내',
-          '.bobignore는 워크스페이스 파일에만 적용되며 시스템 수준 격리를 만들지 않는다고 문서가 직접 밝힘',
+          '.bobignore는 read_file 등에서 엄격히 차단되지만, 문서가 "파일 편집 도구의 쓰기 우회 가능성"을 직접 밝힌다 — insert_content와 search_and_replace의 최종 쓰기에 명시적 검사가 없음',
+          '신뢰 폴더로 미승인 프로젝트의 설정·환경변수·MCP 연결을 차단하는 장치는 있음 (Bob Shell)',
           '프리뷰 단계에 프롬프트 인젝션으로 CLI를 통해 악성코드를 실행시킨 사례가 보고됨. IBM은 조치를 밝혔으나 공개 검증 자료는 확인하지 못함',
         ],
-        media: { src: 'assets/img/data-protection/bob.png', caption: 'Bob의 데이터 보호 설정' },
-        source: SRC.bobSec,
+        media: { src: 'assets/img/data-protection/bob.png', caption: 'Bob의 .bobignore 설정' },
+        source: SRC.bobIgnore,
       },
       claude: {
         level: 'partial',
@@ -1202,8 +1296,10 @@ const FEATURES = [
     verdict:
       '네 도구 모두 부분이며, 이유가 서로 다르다. 경쟁 도구 셋은 격리와 네트워크 차단으로 유출 경로를 좁히지만 내용 기반 탐지는 조직에 맡긴다. ' +
       'Bob은 내용 기반 탐지를 제품 기능으로 주장하는 유일한 도구인데, 그 주장을 자사 보안 문서가 뒷받침하지 않는다. ' +
-      '이 불일치가 이 자료에서 가장 크게 벌어진 격차이며, 데이터 보호를 근거로 Bob을 선택한다면 파일럿에서 반드시 직접 뚫어 봐야 하는 칸이다. ' +
-      '구체적으로는 우리 저장소에 테스트 비밀값을 심어 두고 스캔이 실제로 걸리는지, 승인 장치가 프롬프트 인젝션으로 우회되는지를 확인해야 한다.',
+      '오히려 문서가 스스로 약점을 밝힌다 — .bobignore가 읽기는 막지만 일부 편집 도구의 최종 쓰기에는 검사가 없다고 적혀 있다. ' +
+      '벤더가 이 정도를 공개하는 것은 문서 품질로는 좋은 신호이지만, 판정 근거로는 발표 자료의 "민감 데이터 스캔"과 정면으로 어긋난다. ' +
+      '데이터 보호를 근거로 Bob을 선택한다면 파일럿에서 반드시 직접 뚫어 봐야 한다 — 테스트 비밀값을 심어 두고 스캔이 걸리는지, ' +
+      '.bobignore로 막은 파일이 편집 도구로 덮이는지, 승인 장치가 프롬프트 인젝션으로 우회되는지를 확인해야 한다.',
   },
 
   {
@@ -1216,16 +1312,17 @@ const FEATURES = [
       '판정 기준은 OS·컨테이너 수준의 격리를 제품이 제공하는지로 잡았다. 명령 문자열 검사나 무시 파일은 격리가 아니므로 해당하지 않는다.',
     tools: {
       bob: {
-        level: 'none',
-        label: '격리 없음 (문서 명시)',
+        level: 'partial',
+        label: 'Shell만 격리',
         bullets: [
-          '공식 보안 가이드가 ".bobignore는 시스템 수준 샌드박스를 만들지 않는다"고 직접 밝힘',
-          '통제 수단은 승인 다이얼로그, 자동 승인 목록, v2.0.0의 명령 보안 검사이며 모두 격리가 아님',
-          '문서는 광범위한 명령 패턴을 피하고 사용을 제한할 것을 사용자에게 권고',
-          '네 도구 중 벤더 문서가 격리 부재를 명시한 유일한 경우이므로 확인 필요가 아니라 미지원으로 판정했다',
+          'Bob Shell은 macOS Seatbelt(sandbox-exec)와 Docker·Podman 컨테이너 격리를 제공. 컨테이너는 완전한 프로세스 격리',
+          'Seatbelt 프로파일로 네트워크 허용 여부와 쓰기 범위를 단계별로 지정. 기본 프로파일은 프로젝트 디렉터리 밖 쓰기를 차단',
+          '`-s` 플래그, `BOB_SHELL_SANDBOX` 환경변수, `settings.json`으로 설정하며 프로젝트 단위로 팀 전체에 적용 가능',
+          '신뢰 폴더 기능으로 미승인 폴더를 제한 모드로 실행 — 프로젝트 설정·환경변수·MCP 서버·자동 승인·커스텀 커맨드를 모두 차단',
+          '단, 기본값은 꺼진 상태이며 컨테이너 방식은 이미지를 직접 빌드해야 한다. IDE 쪽에는 시스템 수준 격리가 없다고 보안 가이드가 명시',
         ],
-        media: { src: 'assets/img/sandboxing/bob.png', caption: 'Bob의 승인 다이얼로그' },
-        source: SRC.bobSec,
+        media: { src: 'assets/img/sandboxing/bob.png', caption: 'Bob Shell의 샌드박스 설정' },
+        source: SRC.bobSandbox,
       },
       claude: {
         level: 'full',
@@ -1259,10 +1356,13 @@ const FEATURES = [
       },
     },
     verdict:
-      '엔터프라이즈 통제 카테고리에서 실제 변별이 생기는 유일한 항목이며, 방향은 Bob에게 불리하다. ' +
-      'Bob의 통제 모델은 사람의 승인에 의존하는데, 자동 승인 목록을 켜는 순간 그 층이 사라진다. 문서 자신이 이 위험을 경고하고 있다. ' +
-      '프리뷰 단계에서 프롬프트 인젝션으로 CLI를 통해 악성코드가 실행된 사례가 보고된 것도 격리 부재와 같은 구조에서 나온다. ' +
-      '규제 대응을 명분으로 Bob을 도입하려면 이 항목이 정면으로 걸리므로, 온프렘 로드맵과 함께 IBM에 먼저 물어야 한다.',
+      '이 항목은 조사 과정에서 판정이 뒤집혔다. Bob IDE의 보안 가이드만 보고 격리가 없다고 판단했으나, ' +
+      'Bob Shell에는 Seatbelt와 컨테이너 기반 샌드박스가 문서화돼 있다. 초안의 `미지원`은 오판이었다. ' +
+      '남는 차이는 두 가지다. 첫째, Bob의 격리는 Shell 전용이므로 개발자가 실제로 쓰는 IDE에는 적용되지 않는다. ' +
+      'Codex처럼 격리가 기본 동작인 경우와 달리 Bob은 켜야 하고, 안 켜면 통제가 승인 다이얼로그 한 층으로 돌아간다. ' +
+      '둘째, 자동 승인 목록을 켜면 그 한 층마저 사라지며 문서 자신이 이 위험을 경고한다. ' +
+      '따라서 파일럿에서 확인할 것은 "격리가 있는가"가 아니라 "우리 개발자들이 실제로 켠 상태로 쓰게 만들 수 있는가"다. ' +
+      '프로젝트 `settings.json`으로 팀 전체에 강제할 수 있으므로 표준 설정에 넣는 것이 현실적인 방법이다.',
   },
 
   {
@@ -1276,15 +1376,16 @@ const FEATURES = [
     tools: {
       bob: {
         level: 'partial',
-        label: '기록 산출물 + 미확인 주장',
+        label: '인증·관리 이벤트만',
         bullets: [
-          '진행 기록서와 의사결정 기록서를 추적·거버넌스 단계의 산출물로 정의하고 Phase gate를 수행 — 문서 형태의 경위 기록',
-          'IBM은 BobShell이 모든 에이전트 행위를 실시간으로 자기 문서화해 모든 결정을 추적 가능하게 한다고 주장',
-          '그러나 이에 대응하는 감사 로그 기능이 공식 문서에 없고, 보안 가이드는 감사 로깅을 MCP 서버에 한해서만 언급',
-          '규제 대응 형식(보존 기간, 반출 형식, 변조 방지)은 확인하지 못함',
+          'Enterprise 활동 로그를 CADF(Cloud Auditing Data Federation) 표준 JSON으로 제공. action·outcome·eventTime·initiator.id 필드를 담고 시간 단위 파일로 내려받음',
+          '업계 표준을 따르는 기계 판독 형식이라는 점은 분명한 강점이다',
+          '그러나 기록 대상이 인증(로그인·로그아웃·토큰 갱신)과 관리 활동(사용자·팀·좌석 변경)뿐이다 — 에이전트가 무엇을 실행했는지는 남지 않는다',
+          'IBM은 BobShell이 모든 에이전트 행위를 자기 문서화한다고 주장하지만 이에 대응하는 기능이 공식 문서에 없다',
+          '판정 기준이 "에이전트 행위의 경위"이므로, 잘 만든 IAM 감사 로그가 있다는 사실로는 기준을 충족하지 못한다',
         ],
-        media: { src: 'assets/img/auditability/bob.png', caption: 'Bob의 의사결정 기록서' },
-        source: SRC.bobSelfDoc,
+        media: { src: 'assets/img/auditability/bob.png', caption: 'Bob의 활동 로그' },
+        source: SRC.bobActivityLog,
       },
       claude: {
         level: 'partial',
@@ -1299,14 +1400,15 @@ const FEATURES = [
       },
       codex: {
         level: 'full',
-        label: '컴플라이언스 API',
+        label: '에이전트 행위 로그',
         bullets: [
-          '컴플라이언스 API와 감사 이벤트(audit events)를 문서화된 관리자 기능으로 제공',
-          '워크스페이스 분석과 사용 거버넌스를 조직 단위로 조회',
-          '네 도구 중 감사 기록을 1차 문서에 명시한 유일한 경우',
+          'OpenTelemetry로 사용자 프롬프트, 도구 승인 결정, 도구 실행 결과, MCP 서버 사용, 네트워크 프록시 허용·차단 이벤트를 내보냄',
+          '보안팀이 원래 요청과 도구 활동, 승인 결정, 차단 내역을 함께 조회해 사용자와 에이전트의 의도를 재구성할 수 있음',
+          'Compliance Platform의 감사 로그와 Admin 감사·인증·Codex 사용 로그를 별도로 제공',
+          '네 도구 중 에이전트 행위 수준의 기록을 1차 문서에 명시한 유일한 경우',
         ],
-        media: { src: 'assets/img/auditability/codex.png', caption: 'Codex의 감사 이벤트' },
-        source: SRC.codex,
+        media: { src: 'assets/img/auditability/codex.png', caption: 'Codex의 감사 로그' },
+        source: SRC.codexGov,
       },
       cursor: {
         level: 'partial',
@@ -1318,9 +1420,10 @@ const FEATURES = [
     },
     verdict:
       '되돌리기와 감사 추적을 같은 것으로 보면 판단을 그르친다는 초안의 지적은 맞다. 다만 그 기준을 네 도구에 똑같이 적용하면 Bob이 1위가 아니다. ' +
-      'Bob이 실제로 가진 것은 의사결정 기록서라는 문서 산출물이고, 이건 사람이 읽는 기록이다. ' +
-      'Codex는 감사 이벤트를 API로 반출하는 기계 판독 기록을 문서화했다 — 컴플라이언스 팀이 SIEM에 넣어야 하는 쪽은 후자다. ' +
-      '두 형태는 서로를 대체하지 않으므로, 우리 감사 요건이 문서 제출인지 로그 연동인지 먼저 정해야 이 행을 읽을 수 있다.',
+      '공식 문서를 확인하니 Bob에는 CADF 표준을 따르는 제대로 된 감사 로그가 있었다 — 초안이 이를 놓치고 있었다. ' +
+      '문제는 범위다. Bob의 로그는 "누가 로그인했고 관리자가 무엇을 바꿨는가"를 남기고, Codex의 로그는 "에이전트가 어떤 도구를 어떤 승인으로 실행했는가"를 남긴다. ' +
+      '규제 대응에서 필요한 쪽은 대개 후자다. AI가 만든 코드에 문제가 생겼을 때 감사인이 묻는 것은 로그인 시각이 아니라 무엇이 실행됐는지이기 때문이다. ' +
+      'IBM이 주장하는 BobShell 자기 문서화가 실제로 제품에 있고 반출 가능한 형식이라면 이 판정은 올라간다. IBM에 확인할 항목 목록에 이것을 넣어야 한다.',
   },
 
   /* ===== E. 비용 구조 =============================================== */
@@ -1404,12 +1507,13 @@ const FEATURES = [
         label: '멀티벤더 자동 라우팅',
         bullets: [
           'Anthropic Claude, Mistral·Devstral, IBM Granite를 작업 성격에 따라 자동 선택 — 단순 완성은 소형 모델, 복잡한 추론은 프런티어 모델',
-          '정확도·지연시간·비용 기준의 규칙 엔진이 라우팅을 결정하며, 선택 기준을 개발자가 아니라 조직이 정책으로 잡음',
-          'IBM은 이 라우팅으로 비용을 최대 40% 절감한다고 제시 (벤더 측 주장, 작업 구성에 따라 달라짐)',
-          '반면 개발자가 어느 모델이 쓰였는지 통제하기 어려워 블랙박스라는 지적이 있음 — 품질 회귀를 추적할 때 변수가 하나 늘어난다',
+          '정확도·지연시간·비용 기준의 규칙 엔진이 라우팅을 결정한다고 발표됨. IBM은 이 라우팅으로 비용을 최대 40% 절감한다고 제시',
+          '중요한 유보: 공식 제품 문서에는 모델 라우팅·모델 목록·모델 선택 UI가 전혀 등장하지 않는다. Bobcoins 문서만 "Bob이 모델 사용량을 코인으로 환산한다"고 적는다',
+          '따라서 라우팅은 벤더가 설명하는 내부 동작이며, 개발자나 조직이 선택을 확인하거나 지정하는 문서화된 수단이 없다 — 블랙박스라는 외부 지적과 일치한다',
+          '조직이 모델을 정책으로 제한하는 기능은 오히려 Claude·Codex 쪽에 문서화돼 있다',
         ],
         media: { src: 'assets/img/model-choice/bob.png', caption: 'Bob의 모델 라우팅' },
-        source: SRC.bobDeck,
+        source: SRC.bobRouting,
       },
       claude: {
         level: 'partial',
@@ -1444,10 +1548,11 @@ const FEATURES = [
     },
     verdict:
       'Cursor도 멀티벤더 선택과 자체 모델을 제공하므로 "여러 모델을 쓴다"만으로는 구분되지 않는다. ' +
-      'Bob의 실질적 차이는 선택 기준을 개발자가 아니라 조직이 정책으로 통제한다는 점이다. ' +
-      '다만 같은 구조가 반대 방향으로도 작동한다 — 개발자가 모델을 고정할 수 없으면 품질 문제의 원인을 분리하기 어렵다. ' +
-      '그리고 이 항목의 값을 계산할 때 잊지 말아야 할 사실이 있다. Bob의 프런티어 모델이 Claude이므로, ' +
-      '라우팅이 절감하는 것은 "Claude를 덜 쓰는 것"이고 아낀 만큼 결과물이 소형 모델의 산출물로 바뀐다. 40%라는 수치는 이 교환의 결과이며 품질 영향은 별도로 재야 한다.',
+      'Bob의 라우팅은 실재할 가능성이 높지만, 이 항목은 이 자료에서 근거가 가장 약한 칸이다 — ' +
+      '벤더 발표와 보도에는 상세히 나오는데 공식 제품 문서에는 모델 이야기가 아예 없다. ' +
+      '초안은 여기에 "조직이 정책으로 통제한다"고 적었는데 그 근거는 어디에도 없었고, 오히려 모델을 정책으로 제한하는 기능은 Claude·Codex 쪽에 문서화돼 있다. ' +
+      '문서가 침묵한다는 사실 자체가 판단 재료다. 개발자도 조직도 어느 모델이 쓰였는지 확인할 문서화된 수단이 없다는 뜻이고, 품질 회귀를 추적할 때 변수가 하나 늘어난다. ' +
+      '그리고 Bob의 프런티어 모델이 Claude이므로 라우팅이 절감하는 것은 "Claude를 덜 쓰는 것"이다. 40%는 그 교환의 결과이며 품질 영향은 별도로 재야 한다.',
   },
 
   {
@@ -1462,15 +1567,16 @@ const FEATURES = [
     tools: {
       bob: {
         level: 'full',
-        label: 'Bobalytics',
+        label: 'Bobalytics + 예산 한도',
         bullets: [
-          '조직·팀·개인 단위로 토큰 예산과 Bobcoin 사용량을 한 화면에서 추적',
-          '개인·팀 단위 사용 한도를 설정·조정해 비용 예측 가능성을 확보하고, 권한 관리와 같은 화면에서 통제',
-          'v1.0.2에 Bobalytics for Enterprise(팀 분석, Bob Factor 지표, 언어별 사용량) 추가, 2026-07 업데이트에서 AI 비용·사용 분석을 제품에 내장',
-          '과금 단위가 코인이라 행위 단위 원가가 그대로 보인다 — 네 도구 중 가장 세밀한 편',
+          'Bobalytics를 워크스페이스·팀·사용자 세 층으로 제공. 워크스페이스 뷰는 관리자 전용이고, 팀 뷰에서 일반 사용자에게는 이메일이 User 1·User 2로 익명화됨',
+          'KPI 세 개로 정리 — 도입률(일 활성 사용자÷라이선스 좌석), Bob factor(Bob이 작성한 커밋 라인 비율), Bobcoin 지출. 팀별로 성과 대비 비용을 함께 봄',
+          '관찰에 그치지 않고 통제까지 간다 — 팀 생성 시 팀 예산(사용 가능한 최대 Bobcoin)을 걸고, 개인별 지출 한도를 관리자가 설정',
+          '공유 Bobcoin 풀에서 팀·개인에 배분하며, 언어별·모드별 사용 패턴과 저장소별 기여도까지 분해',
+          '단, Bobalytics는 Enterprise 플랜 전용이며 bob.ibm.com 웹 포털에서만 열린다',
         ],
         media: { src: 'assets/img/cost-visibility/bob.png', caption: 'Bobalytics 비용 대시보드' },
-        source: SRC.bobDeck,
+        source: SRC.bobalytics,
       },
       claude: {
         level: 'full',
@@ -1505,11 +1611,12 @@ const FEATURES = [
       },
     },
     verdict:
-      'Bob이 실제로 앞서는 항목이지만 초안이 그린 것만큼 크게 앞서지는 않는다. Claude도 분석 API 두 종과 지출 알림을 갖췄다. ' +
-      'Bob의 우위는 대시보드의 존재가 아니라 과금 단위가 행위라는 점에서 나온다 — 코인이 차감되는 단위가 그대로 원가 분해 단위가 되고, 사용 한도를 개인·팀에 사전에 걸 수 있다. ' +
-      '앞의 두 항목과 묶어서 볼 때만 의미가 산다. 라우팅으로 단가를 낮추고 가시성으로 그 절감을 증명하는 구조이며, ' +
-      '이 항목이 없으면 40% 절감 주장은 확인할 방법이 없다. ' +
-      '다만 대시보드가 있다는 것과 우리 부서별 배부 기준에 맞는다는 것은 다른 문제이므로, 파일럿에서 실제 정산에 쓸 수 있는 형태인지 확인해야 한다.',
+      '공식 문서로 확인하니 이 항목은 Bob의 강점이 맞다. 발표자료의 주장 중 문서로 그대로 확인된 드문 경우이기도 하다. ' +
+      'Claude도 분석 API 두 종과 지출 알림을 갖췄으므로 "대시보드가 있다"로는 갈리지 않는다. ' +
+      'Bob의 차이는 두 가지다. 과금 단위가 행위이므로 코인 차감 단위가 그대로 원가 분해 단위가 되고, ' +
+      '팀 예산과 개인 지출 한도를 사전에 걸 수 있어 관찰에서 통제로 넘어간다. Bob factor처럼 기여도를 비용과 나란히 보는 지표도 다른 도구에 대응물이 없다. ' +
+      '유보는 셋이다. Enterprise 플랜 전용이고, 라우팅의 40% 절감 주장을 이 대시보드로 검증하려 해도 모델별 내역이 문서화돼 있지 않으며, ' +
+      '대시보드가 있다는 것과 우리 부서별 배부 기준에 맞는다는 것은 다른 문제다. 파일럿에서 실제 정산에 쓸 수 있는 형태인지 확인해야 한다.',
   },
 
   /* ===== F. 도입 조건 =============================================== */

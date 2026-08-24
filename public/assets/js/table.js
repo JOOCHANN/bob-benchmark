@@ -28,16 +28,6 @@
     });
   }
 
-  function renderTakeaways() {
-    const grid = document.getElementById('takeaways');
-    TAKEAWAYS.forEach(function (item) {
-      const card = el('article', 'takeaway tk-' + item.kind);
-      card.appendChild(el('h3', null, item.title));
-      card.appendChild(el('p', null, item.body));
-      grid.appendChild(card);
-    });
-  }
-
   function renderLegend() {
     const legend = document.getElementById('legend');
     ['full', 'partial', 'none', 'unknown'].forEach(function (key) {
@@ -215,7 +205,6 @@
   }
 
   renderStats();
-  renderTakeaways();
   renderLegend();
   renderHead();
   renderBody();

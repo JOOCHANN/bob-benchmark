@@ -207,39 +207,6 @@ p {
   font-variant-numeric: tabular-nums;
 }
 
-/* --------------------------------------------------------- 결론 카드 */
-
-.takeaway-grid {
-  display: grid;
-  /* 카드 수가 늘어도 줄이 어긋나지 않게 개수를 고정하지 않는다. */
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
-  margin-top: 16px;
-}
-
-.takeaway {
-  border-left: 3px solid var(--border-strong);
-  padding: 4px 0 4px 18px;
-}
-.takeaway h3 {
-  font-size: 16px;
-  margin-bottom: 6px;
-}
-.takeaway p {
-  font-size: 13.5px;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-.tk-pro {
-  border-left-color: var(--support-success);
-}
-.tk-con {
-  border-left-color: var(--support-warning);
-}
-.tk-neutral {
-  border-left-color: var(--border-strong);
-}
-
 /* --------------------------------------------------------- 범례 */
 
 .legend {
@@ -1001,10 +968,6 @@ tr.is-parity .dot {
     border-top: 1px solid var(--border-subtle);
     padding-top: 16px;
     width: 100%;
-  }
-  .takeaway-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
   }
 }
 

@@ -218,6 +218,10 @@ const SRC = {
     text: 'Claude Code 공식 문서 (권한 모드)',
     url: 'https://code.claude.com/docs/en/permission-modes',
   },
+  claudeModes: {
+    text: 'Claude Code 공식 문서 (권한 모드)',
+    url: 'https://code.claude.com/docs/en/permission-modes',
+  },
   claudeSandbox: { text: 'Claude Code 문서 (Sandboxing)', url: 'https://code.claude.com/docs/en/sandboxing' },
   claudeIam: { text: 'Claude Code 문서 (IAM·권한 관리)', url: 'https://code.claude.com/docs/en/iam' },
   claudeGha: {
@@ -286,7 +290,7 @@ const FEATURES = [
     slug: "modes",
     category: "작업",
     name: "모드",
-    summary: "세션의 도구 권한(모드)과 추론 예산(Effort)을 따로 두는지",
+    summary: "모드: 이 세션에서 에이전트에게 허용하는 동작의 범위. Effort: 그 안에서 추론에 쓰는 양.",
     tools: {
       bob: { level: "full", label: "커스텀 모드 · Effort 없음" },
       claude: { level: "full", label: "권한 모드 + Effort" },

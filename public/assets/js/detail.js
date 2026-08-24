@@ -10,13 +10,16 @@
   const feature = FEATURES[index];
   const content = document.getElementById('content');
 
-  document.getElementById('foot-date').textContent = META.checkedAt;
-
   const nav = document.getElementById('navlist');
+
+  function setFootDate(date) {
+    document.getElementById('foot-date').textContent = date;
+  }
 
   /* --- 없는 항목 -------------------------------------------------------- */
 
   if (!feature) {
+    setFootDate(META.checkedAt);
     renderSideNav(nav, null);
     setupNavToggle('항목 목록');
     document.title = '항목을 찾을 수 없습니다 — AI 코딩 도구 역량 비교';
@@ -28,8 +31,13 @@
     return;
   }
 
+  function itemDate() {
+    return feature.updatedAt || META.checkedAt;
+  }
+
   function attachDetail(extra) {
     if (!extra) return;
+    if (extra.updatedAt) feature.updatedAt = extra.updatedAt;
     if (extra.why) feature.why = extra.why;
     if (extra.verdict) feature.verdict = extra.verdict;
     if (!extra.tools) return;
@@ -50,6 +58,7 @@
 
     const meta = el('div', 'detail-meta');
     meta.appendChild(el('span', 'detail-category', feature.category));
+    meta.appendChild(el('span', 'detail-updated', itemDate() + ' 수정'));
     if (isParity(feature)) meta.appendChild(el('span', 'chip chip-parity', '네 도구 동일'));
     header.appendChild(meta);
 
@@ -132,22 +141,36 @@
     card.appendChild(body);
 
     const foot = el('div', 'card-foot');
-    if (cell.source && cell.source.url) {
-      foot.appendChild(el('span', null, '출처 '));
-      const a = el('a', null, cell.source.text + ' ↗');
-      a.href = cell.source.url;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      foot.appendChild(a);
-    } else if (cell.source) {
-      // 사내 자료처럼 링크가 없는 출처. 이름만 남긴다.
-      foot.appendChild(el('span', null, '출처 ' + cell.source.text));
-    } else {
-      foot.textContent = '출처 미확인 — 검증 필요';
-    }
+    renderSources(foot, cell);
     card.appendChild(foot);
 
     return card;
+  }
+
+  function sourceList(cell) {
+    if (!cell.source) return [];
+    return Array.isArray(cell.source) ? cell.source : [cell.source];
+  }
+
+  function renderSources(foot, cell) {
+    const list = sourceList(cell).filter(Boolean);
+    if (!list.length) {
+      foot.textContent = '출처 미확인 — 검증 필요';
+      return;
+    }
+
+    foot.appendChild(el('span', 'src-label', '출처'));
+    list.forEach(function (src) {
+      if (src.url) {
+        const a = el('a', 'src-link', src.text + ' ↗');
+        a.href = src.url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        foot.appendChild(a);
+      } else {
+        foot.appendChild(el('span', 'src-link', src.text));
+      }
+    });
   }
 
   function renderCards() {
@@ -164,11 +187,24 @@
 
   /* --- 정리 ------------------------------------------------------------- */
 
+  function isVerdictRow(item) {
+    return item && typeof item === 'object' && item.label && item.text;
+  }
+
   function renderVerdict() {
     if (!feature.verdict || (Array.isArray(feature.verdict) && !feature.verdict.length)) return;
-    const section = el('section', 'detail-section');
+    const section = el('section', 'detail-section detail-verdict');
     section.appendChild(el('h2', 'section-title', '정리'));
-    if (Array.isArray(feature.verdict)) {
+    if (Array.isArray(feature.verdict) && feature.verdict.every(isVerdictRow)) {
+      const board = el('dl', 'verdict-board');
+      feature.verdict.forEach(function (row) {
+        const item = el('div', 'verdict-item');
+        item.appendChild(el('dt', 'verdict-label', row.label));
+        item.appendChild(el('dd', 'verdict-text', row.text));
+        board.appendChild(item);
+      });
+      section.appendChild(board);
+    } else if (Array.isArray(feature.verdict)) {
       const list = el('ul', 'verdict-list');
       feature.verdict.forEach(function (line) {
         list.appendChild(el('li', null, line));
@@ -182,6 +218,7 @@
 
   function start() {
     attachDetail(FEATURES_DETAIL[feature.slug]);
+    setFootDate(itemDate());
     document.title = feature.name + ' — AI 코딩 도구 역량 비교';
     renderSideNav(nav, slug);
     setupNavToggle(feature.name);

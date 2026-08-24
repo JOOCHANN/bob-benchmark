@@ -773,6 +773,10 @@ tr.is-parity .dot {
   text-transform: uppercase;
   color: var(--text-helper);
 }
+.detail-updated {
+  font-size: 12px;
+  color: var(--text-helper);
+}
 .detail-title {
   font-size: 34px;
   letter-spacing: -0.03em;
@@ -905,10 +909,21 @@ tr.is-parity .dot {
 }
 
 .card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
   padding: 12px 18px;
   border-top: 1px solid var(--border-subtle);
   font-size: 12.5px;
   color: var(--text-helper);
+}
+.src-label {
+  flex: none;
+  font-weight: 600;
+}
+.src-link {
+  flex: none;
 }
 
 .verdict {
@@ -930,6 +945,42 @@ tr.is-parity .dot {
 }
 .verdict-list li + li {
   margin-top: 10px;
+}
+
+.detail-verdict .section-title {
+  color: var(--text-primary);
+  font-size: 12.5px;
+}
+.verdict-board {
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--bob-accent);
+  background: var(--bg);
+}
+.verdict-item {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 8px 20px;
+  margin: 0;
+  padding: 16px 20px;
+}
+.verdict-item + .verdict-item {
+  border-top: 1px solid var(--border-subtle);
+}
+.verdict-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--bob-accent);
+  padding-top: 3px;
+}
+.verdict-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-primary);
 }
 
 /* --------------------------------------------------------- 푸터 */
@@ -1070,6 +1121,10 @@ tr.is-parity .dot {
 @media (max-width: 900px) {
   .cards {
     grid-template-columns: 1fr;
+  }
+  .verdict-item {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
   .site-title {
     font-size: 28px;

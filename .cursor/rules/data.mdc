@@ -22,15 +22,18 @@ alwaysApply: false
 
 // features/session-sharing.js — 상세
 FEATURES_DETAIL['session-sharing'] = {
+  updatedAt: '2026-08-25',         // 이 항목을 마지막으로 고친 날. 없으면 메인 조사 시점
   why: '왜 보는지 + 판정 기준',
   tools: {
     bob: {
       bullets: ['근거 한 줄'],
       media: { src: 'assets/img/session-sharing/bob.png', caption: '설명' },
-      source: SRC.someDoc,
+      source: SRC.someDoc,           // 또는 [SRC.a, SRC.b] — 주장마다 해당 문서
     },
   },
-  verdict: '정리. 문자열 또는 불릿 배열. 기준에 따라 우위가 바뀌면 그 사실을 적는다.',
+  verdict: [
+    { label: '축 이름', text: '한눈에 보는 정리. 기준에 따라 우위가 바뀌면 그 사실을 적는다.' },
+  ],
 };
 ```
 

@@ -100,6 +100,10 @@ const SRC = {
     url: 'https://bob.ibm.com/docs/ide/getting-started/install',
   },
   bobModes: { text: 'IBM Bob 공식 문서 (모드)', url: 'https://bob.ibm.com/docs/ide/features/modes' },
+  bobCustomModes: {
+    text: 'IBM Bob 공식 문서 (커스텀 모드)',
+    url: 'https://bob.ibm.com/docs/ide/configuration/custom-modes',
+  },
   bobSubagents: {
     text: 'IBM Bob 공식 문서 (서브에이전트)',
     url: 'https://bob.ibm.com/docs/ide/features/subagents',
@@ -222,6 +226,10 @@ const SRC = {
     text: 'Claude Code 공식 문서 (권한 모드)',
     url: 'https://code.claude.com/docs/en/permission-modes',
   },
+  claudeEffort: {
+    text: 'Claude Code 공식 문서 (모델·Effort)',
+    url: 'https://code.claude.com/docs/en/model-config',
+  },
   claudeSandbox: { text: 'Claude Code 문서 (Sandboxing)', url: 'https://code.claude.com/docs/en/sandboxing' },
   claudeIam: { text: 'Claude Code 문서 (IAM·권한 관리)', url: 'https://code.claude.com/docs/en/iam' },
   claudeGha: {
@@ -268,6 +276,10 @@ const SRC = {
     text: 'Cursor 공식 문서 (Agent·모드)',
     url: 'https://cursor.com/help/ai-features/agent',
   },
+  cursorEffort: {
+    text: 'Cursor 공식 문서 (Grok 4.6 · Effort)',
+    url: 'https://cursor.com/help/models-and-usage/grok-4-6',
+  },
   cursorCli: { text: 'Cursor CLI', url: 'https://cursor.com/cli' },
   cursorAuto: {
     text: 'Cursor 문서 (Automations · 클라우드 에이전트)',
@@ -290,7 +302,7 @@ const FEATURES = [
     slug: "modes",
     category: "작업",
     name: "모드",
-    summary: "모드: 이 세션에서 에이전트에게 허용하는 동작의 범위. Effort: 그 안에서 추론에 쓰는 양.",
+    summary: "에이전트에게 허용하는 동작의 범위와 그 안에서 추론에 쓰는 양.",
     tools: {
       bob: { level: "full", label: "커스텀 모드 · Effort 없음" },
       claude: { level: "full", label: "권한 모드 + Effort" },

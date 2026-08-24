@@ -7,11 +7,16 @@ function el(tag, className, text) {
   return node;
 }
 
-/** 네 도구의 판정이 모두 같으면 도구 선택의 근거가 되지 않는 항목이다. */
+/** 네 도구의 판정이 모두 같으면 도구 선택의 근거가 되지 않는 항목이다. 미확인은 동일로 치지 않는다. */
 function isParity(feature) {
   const levels = TOOLS.map(function (t) {
-    return (feature.tools[t.id] || {}).level;
+    return (feature.tools[t.id] || {}).level || 'unknown';
   });
+  if (levels.some(function (lv) {
+    return lv === 'unknown';
+  })) {
+    return false;
+  }
   return levels.every(function (lv) {
     return lv === levels[0];
   });

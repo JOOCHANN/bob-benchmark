@@ -273,61 +273,6 @@ const SRC = {
 const FEATURES = [
   /* ===== 작업 ================================================= */
   {
-    slug: 'plan-design',
-    category: '작업',
-    name: '계획',
-    summary: '코드를 건드리기 전에 작업 계획을 세우고 승인을 받는 단계',
-    why:
-      '에이전트가 곧바로 파일을 고치기 시작하면 방향이 어긋난 뒤에야 발견하게 된다. 계획 단계를 분리하면 되돌리는 비용이 큰 작업일수록 이득이 커진다. ' +
-      '판정 기준은 계획을 별도 모드로 분리해 승인 대상으로 다루는지로 잡았다.',
-    tools: {
-      bob: {
-        level: 'full',
-        label: 'Plan 모드',
-        bullets: [
-          'Plan 모드는 create-plan 스킬로 맥락을 모아 계획을 만들고, 사용자가 검토·승인한 뒤 다른 모드로 넘어가게 설계됨',
-          '계획이 준비되면 Bob이 Plan → Agent로 모드를 스스로 전환해 이어서 진행',
-          'Ask 모드는 파일 수정 없이 코드베이스 질의에만 쓰여 계획 단계의 안전장치로 동작',
-        ],
-        media: { src: 'assets/img/plan-design/bob.png', caption: 'Bob의 Plan 모드' },
-        source: SRC.bobModes,
-      },
-      claude: {
-        level: 'full',
-        label: 'Plan 모드',
-        bullets: [
-          '읽기 전용으로 조사한 뒤 계획을 제시하고 승인을 받음. 승인 전까지 파일 수정 차단',
-          'VS Code 확장에서 계획 검토(plan review) UI 제공',
-          '계획이 세션 산출물로 남으며, 문서 체계로 정의된 산출물은 아님',
-        ],
-        media: { src: 'assets/img/plan-design/claude.png', caption: 'Claude Code의 Plan 모드' },
-        source: SRC.claude,
-      },
-      codex: {
-        level: 'partial',
-        label: '승인 정책으로 대체',
-        bullets: [
-          '계획 전용 모드보다 실행 단위 승인 정책(approval modes)으로 통제',
-          '계획 산출물 자체를 승인 대상으로 다루지는 않음',
-        ],
-        media: { src: 'assets/img/plan-design/codex.png', caption: 'Codex의 승인 모드' },
-        source: SRC.codex,
-      },
-      cursor: {
-        level: 'full',
-        label: 'Plan 모드',
-        bullets: ['작업 전 계획을 세우고 사용자가 검토·수정', '계획에서 실행으로 넘어가는 연결이 매끄러움'],
-        media: { src: 'assets/img/plan-design/cursor.png', caption: 'Cursor의 Plan' },
-        source: SRC.cursor,
-      },
-    },
-    verdict:
-      '계획 모드 자체는 세 도구가 갖췄고, 공식 문서로 보면 동작 범위도 사실상 같다 — 조사 후 계획을 제시하고 승인받은 뒤 구현으로 넘어간다. ' +
-      '초안은 Bob만 SRS·SDD 같은 정해진 문서를 만든다고 적었으나 공식 문서에 그런 내용이 없어 삭제했다. ' +
-      'Bob 쪽에서 실제로 확인되는 차이는 두 가지로 작다. 계획 수립이 create-plan 스킬로 구현돼 있어 조직이 그 스킬을 수정할 수 있고, ' +
-      '계획이 준비되면 모드를 스스로 Agent로 바꿔 이어간다. 도입 판단을 가를 만한 차이는 아니다.',
-  },
-  {
     slug: 'modes',
     category: '작업',
     name: '모드',
@@ -368,6 +313,61 @@ const FEATURES = [
     verdict: '',
   },
   {
+    slug: 'plan-design',
+    category: '작업',
+    name: '계획',
+    summary: '코드를 건드리기 전에 작업 계획을 세우고 승인을 받는 단계',
+    why:
+      '에이전트가 곧바로 파일을 고치기 시작하면 방향이 어긋난 뒤에야 발견하게 된다. 계획 단계를 분리하면 되돌리는 비용이 큰 작업일수록 이득이 커진다. ' +
+      '판정 기준은 계획을 별도 모드로 분리해 승인 대상으로 다루는지로 잡았다.',
+    tools: {
+      bob: {
+        level: 'unknown',
+        label: null,
+        bullets: [
+          'Plan 모드는 create-plan 스킬로 맥락을 모아 계획을 만들고, 사용자가 검토·승인한 뒤 다른 모드로 넘어가게 설계됨',
+          '계획이 준비되면 Bob이 Plan → Agent로 모드를 스스로 전환해 이어서 진행',
+          'Ask 모드는 파일 수정 없이 코드베이스 질의에만 쓰여 계획 단계의 안전장치로 동작',
+        ],
+        media: { src: 'assets/img/plan-design/bob.png', caption: 'Bob의 Plan 모드' },
+        source: SRC.bobModes,
+      },
+      claude: {
+        level: 'unknown',
+        label: null,
+        bullets: [
+          '읽기 전용으로 조사한 뒤 계획을 제시하고 승인을 받음. 승인 전까지 파일 수정 차단',
+          'VS Code 확장에서 계획 검토(plan review) UI 제공',
+          '계획이 세션 산출물로 남으며, 문서 체계로 정의된 산출물은 아님',
+        ],
+        media: { src: 'assets/img/plan-design/claude.png', caption: 'Claude Code의 Plan 모드' },
+        source: SRC.claude,
+      },
+      codex: {
+        level: 'unknown',
+        label: null,
+        bullets: [
+          '계획 전용 모드보다 실행 단위 승인 정책(approval modes)으로 통제',
+          '계획 산출물 자체를 승인 대상으로 다루지는 않음',
+        ],
+        media: { src: 'assets/img/plan-design/codex.png', caption: 'Codex의 승인 모드' },
+        source: SRC.codex,
+      },
+      cursor: {
+        level: 'unknown',
+        label: null,
+        bullets: ['작업 전 계획을 세우고 사용자가 검토·수정', '계획에서 실행으로 넘어가는 연결이 매끄러움'],
+        media: { src: 'assets/img/plan-design/cursor.png', caption: 'Cursor의 Plan' },
+        source: SRC.cursor,
+      },
+    },
+    verdict:
+      '계획 모드 자체는 세 도구가 갖췄고, 공식 문서로 보면 동작 범위도 사실상 같다 — 조사 후 계획을 제시하고 승인받은 뒤 구현으로 넘어간다. ' +
+      '초안은 Bob만 SRS·SDD 같은 정해진 문서를 만든다고 적었으나 공식 문서에 그런 내용이 없어 삭제했다. ' +
+      'Bob 쪽에서 실제로 확인되는 차이는 두 가지로 작다. 계획 수립이 create-plan 스킬로 구현돼 있어 조직이 그 스킬을 수정할 수 있고, ' +
+      '계획이 준비되면 모드를 스스로 Agent로 바꿔 이어간다. 도입 판단을 가를 만한 차이는 아니다.',
+  },
+  {
     slug: 'codebase',
     category: '작업',
     name: '코드 이해·수정',
@@ -377,8 +377,8 @@ const FEATURES = [
       '반대로 여기서 변별력이 사라졌다면, 도구 선택 기준을 다른 축으로 옮겨야 한다는 신호다.',
     tools: {
       bob: {
-        level: 'full',
-        label: '생성·리팩터링·분석',
+        level: 'unknown',
+        label: null,
         bullets: [
           '코드 생성, 리팩터링, 디버깅, 코드베이스 질의응답을 기본 제공',
           'Agent 모드가 Read·Edit·Execute·MCP·Skill·Todo·Subtask 도구를 모두 쓰며, 모드별로 도구 접근 범위가 다르게 지정됨',
@@ -389,8 +389,8 @@ const FEATURES = [
         source: SRC.bobTools,
       },
       claude: {
-        level: 'full',
-        label: '대규모 저장소 탐색',
+        level: 'unknown',
+        label: null,
         bullets: [
           '탐색·편집·명령 실행을 한 흐름에서 수행',
           '긴 작업의 컨텍스트 관리 장치와 세션 간 자동 메모리 제공',
@@ -399,15 +399,15 @@ const FEATURES = [
         source: SRC.claude,
       },
       codex: {
-        level: 'full',
-        label: '저장소 단위 작업',
+        level: 'unknown',
+        label: null,
         bullets: ['저장소 전체를 대상으로 변경 수행', '격리 환경에서 실행해 부작용을 제한'],
         media: { src: 'assets/img/codebase/codex.png', caption: 'Codex의 저장소 작업' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'full',
-        label: '인덱싱 기반 탐색',
+        level: 'unknown',
+        label: null,
         bullets: ['코드베이스 인덱싱으로 관련 파일을 빠르게 찾음', '에디터와 밀착된 다중 파일 편집'],
         media: { src: 'assets/img/codebase/cursor.png', caption: 'Cursor의 인덱싱' },
         source: SRC.cursor,
@@ -427,8 +427,8 @@ const FEATURES = [
       '에이전트가 만든 코드를 사람이 전부 읽어 검증하면 생산성 이득이 사라진다. 테스트를 스스로 쓰고 돌려 실패를 잡아내는지가 실사용 품질을 가른다.',
     tools: {
       bob: {
-        level: 'full',
-        label: '테스트 워크플로',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Premium Package for Java에 단위 테스트 생성 워크플로를 두어, 실행 전에 테스트 전략을 구조화해 일관되고 측정 가능한 커버리지를 확보',
           'Agent 모드가 Execute 도구로 테스트를 직접 실행하고 Todo 도구로 진행을 추적',
@@ -438,22 +438,22 @@ const FEATURES = [
         source: SRC.bobJavaWorkflows,
       },
       claude: {
-        level: 'full',
-        label: '테스트 주도 루프',
+        level: 'unknown',
+        label: null,
         bullets: ['테스트를 먼저 쓰고 통과할 때까지 반복하는 작업 방식 지원', '실패 로그를 읽어 수정까지 이어감'],
         media: { src: 'assets/img/testing/claude.png', caption: 'Claude Code의 테스트 루프' },
         source: SRC.claude,
       },
       codex: {
-        level: 'full',
-        label: '샌드박스 실행',
+        level: 'unknown',
+        label: null,
         bullets: ['격리 환경에서 테스트를 실행하고 결과를 반영', '실행 환경이 통제돼 재현성이 높음'],
         media: { src: 'assets/img/testing/codex.png', caption: 'Codex의 테스트 실행' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'full',
-        label: '터미널 실행 기반',
+        level: 'unknown',
+        label: null,
         bullets: [
           '에이전트가 터미널로 테스트를 실행하고 결과를 반영',
           'Automations에 테스트 생성 템플릿을 제공해 예약 실행 가능',
@@ -480,8 +480,8 @@ const FEATURES = [
       '다만 이 기준은 리뷰가 일어나는 시점을 묻지 않는다는 한계가 있어, 각 칸에 그 시점을 함께 적었다.',
     tools: {
       bob: {
-        level: 'full',
-        label: 'Findings 목록',
+        level: 'unknown',
+        label: null,
         bullets: [
           '/review로 선택한 브랜치 간 diff를 분석해 Findings 패널에 이슈를 심각도별로 누적. GitHub과 GitLab 브랜치 비교를 지원',
           'GitHub 이슈 URL을 함께 주면 변경이 그 요구사항을 충족하는지 검증 (이슈 검증은 GitHub 전용)',
@@ -492,8 +492,8 @@ const FEATURES = [
         source: SRC.bobReviews,
       },
       claude: {
-        level: 'partial',
-        label: 'PR 자동 리뷰',
+        level: 'unknown',
+        label: null,
         bullets: [
           'GitHub Code Review로 모든 PR에 자동 리뷰를 붙이고, 보안 리뷰 명령으로 변경분을 점검',
           '결과가 세션 출력이나 PR 코멘트로 남아, 미처리 항목을 목록으로 관리하는 구조는 아님',
@@ -503,8 +503,8 @@ const FEATURES = [
         source: SRC.claudeGha,
       },
       codex: {
-        level: 'partial',
-        label: 'PR 자동 리뷰',
+        level: 'unknown',
+        label: null,
         bullets: [
           '설정에서 Automatic reviews를 켜면 멘션 없이 새 PR을 자동 리뷰',
           '리뷰가 클라우드 작업으로 돌고 권한이 있으면 수정을 브랜치에 직접 푸시',
@@ -514,8 +514,8 @@ const FEATURES = [
         source: SRC.codexUpgrades,
       },
       cursor: {
-        level: 'partial',
-        label: 'Bugbot',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Bugbot이 PR에 결함을 코멘트로 남기고 "Fix in Cursor"로 해당 코드로 점프',
           'Bugbot Autofix와 Security Review를 별도 기능으로 제공하며 관리자 화면에서 사용량을 분리해 집계',
@@ -543,8 +543,8 @@ const FEATURES = [
       '비용 관점도 있다 — 탐색 단계를 서브에이전트에 격리하면 메인 컨텍스트가 부풀지 않는다.',
     tools: {
       bob: {
-        level: 'full',
-        label: '역할 기반 서브에이전트',
+        level: 'unknown',
+        label: null,
         bullets: [
           '서브에이전트가 독립 컨텍스트 창에서 지정된 작업을 수행하고 결과 요약만 본 대화로 돌려줌. 생성 전 사용자 승인 필요',
           '문서가 강조하는 용도는 병렬 처리보다 컨텍스트 오염 방지 — 코드베이스 탐색처럼 맥락을 많이 먹는 작업을 격리',
@@ -555,8 +555,8 @@ const FEATURES = [
         source: SRC.bobSubagents,
       },
       claude: {
-        level: 'full',
-        label: '서브에이전트 + 병렬 세션',
+        level: 'unknown',
+        label: null,
         bullets: [
           '역할별 서브에이전트를 정의해 독립 컨텍스트에서 병렬 실행. 리드 에이전트가 분배와 병합을 조율',
           '여러 전체 세션을 한 화면에서 동시에 돌리는 백그라운드 에이전트 뷰 제공',
@@ -565,15 +565,15 @@ const FEATURES = [
         source: SRC.claude,
       },
       codex: {
-        level: 'partial',
-        label: '작업 단위 병렬화',
+        level: 'unknown',
+        label: null,
         bullets: ['격리 환경에서 여러 클라우드 작업을 동시에 실행', '한 작업 안에서 에이전트를 분기시키는 구조와는 결이 다름'],
         media: { src: 'assets/img/orchestration/codex.png', caption: 'Codex의 병렬 작업' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: '병렬 클라우드 에이전트',
+        level: 'unknown',
+        label: null,
         bullets: [
           '클라우드 에이전트를 여러 개 동시에 띄워 격리된 VM에서 병렬 처리',
           '한 작업 안에서 서브에이전트로 분기하는 기능의 범위는 공식 문서로 확정하지 못함',
@@ -597,8 +597,8 @@ const FEATURES = [
       '투자 대비 효과를 숫자로 제시하기도 쉽다. 우리 자산 구성에 COBOL·PL/I·RPG가 있다면 이 항목의 가중치가 가장 높다.',
     tools: {
       bob: {
-        level: 'full',
-        label: '플랫폼별 전용 패키지',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Premium Package for Java에 네 개 워크플로가 문서화돼 있다 — Java 버전 업그레이드(AI 검증과 에이전트 수정 사이클), WebSphere→Liberty 리플랫포밍(IBM AMA 마이그레이션 플랜 기반), UI 현대화, 단위 테스트 생성',
           'Z용(COBOL·PL/I·JCL)과 IBM i용(RPG·CL·DDS) 패키지를 따로 제공 — 타 도구에 대응물이 없는 영역',
@@ -609,22 +609,22 @@ const FEATURES = [
         source: SRC.bobJavaWorkflows,
       },
       claude: {
-        level: 'partial',
-        label: '범용 역량으로 수행',
+        level: 'unknown',
+        label: null,
         bullets: ['대규모 마이그레이션을 수행할 수 있으나 전용 워크플로는 아님', '작업 분해와 검증 설계를 사용자가 맡음'],
         media: { src: 'assets/img/modernization/claude.png', caption: 'Claude Code의 마이그레이션' },
         source: SRC.claude,
       },
       codex: {
-        level: 'partial',
-        label: '범용 역량으로 수행',
+        level: 'unknown',
+        label: null,
         bullets: ['병렬 클라우드 작업으로 대량 변경을 처리할 수 있음', '레거시 전용 자산은 제공하지 않음'],
         media: { src: 'assets/img/modernization/codex.png', caption: 'Codex의 대량 변경' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: '범용 역량으로 수행',
+        level: 'unknown',
+        label: null,
         bullets: ['다중 파일 편집과 클라우드 에이전트로 마이그레이션 수행 가능', '레거시 전용 자산은 제공하지 않음'],
         media: { src: 'assets/img/modernization/cursor.png', caption: 'Cursor의 다중 파일 편집' },
         source: SRC.cursor,
@@ -648,8 +648,8 @@ const FEATURES = [
       '도입 검토에서는 "우리가 만든 연동 자산이 도구를 바꿔도 살아남는가"가 실질적 기준이 된다.',
     tools: {
       bob: {
-        level: 'full',
-        label: 'MCP + IBM 제품군',
+        level: 'unknown',
+        label: null,
         bullets: [
           '설정 패널에서 MCP 서버 추가·구성·제거. 로컬 실행과 원격 실행 모두 선택 가능',
           'v2.0.1에서 MCP 리소스·프롬프트를 @ 멘션과 / 액션으로 호출하고 서버 입력값을 검증',
@@ -659,8 +659,8 @@ const FEATURES = [
         source: SRC.bobLog,
       },
       claude: {
-        level: 'full',
-        label: 'MCP 지원',
+        level: 'unknown',
+        label: null,
         bullets: [
           'MCP 표준을 제안한 주체로 로컬·원격 서버 모두 지원',
           '프로젝트/사용자 단위로 서버 범위 분리, 커밋 가능한 .mcp.json으로 팀 공유',
@@ -669,15 +669,15 @@ const FEATURES = [
         source: SRC.mcp,
       },
       codex: {
-        level: 'full',
-        label: 'MCP 지원',
+        level: 'unknown',
+        label: null,
         bullets: ['설정 파일로 MCP 서버를 등록해 도구로 노출'],
         media: { src: 'assets/img/integration/codex.png', caption: 'Codex의 MCP' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'full',
-        label: 'MCP 지원',
+        level: 'unknown',
+        label: null,
         bullets: ['설정 UI에서 MCP 서버를 등록해 에이전트 도구로 사용', 'MCP Apps와 팀 마켓플레이스로 조직 내 배포'],
         media: { src: 'assets/img/integration/cursor.png', caption: 'Cursor의 MCP' },
         source: SRC.cursor,
@@ -698,8 +698,8 @@ const FEATURES = [
       '판정 기준은 두 가지다. 규칙과 워크플로를 코드로 관리해 팀이 공유할 수 있는가, 그리고 그 규칙을 사람의 준수에 맡기지 않고 훅으로 강제할 수 있는가.',
     tools: {
       bob: {
-        level: 'partial',
-        label: '규칙 · 커맨드 · Skills',
+        level: 'unknown',
+        label: null,
         bullets: [
           '커스텀 규칙을 전역(~/.bob/rules/)과 워크스페이스(.bob/)로 나눠 지정. 프로젝트 규칙은 코드와 함께 버전 관리되어 clone하면 팀원에게 전파되고 변경이 코드 리뷰를 거침',
           '마크다운 파일로 커스텀 슬래시 커맨드를 만들고, Bob IDE와 Bob Shell에서 동일하게 동작',
@@ -710,8 +710,8 @@ const FEATURES = [
         source: SRC.bobSkills,
       },
       claude: {
-        level: 'full',
-        label: '규칙 · Skills · 훅',
+        level: 'unknown',
+        label: null,
         bullets: [
           'CLAUDE.md로 프로젝트 표준을 지정하고 세션 간 자동 메모리를 축적',
           'Skills로 반복 워크플로를 패키징해 팀이 공유. 저장소에 커밋하면 클라우드 세션에서도 동작',
@@ -722,8 +722,8 @@ const FEATURES = [
         source: SRC.claudeHooks,
       },
       codex: {
-        level: 'full',
-        label: 'AGENTS.md · Skills · 훅',
+        level: 'unknown',
+        label: null,
         bullets: [
           'AGENTS.md로 저장소 규칙을 정의 (Bob·Cursor도 같은 관례를 수용)',
           '커스텀 프롬프트, Skills·플러그인, 훅을 문서화된 확장 수단으로 제공',
@@ -732,8 +732,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'full',
-        label: 'Rules · Skills · 훅',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Rules와 Team Rules로 조직 전역 정책을 정의하고 Bugbot 규칙까지 적용',
           'Hooks로 onPreEdit·onPostEdit·onPreCommit·onApprove 이벤트에 bash·Node·Python 스크립트를 연결',
@@ -760,8 +760,8 @@ const FEATURES = [
       '비대화형 CLI 호출만 되는 경우는 부분으로 둔다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: 'Shell 비대화형',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Bob Shell의 비대화형 세션(bob -p)으로 스크립트·자동화에서 호출하고 파이프로 입력을 넘길 수 있음',
           '에이전트를 우리 코드에 임베딩하는 SDK는 공식 문서 전체에서 확인되지 않음 — 자동화의 형태가 셸 호출로 제한된다',
@@ -771,8 +771,8 @@ const FEATURES = [
         source: SRC.bobHeadless,
       },
       claude: {
-        level: 'full',
-        label: 'Agent SDK',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Agent SDK로 Claude Code의 도구·권한을 쓰는 자체 에이전트를 구축. Python·Node가 도는 곳이면 어디서든 호스팅',
           '오케스트레이션·도구 접근·권한을 코드로 제어',
@@ -782,15 +782,15 @@ const FEATURES = [
         source: SRC.claudeSdk,
       },
       codex: {
-        level: 'full',
-        label: 'Codex SDK',
+        level: 'unknown',
+        label: null,
         bullets: ['SDK를 공식 문서에 두고 에이전트를 외부 시스템에 임베딩'],
         media: { src: 'assets/img/embedding/codex.png', caption: 'Codex SDK' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: 'CLI 호출',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Cursor CLI로 GitHub Actions·스크립트에서 에이전트를 실행하고 커스텀 에이전트를 구성',
           '언어 SDK 형태의 임베딩 수단은 공식 문서로 확인하지 못함',
@@ -815,8 +815,8 @@ const FEATURES = [
       '"CLI를 스크립트에서 부를 수 있다"는 어느 CLI나 되는 얘기이므로 그것만으로는 기준을 넘지 못한다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: 'Shell 비대화형 실행',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Bob Shell의 비대화형 세션(bob -p)으로 스크립트·배치 처리에서 호출하고, 파이프 입력과 출력 리다이렉트를 지원',
           '공식 문서가 Bob Shell의 용도로 "CI/CD 통합"을 명시',
@@ -827,8 +827,8 @@ const FEATURES = [
         source: SRC.bobHeadless,
       },
       claude: {
-        level: 'full',
-        label: '전용 CI 통합',
+        level: 'unknown',
+        label: null,
         bullets: [
           'GitHub Actions와 GitLab CI/CD용 전용 통합을 공식 문서로 제공',
           '비대화형 모드(claude -p)로 파이프에 끼워 넣거나 CI 단계로 실행',
@@ -838,8 +838,8 @@ const FEATURES = [
         source: SRC.claudeGha,
       },
       codex: {
-        level: 'full',
-        label: 'GitHub 연동 + 클라우드',
+        level: 'unknown',
+        label: null,
         bullets: [
           'GitHub 통합으로 이슈·PR 이벤트에서 클라우드 작업을 실행하고 변경분을 PR로 제출',
           '릴리스 승인 자체를 조율하는 구조는 아님',
@@ -848,8 +848,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'full',
-        label: 'CLI + GitHub Actions',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Cursor CLI를 GitHub Actions에서 실행해 문서 갱신·보안 리뷰를 자동화',
           'Automations로 파이프라인성 작업을 예약 실행',
@@ -886,8 +886,8 @@ const FEATURES = [
         source: null,
       },
       claude: {
-        level: 'full',
-        label: '클라우드 세션',
+        level: 'unknown',
+        label: null,
         bullets: [
           '웹·모바일에서 장시간 작업을 시작하고 로컬 설정 없이 실행. 노트북을 닫아도 계속됨',
           'claude --cloud로 로컬에서 시작한 작업을 클라우드로 넘기고, --teleport로 터미널로 회수',
@@ -897,8 +897,8 @@ const FEATURES = [
         source: SRC.claudeWeb,
       },
       codex: {
-        level: 'full',
-        label: 'Codex Cloud',
+        level: 'unknown',
+        label: null,
         bullets: [
           'CLI·Slack·GitHub 이슈에서 작업을 던지면 격리된 클라우드 샌드박스에서 실행',
           '결과를 리뷰 가능한 diff로 받아 명령 한 번으로 로컬에 병합',
@@ -907,8 +907,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'full',
-        label: 'Cloud Agents',
+        level: 'unknown',
+        label: null,
         bullets: [
           '2026-02 출시. Cursor의 격리된 VM에서 실행되며 웹·데스크톱·모바일·Slack·GitHub에서 접근',
           'GitHub 이슈를 읽어 브랜치를 만들고 PR 초안까지 작성',
@@ -946,8 +946,8 @@ const FEATURES = [
         source: null,
       },
       claude: {
-        level: 'full',
-        label: 'Routines',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Anthropic 관리 클라우드에서 실행돼 노트북이 꺼져 있어도 계속 동작',
           '트리거 3종 — 스케줄(시간·일·주 프리셋, 커스텀 cron, 최소 주기 1시간), HTTP API, GitHub 이벤트(PR·릴리스, 필터 지정 가능)',
@@ -958,15 +958,15 @@ const FEATURES = [
         source: SRC.claudeRoutines,
       },
       codex: {
-        level: 'full',
-        label: '예약 · 자동 리뷰',
+        level: 'unknown',
+        label: null,
         bullets: ['예약·반복 작업을 문서화된 기능으로 제공', '설정에서 새 PR 자동 리뷰를 상시 실행'],
         media: { src: 'assets/img/scheduling/codex.png', caption: 'Codex의 예약 작업' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'full',
-        label: 'Automations',
+        level: 'unknown',
+        label: null,
         bullets: [
           'cron 기반 예약으로 주간 보안 스캔, 야간 테스트 커버리지 리포트, 일간 의존성 점검을 무인 실행',
           'PR 리뷰·보안 감사·테스트 생성·버그 트리아지 템플릿 제공',
@@ -1005,8 +1005,8 @@ const FEATURES = [
         source: SRC.bobUsers,
       },
       claude: {
-        level: 'full',
-        label: 'Cowork',
+        level: 'unknown',
+        label: null,
         bullets: [
           '코딩이 아닌 일반 업무를 에이전트에 맡기는 Cowork를 별도 제품으로 제공. 2026-01 데스크톱 출시 후 2026-07-07 웹·모바일로 확장(베타, Max 플랜 우선)',
           'Anthropic 서버의 원격 세션으로 돌아 모든 기기가 꺼져 있어도 예약 작업이 진행되고, 판단이 필요하면 휴대폰으로 확인을 요청',
@@ -1016,8 +1016,8 @@ const FEATURES = [
         source: SRC.claudeCowork,
       },
       codex: {
-        level: 'partial',
-        label: 'Slack 디스패치',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Slack 채널·스레드에서 @Codex 멘션으로 작업을 생성해 개발자가 아닌 구성원도 지시 가능',
           '코딩 외 업무를 위한 별도 제품은 아님',
@@ -1026,8 +1026,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: 'Slack + 웹',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Slack 봇과 웹 앱으로 IDE 밖에서 작업 지시 가능',
           'JIRA·GitHub Issues 연동으로 티켓에서 작업 시작',
@@ -1053,8 +1053,8 @@ const FEATURES = [
       '개발자가 설정을 바꿀 수 있으면 그것은 기본값이지 정책이 아니다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: '좌석·예산 통제 중심',
+        level: 'unknown',
+        label: null,
         bullets: [
           'SAML IdP를 이메일 도메인 단위로 연결하고, DNS TXT 레코드로 도메인 소유를 검증한 뒤 SSO를 강제',
           '역할은 User와 Admin 두 종류. Admin은 사용자·팀 관리와 관리 대시보드 접근 권한을 가짐',
@@ -1066,8 +1066,8 @@ const FEATURES = [
         source: SRC.bobEnterprise,
       },
       claude: {
-        level: 'full',
-        label: 'MDM 관리 설정',
+        level: 'unknown',
+        label: null,
         bullets: [
           'MDM으로 배포하는 managed settings를 사용자가 재정의할 수 없음. 허용 모델과 기본값을 중앙에서 조정',
           '서버에 정책을 한 번 정의하면 클라이언트가 로그인 시 받아감',
@@ -1078,8 +1078,8 @@ const FEATURES = [
         source: SRC.claudeIam,
       },
       codex: {
-        level: 'full',
-        label: 'RBAC · 관리 구성',
+        level: 'unknown',
+        label: null,
         bullets: [
           '역할 기반 접근 제어와 managed configuration을 문서화된 관리자 기능으로 제공',
           '모델 가용성 관리와 사용 거버넌스를 조직 단위로 설정',
@@ -1088,8 +1088,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: 'Team Rules',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Team Rules로 조직 전역 정책을 정의하고 Bugbot 규칙까지 적용',
           '훅으로 승인·편집 이벤트에 스크립트 연결',
@@ -1118,8 +1118,8 @@ const FEATURES = [
       '이 항목은 네 도구 모두 1차 문서로 확인된 범위가 좁아, 확인한 것과 못 한 것을 칸 안에 그대로 적었다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: '주장과 문서가 불일치',
+        level: 'unknown',
+        label: null,
         bullets: [
           'IBM 발표는 프롬프트 정규화, 민감 데이터 스캔, 실시간 정책 집행을 실행 시점에 적용한다고 명시',
           '그러나 공식 보안 가이드는 민감정보 스캔을 자동 기능으로 문서화하지 않고, 비밀값을 Bob에 주지 말고 .gitignore와 .bobignore에 넣으라고 사용자 책임으로 안내',
@@ -1131,8 +1131,8 @@ const FEATURES = [
         source: SRC.bobIgnore,
       },
       claude: {
-        level: 'partial',
-        label: '권한·격리 중심',
+        level: 'unknown',
+        label: null,
         bullets: [
           '샌드박스와 권한 정책으로 접근 범위를 좁히고, 클라우드 세션은 허용 도메인 밖 요청을 403으로 차단',
           '훅으로 커밋 전 비밀값 스캔 같은 검사를 직접 붙일 수 있음',
@@ -1142,8 +1142,8 @@ const FEATURES = [
         source: SRC.claudeSandbox,
       },
       codex: {
-        level: 'partial',
-        label: '샌드박스 · 네트워크 차단',
+        level: 'unknown',
+        label: null,
         bullets: [
           '네트워크 차단과 샌드박스 실행으로 유출 경로를 물리적으로 제한',
           'HIPAA 대응 옵션과 컴플라이언스 API를 문서화',
@@ -1153,8 +1153,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: '프라이버시 모드',
+        level: 'unknown',
+        label: null,
         bullets: [
           '프라이버시 모드로 코드 저장을 차단하고 팀 단위 관리자 설정 제공',
           '코드 보관 여부 통제가 중심이며 실행 중 민감정보 차단과는 층위가 다름',
@@ -1181,8 +1181,8 @@ const FEATURES = [
       '판정 기준은 OS·컨테이너 수준의 격리를 제품이 제공하는지로 잡았다. 명령 문자열 검사나 무시 파일은 격리가 아니므로 해당하지 않는다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: 'Shell만 격리',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Bob Shell은 macOS Seatbelt(sandbox-exec)와 Docker·Podman 컨테이너 격리를 제공. 컨테이너는 완전한 프로세스 격리',
           'Seatbelt 프로파일로 네트워크 허용 여부와 쓰기 범위를 단계별로 지정. 기본 프로파일은 프로젝트 디렉터리 밖 쓰기를 차단',
@@ -1194,8 +1194,8 @@ const FEATURES = [
         source: SRC.bobSandbox,
       },
       claude: {
-        level: 'full',
-        label: '샌드박스 실행',
+        level: 'unknown',
+        label: null,
         bullets: [
           '샌드박스 실행을 공식 문서로 제공해 파일시스템·네트워크 접근을 OS 수준에서 제한',
           '클라우드 세션은 환경별 네트워크 접근 수준을 지정하고 허용 목록 밖 요청을 403으로 차단',
@@ -1204,8 +1204,8 @@ const FEATURES = [
         source: SRC.claudeSandbox,
       },
       codex: {
-        level: 'full',
-        label: '샌드박스 기본',
+        level: 'unknown',
+        label: null,
         bullets: [
           '로컬은 샌드박스와 승인 모드, 클라우드는 격리된 샌드박스에서 실행',
           '격리를 기본 동작으로 두어 실행 환경 자체가 위험 범위를 정함',
@@ -1214,8 +1214,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: '클라우드만 격리',
+        level: 'unknown',
+        label: null,
         bullets: [
           '클라우드 에이전트는 Cursor의 격리된 VM에서 실행',
           '로컬 IDE 에이전트의 OS 수준 격리는 공식 문서로 확인하지 못함',
@@ -1243,8 +1243,8 @@ const FEATURES = [
       '개발자가 실수를 되돌리는 장치(체크포인트, 변경 이력)는 목적이 달라 여기에 해당하지 않는다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: '인증·관리 이벤트만',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Enterprise 활동 로그를 CADF(Cloud Auditing Data Federation) 표준 JSON으로 제공. action·outcome·eventTime·initiator.id 필드를 담고 시간 단위 파일로 내려받음',
           '업계 표준을 따르는 기계 판독 형식이라는 점은 분명한 강점이다',
@@ -1256,8 +1256,8 @@ const FEATURES = [
         source: SRC.bobActivityLog,
       },
       claude: {
-        level: 'partial',
-        label: '로그 · 훅 · 분석 API',
+        level: 'unknown',
+        label: null,
         bullets: [
           '세션 기록과 훅으로 감사 로그를 구성할 수 있고, 클라이언트 텔레메트리는 배포 형태와 무관하게 동작',
           'Analytics API로 조직 단위 사용 이력을 반출 (단, Bedrock·Vertex·Foundry 경유 세션은 집계에서 빠짐)',
@@ -1267,8 +1267,8 @@ const FEATURES = [
         source: SRC.claudeAnalytics,
       },
       codex: {
-        level: 'full',
-        label: '에이전트 행위 로그',
+        level: 'unknown',
+        label: null,
         bullets: [
           'OpenTelemetry로 사용자 프롬프트, 도구 승인 결정, 도구 실행 결과, MCP 서버 사용, 네트워크 프록시 허용·차단 이벤트를 내보냄',
           '보안팀이 원래 요청과 도구 활동, 승인 결정, 차단 내역을 함께 조회해 사용자와 에이전트의 의도를 재구성할 수 있음',
@@ -1279,8 +1279,8 @@ const FEATURES = [
         source: SRC.codexGov,
       },
       cursor: {
-        level: 'partial',
-        label: '변경 이력 중심',
+        level: 'unknown',
+        label: null,
         bullets: ['에디터 변경 이력과 체크포인트로 되돌리기 지원', '관리자 화면의 사용량 집계가 중심이며 경위 기록과는 층위가 다름'],
         media: { src: 'assets/img/auditability/cursor.png', caption: 'Cursor의 체크포인트' },
         source: SRC.cursor,
@@ -1305,8 +1305,8 @@ const FEATURES = [
       '수천 명 규모에서 예측 불가능한 변동비는 금액 자체보다 예산 편성에서 더 큰 문제가 된다. 아래 금액은 모두 공개 정가다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: '선불 크레딧(Bobcoin)',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Bobcoin 선불 크레딧으로 과금(1코인 = $0.50 고정). 코드 생성·파일 분석·명령 실행 등 행위가 요구하는 연산량에 따라 차감',
           '좌석 요금에 지원 비용이 별도로 붙는다 — Pro $20+$3(40코인), Pro Plus $60+$9(160코인), Ultra $200+$30(500코인)',
@@ -1319,8 +1319,8 @@ const FEATURES = [
         source: SRC.bobCoins,
       },
       claude: {
-        level: 'full',
-        label: '좌석에 사용량 포함',
+        level: 'unknown',
+        label: null,
         bullets: [
           '좌석 요금에 사용량이 포함되는 구조 — Team 표준 좌석 월 $20~25, 프리미엄 좌석 월 $100~125',
           'Claude Code가 모든 요금제에 포함돼 별도 라인 아이템이 없음',
@@ -1331,8 +1331,8 @@ const FEATURES = [
         source: SRC.claudePrice,
       },
       codex: {
-        level: 'partial',
-        label: '토큰 크레딧',
+        level: 'unknown',
+        label: null,
         bullets: [
           '2026-04부터 메시지 단위가 아닌 토큰 크레딧 방식으로 전환',
           'Enterprise는 좌석별 한도 대신 조직 공용 크레딧 풀 — 사용량이 고른 팀에 유리하나 좌석 고정비 개념이 약함',
@@ -1341,8 +1341,8 @@ const FEATURES = [
         source: SRC.codexPrice,
       },
       cursor: {
-        level: 'partial',
-        label: '좌석 + 초과분 후불',
+        level: 'unknown',
+        label: null,
         bullets: [
           '좌석에 포함 사용량을 주고 초과분은 후불로 청구(Teams 좌석 월 $40 기준)',
           'Bugbot은 사용자당 월 $40의 별도 과금',
@@ -1369,8 +1369,8 @@ const FEATURES = [
       '모델 시장의 변화 속도를 보면 종속성도 비용 위험의 일종이다.',
     tools: {
       bob: {
-        level: 'full',
-        label: '멀티벤더 자동 라우팅',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Anthropic Claude, Mistral·Devstral, IBM Granite를 작업 성격에 따라 자동 선택 — 단순 완성은 소형 모델, 복잡한 추론은 프런티어 모델',
           '정확도·지연시간·비용 기준의 규칙 엔진이 라우팅을 결정한다고 발표됨. IBM은 이 라우팅으로 비용을 최대 40% 절감한다고 제시',
@@ -1382,8 +1382,8 @@ const FEATURES = [
         source: SRC.bobRouting,
       },
       claude: {
-        level: 'partial',
-        label: '자사 모델 내 선택',
+        level: 'unknown',
+        label: null,
         bullets: [
           '등급별 모델 선택과 작업별 자동 전환을 지원해 단가를 조절하고, 관리자가 허용 모델을 중앙에서 제한',
           '타사 모델을 섞는 구조가 아니므로 절감 폭이 자사 등급 범위로 제한됨',
@@ -1392,8 +1392,8 @@ const FEATURES = [
         source: SRC.claudeIam,
       },
       codex: {
-        level: 'partial',
-        label: '자사 모델 내 선택',
+        level: 'unknown',
+        label: null,
         bullets: [
           '자사 모델 계열 안에서 추론 강도를 조절해 비용을 낮추고, 관리자가 모델 가용성을 관리',
           '벤더 종속성이 가장 높은 편',
@@ -1402,8 +1402,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'full',
-        label: '멀티벤더 선택',
+        level: 'unknown',
+        label: null,
         bullets: [
           '여러 벤더 모델을 등록하고 자동 선택 모드를 제공. 자체 모델(Composer)도 선택지에 포함',
           '선택 기준이 대체로 개발자와 제품 기본값에 맡겨져, 조직이 정책으로 강제하는 층위는 아님',
@@ -1431,8 +1431,8 @@ const FEATURES = [
       '앞 항목의 단가 절감 주장을 검증할 유일한 수단이기도 하다.',
     tools: {
       bob: {
-        level: 'full',
-        label: 'Bobalytics + 예산 한도',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Bobalytics를 워크스페이스·팀·사용자 세 층으로 제공. 워크스페이스 뷰는 관리자 전용이고, 팀 뷰에서 일반 사용자에게는 이메일이 User 1·User 2로 익명화됨',
           'KPI 세 개로 정리 — 도입률(일 활성 사용자÷라이선스 좌석), Bob factor(Bob이 작성한 커밋 라인 비율), Bobcoin 지출. 팀별로 성과 대비 비용을 함께 봄',
@@ -1444,8 +1444,8 @@ const FEATURES = [
         source: SRC.bobalytics,
       },
       claude: {
-        level: 'full',
-        label: '분석 API + 지출 알림',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Claude Code Analytics API로 조직의 일별 생산성 지표를, Enterprise Analytics API로 제품 전반의 채택·비용 데이터를 반출',
           'apps gateway로 사용자별 비용 추적, 모델별 엔타이틀먼트, 지출 알림 제공',
@@ -1455,8 +1455,8 @@ const FEATURES = [
         source: SRC.claudeAnalytics,
       },
       codex: {
-        level: 'partial',
-        label: '워크스페이스 분석',
+        level: 'unknown',
+        label: null,
         bullets: [
           '워크스페이스 분석과 사용 거버넌스를 관리자 기능으로 제공하고 조직 공용 크레딧 풀의 소진 현황을 확인',
           '작업 유형별 원가 분해와 사전 한도 설정의 실제 범위는 1차 문서로 확인하지 못함',
@@ -1465,8 +1465,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: '표면별 사용량 분해',
+        level: 'unknown',
+        label: null,
         bullets: [
           '관리자가 사용량을 사용자별로 필터링하고 표면별(클라이언트·클라우드 에이전트·Automations·Bugbot·Security Review)로 분해',
           '초과 과금 억제는 요금제 선택으로 간접 통제하며 사전 한도 설정은 확인하지 못함',
@@ -1494,8 +1494,8 @@ const FEATURES = [
       '뒤에서 뒤집히지 않도록 가장 먼저 확인해야 한다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: 'SaaS만 제공',
+        level: 'unknown',
+        label: null,
         bullets: [
           '2026-04-28 GA 시점에 SaaS로만 제공되며, 온프렘 배포는 데이터 레지던시·규제 요건 대응을 위해 향후 릴리스로 예정',
           '온프렘 제공 시점은 공표되지 않음',
@@ -1505,8 +1505,8 @@ const FEATURES = [
         source: SRC.bobNews,
       },
       claude: {
-        level: 'full',
-        label: '자체 클라우드 경유 가능',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Amazon Bedrock, Google Cloud Vertex, Microsoft Foundry를 통한 모델 접근 경로 지원 — 기업 클라우드 계정 안에서 처리',
           'apps gateway로 자체 호스팅 control plane과 기업 SSO 구성',
@@ -1517,15 +1517,15 @@ const FEATURES = [
         source: SRC.claudeDeploy,
       },
       codex: {
-        level: 'partial',
-        label: 'SaaS 중심',
+        level: 'unknown',
+        label: null,
         bullets: ['벤더 서비스 경유가 전제', '로컬 CLI 실행은 가능하나 모델 호출은 외부로 나감'],
         media: { src: 'assets/img/deployment/codex.png', caption: 'Codex의 제공 형태' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: 'SaaS + 프라이버시 모드',
+        level: 'unknown',
+        label: null,
         bullets: ['코드 저장을 막는 프라이버시 모드 제공', '처리 자체는 벤더 인프라를 경유'],
         media: { src: 'assets/img/deployment/cursor.png', caption: 'Cursor의 프라이버시 모드' },
         source: SRC.cursor,
@@ -1547,8 +1547,8 @@ const FEATURES = [
       '판정 기준은 IDE, 웹, 데스크톱, CLI 중 어디에서 같은 작업을 이어갈 수 있는지로 잡았다. Slack·모바일로 일을 맡기는 경로는 팀으로 쓰기에서 본다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: 'IDE + 터미널',
+        level: 'unknown',
+        label: null,
         bullets: [
           'Bob IDE는 독립 애플리케이션으로 설치된다 — macOS .pkg, Windows .exe, Debian·RedHat 패키지를 받아 설치하고 응용 프로그램 메뉴에서 실행',
           'Bob Shell이 터미널 표면을 담당하며 두 환경에서 슬래시 커맨드가 동일하게 동작',
@@ -1559,8 +1559,8 @@ const FEATURES = [
         source: SRC.bobInstall,
       },
       claude: {
-        level: 'full',
-        label: '터미널·IDE·데스크톱·웹',
+        level: 'unknown',
+        label: null,
         bullets: [
           '터미널, VS Code, JetBrains, 데스크톱 앱, 웹(claude.ai/code)에서 동일 엔진 사용',
           '표면 간 이동 지원 — /desktop, claude --cloud, --teleport, Remote Control로 세션을 옮김',
@@ -1570,8 +1570,8 @@ const FEATURES = [
         source: SRC.claude,
       },
       codex: {
-        level: 'full',
-        label: 'CLI·IDE·데스크톱·웹',
+        level: 'unknown',
+        label: null,
         bullets: [
           'CLI, IDE 확장, macOS·Windows 데스크톱 앱, 웹',
         ],
@@ -1579,8 +1579,8 @@ const FEATURES = [
         source: SRC.codex,
       },
       cursor: {
-        level: 'full',
-        label: 'IDE·웹·CLI',
+        level: 'unknown',
+        label: null,
         bullets: [
           'IDE, 웹 앱, CLI에서 접근',
           'JetBrains는 ACP를 통해 지원',
@@ -1594,5 +1594,6 @@ const FEATURES = [
       '클라이언트는 작업을 이어갈 수 있는 자리를 정하므로 역량으로 다뤄야 한다. ' +
       '더 중요한 것은 이 결과가 앞의 주장과 충돌한다는 점이다. IBM은 Bob을 요구사항부터 유지보수까지 아우르는 조직 단위 SDLC 파트너로 제시하는데, ' +
       '확인된 클라이언트는 개발자용 IDE와 터미널뿐이다. SDLC 전체를 대상으로 한다는 주장과 개발자 도구라는 실물 사이의 간격이 이 행에서 드러난다.',
-  },
+  }
+
 ];

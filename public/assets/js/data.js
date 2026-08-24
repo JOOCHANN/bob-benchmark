@@ -2,8 +2,8 @@
  * 비교 데이터 단일 소스.
  * 장표(index.html)와 상세 페이지(detail.html)가 모두 이 파일만 참조한다.
  *
- * 분류 원칙: 카테고리는 기능 묶음이 아니라 "의사결정 질문" 단위로 나눈다.
- * 기술 검토자와 경영 의사결정자가 같은 표를 보고 각자 필요한 답을 얻게 하기 위함이다.
+ * 분류: 작업, 연동, 사용 범위, 통제, 비용, 도입 여건.
+ * 그룹 머리행에는 대분류 이름만 둔다.
  *
  * level: 'full' | 'partial' | 'none' | 'unknown'
  *   full    - 제품에 내장된 정식 기능
@@ -68,14 +68,14 @@ const LEVELS = {
   unknown: { label: '확인 필요', symbol: '·', className: 'lv-unknown' },
 };
 
-/* 카테고리별 의사결정 질문. 표에서 그룹 머리행에 함께 표시된다. */
+/* 대분류. 질문은 두지 않고 이름만 표시한다. */
 const CATEGORIES = {
-  '에이전트 루프': '일을 맡기면 계획부터 검증까지 도는가',
-  '도구 · 파이프라인': '우리 도구와 빌드에 붙는가',
-  '위임 · 도달': '책상을 벗어나 맡길 수 있는가',
-  '통제': '도입해도 안전한가',
-  '비용': '얼마가, 어떻게 보이는가',
-  '우리 환경': '우리 제약에서 쓸 수 있는가',
+  '작업': '',
+  '연동': '',
+  '사용 범위': '',
+  '통제': '',
+  '비용': '',
+  '도입 여건': '',
 };
 
 /**
@@ -271,11 +271,11 @@ const SRC = {
 };
 
 const FEATURES = [
-  /* ===== A. 에이전트 루프 =========================================== */
+  /* ===== 작업 ================================================= */
   {
     slug: 'plan-design',
-    category: '에이전트 루프',
-    name: '계획 · 설계',
+    category: '작업',
+    name: '계획',
     summary: '코드를 건드리기 전에 작업 계획을 세우고 승인을 받는 단계',
     why:
       '에이전트가 곧바로 파일을 고치기 시작하면 방향이 어긋난 뒤에야 발견하게 된다. 계획 단계를 분리하면 되돌리는 비용이 큰 작업일수록 이득이 커진다. ' +
@@ -285,7 +285,6 @@ const FEATURES = [
         level: 'full',
         label: 'Plan 모드',
         bullets: [
-          'Agent / Ask / Plan 세 모드를 내장 모드로 분리해 제공하고, 모드별로 사용 가능한 도구를 다르게 지정',
           'Plan 모드는 create-plan 스킬로 맥락을 모아 계획을 만들고, 사용자가 검토·승인한 뒤 다른 모드로 넘어가게 설계됨',
           '계획이 준비되면 Bob이 Plan → Agent로 모드를 스스로 전환해 이어서 진행',
           'Ask 모드는 파일 수정 없이 코드베이스 질의에만 쓰여 계획 단계의 안전장치로 동작',
@@ -329,9 +328,49 @@ const FEATURES = [
       '계획이 준비되면 모드를 스스로 Agent로 바꿔 이어간다. 도입 판단을 가를 만한 차이는 아니다.',
   },
   {
+    slug: 'modes',
+    category: '작업',
+    name: '모드',
+    summary: 'Ask·Plan·Agent 같은 작업 모드와, 팀이 정의하는 커스텀 모드',
+    why:
+      '계획은 구현 전에 승인을 받는 단계이고, 규칙·스킬은 파일로 행동을 정하는 수단이다. 이 항목은 그 둘과 겹치지 않는다. ' +
+      '판정 기준은 내장 모드가 도구 접근을 다르게 나누는지, 그리고 팀이 그 묶음을 커스텀 모드로 만들 수 있는지다.',
+    tools: {
+      bob: {
+        level: 'full',
+        label: '내장 · 커스텀 모드',
+        bullets: [
+          'Agent / Ask / Plan 세 모드를 내장 모드로 분리해 제공하고, 모드별로 사용 가능한 도구를 다르게 지정',
+          '커스텀 모드로 도구 접근·파일 권한·행동 지침을 묶어 팀 표준을 강제하는 전용 어시스턴트를 정의',
+        ],
+        media: { src: 'assets/img/modes/bob.png', caption: 'Bob의 모드' },
+        source: SRC.bobModes,
+      },
+      claude: {
+        level: 'unknown',
+        label: null,
+        media: { src: 'assets/img/modes/claude.png', caption: 'Claude Code의 모드' },
+        source: null,
+      },
+      codex: {
+        level: 'unknown',
+        label: null,
+        media: { src: 'assets/img/modes/codex.png', caption: 'Codex의 모드' },
+        source: null,
+      },
+      cursor: {
+        level: 'unknown',
+        label: null,
+        media: { src: 'assets/img/modes/cursor.png', caption: 'Cursor의 모드' },
+        source: null,
+      },
+    },
+    verdict: '',
+  },
+  {
     slug: 'codebase',
-    category: '에이전트 루프',
-    name: '코드베이스 이해 · 작성',
+    category: '작업',
+    name: '코드 이해·수정',
     summary: '대규모 저장소를 탐색해 맥락을 파악하고 여러 파일을 함께 수정하는 기본 역량',
     why:
       '모든 AI 코딩 도구의 출발점이자 실사용에서 가장 자주 부딪히는 지점이다. 이 항목이 부족하면 나머지 기능은 의미가 없다. ' +
@@ -381,8 +420,8 @@ const FEATURES = [
   },
   {
     slug: 'testing',
-    category: '에이전트 루프',
-    name: '테스트 생성 · 실행',
+    category: '작업',
+    name: '테스트',
     summary: '테스트를 만들고 실행해 결과를 스스로 확인하는 루프',
     why:
       '에이전트가 만든 코드를 사람이 전부 읽어 검증하면 생산성 이득이 사라진다. 테스트를 스스로 쓰고 돌려 실패를 잡아내는지가 실사용 품질을 가른다.',
@@ -431,8 +470,8 @@ const FEATURES = [
   },
   {
     slug: 'code-review',
-    category: '에이전트 루프',
-    name: '코드 리뷰 · 취약점 진단',
+    category: '작업',
+    name: '코드 리뷰',
     summary: '작성된 코드에서 결함과 보안 취약점을 찾아내고 수정까지 잇는 단계',
     why:
       '에이전트가 코드를 빠르게 쏟아낼수록 병목은 작성이 아니라 리뷰로 옮겨간다. ' +
@@ -496,8 +535,8 @@ const FEATURES = [
   },
   {
     slug: 'orchestration',
-    category: '에이전트 루프',
-    name: '병렬 에이전트 오케스트레이션',
+    category: '작업',
+    name: '병렬 작업',
     summary: '큰 작업을 여러 갈래로 나눠 독립된 에이전트가 동시에 처리하는 구조',
     why:
       '단일 에이전트는 컨텍스트가 길어질수록 정확도가 떨어진다. 작업을 쪼개 각각 독립 컨텍스트에서 처리하면 대규모 변경에서 처리량과 정확도가 함께 올라간다. ' +
@@ -548,11 +587,61 @@ const FEATURES = [
       'Bob의 차이는 분기 단위를 SDLC 역할과 모드로 잡는다는 점이며, 앞의 산출물 체계와 묶일 때만 의미가 생긴다. ' +
       '기술적 병렬성만 필요하다면 이 항목은 Bob을 고를 이유가 되지 않는다.',
   },
-  /* ===== B. 도구 · 파이프라인 ======================================= */
+  {
+    slug: 'modernization',
+    category: '작업',
+    name: '레거시 현대화',
+    summary: '오래된 언어·프레임워크·런타임을 최신 버전으로 옮기는 대규모 일괄 작업',
+    why:
+      '기술 부채는 대개 사람을 붙여 몇 달씩 태우는 방식으로 처리된다. 반복적이고 범위가 명확해 자동화 효과가 가장 크게 나오는 영역이며, ' +
+      '투자 대비 효과를 숫자로 제시하기도 쉽다. 우리 자산 구성에 COBOL·PL/I·RPG가 있다면 이 항목의 가중치가 가장 높다.',
+    tools: {
+      bob: {
+        level: 'full',
+        label: '플랫폼별 전용 패키지',
+        bullets: [
+          'Premium Package for Java에 네 개 워크플로가 문서화돼 있다 — Java 버전 업그레이드(AI 검증과 에이전트 수정 사이클), WebSphere→Liberty 리플랫포밍(IBM AMA 마이그레이션 플랜 기반), UI 현대화, 단위 테스트 생성',
+          'Z용(COBOL·PL/I·JCL)과 IBM i용(RPG·CL·DDS) 패키지를 따로 제공 — 타 도구에 대응물이 없는 영역',
+          '고객 사례: Blue Pearl이 Java 11→25 전환과 지원 종료 API 127개 해소를 30일 이상 → 약 3일로 단축. APIS IT가 .NET Core 3.1→8 전환을 4~5시간에 완료, 20년 된 EGL/CICS 문서화 10배 가속',
+          '단, Premium Package는 기본 구독에 포함되지 않는 별도 계약 대상',
+        ],
+        media: { src: 'assets/img/modernization/bob.png', caption: 'Bob의 현대화 워크플로' },
+        source: SRC.bobJavaWorkflows,
+      },
+      claude: {
+        level: 'partial',
+        label: '범용 역량으로 수행',
+        bullets: ['대규모 마이그레이션을 수행할 수 있으나 전용 워크플로는 아님', '작업 분해와 검증 설계를 사용자가 맡음'],
+        media: { src: 'assets/img/modernization/claude.png', caption: 'Claude Code의 마이그레이션' },
+        source: SRC.claude,
+      },
+      codex: {
+        level: 'partial',
+        label: '범용 역량으로 수행',
+        bullets: ['병렬 클라우드 작업으로 대량 변경을 처리할 수 있음', '레거시 전용 자산은 제공하지 않음'],
+        media: { src: 'assets/img/modernization/codex.png', caption: 'Codex의 대량 변경' },
+        source: SRC.codex,
+      },
+      cursor: {
+        level: 'partial',
+        label: '범용 역량으로 수행',
+        bullets: ['다중 파일 편집과 클라우드 에이전트로 마이그레이션 수행 가능', '레거시 전용 자산은 제공하지 않음'],
+        media: { src: 'assets/img/modernization/cursor.png', caption: 'Cursor의 다중 파일 편집' },
+        source: SRC.cursor,
+      },
+    },
+    verdict:
+      '네 도구 모두 마이그레이션을 "할 수는" 있다. 차이는 전용 워크플로와 검증 자산이 준비돼 있는지이며, ' +
+      'COBOL·PL/I·RPG처럼 범용 도구가 학습 데이터로만 아는 영역에서는 이 격차가 특히 크다. 이 표에서 Bob의 우위가 가장 확실한 항목이다. ' +
+      '다만 세 가지를 함께 봐야 한다. 인용된 수치는 IBM이 고른 성공 사례이고 대상 코드베이스의 상태에 크게 좌우된다. ' +
+      'Premium Package는 유료 애드온이므로 이 강점은 기본 구독 가격이 아니라 추가 비용을 전제로 계산해야 한다. ' +
+      '그리고 현대화는 일회성 프로젝트이므로, 이 항목 하나로 상시 개발 도구를 결정하면 프로젝트가 끝난 뒤의 판단 근거가 남지 않는다.',
+  },
+  /* ===== 연동 ================================================= */
   {
     slug: 'integration',
-    category: '도구 · 파이프라인',
-    name: '사내 시스템 연동',
+    category: '연동',
+    name: '도구 연결',
     summary: 'MCP로 사내 이슈 트래커·위키·배포 시스템을 에이전트에 연결하는 표준 확장',
     why:
       '사내 시스템에 접근하지 못하는 코딩 에이전트는 반쪽짜리다. MCP는 이 연결을 도구마다 새로 만들지 않고 한 번 만들어 재사용하게 해준다. ' +
@@ -601,8 +690,8 @@ const FEATURES = [
   },
   {
     slug: 'extensibility',
-    category: '도구 · 파이프라인',
-    name: '확장 · 커스터마이즈',
+    category: '연동',
+    name: '규칙·스킬',
     summary: '조직의 규칙과 반복 작업을 파일로 정의해 저장소에 커밋하고 팀이 공유하는 구조',
     why:
       'MCP가 외부 시스템 연결이라면 이 항목은 에이전트 자신의 행동 규정이다. 층위가 달라 서로를 대체하지 못한다. ' +
@@ -615,7 +704,6 @@ const FEATURES = [
           '커스텀 규칙을 전역(~/.bob/rules/)과 워크스페이스(.bob/)로 나눠 지정. 프로젝트 규칙은 코드와 함께 버전 관리되어 clone하면 팀원에게 전파되고 변경이 코드 리뷰를 거침',
           '마크다운 파일로 커스텀 슬래시 커맨드를 만들고, Bob IDE와 Bob Shell에서 동일하게 동작',
           'Skills로 체크리스트·템플릿 등 supporting file을 포함한 워크플로를 정의. 활성화 시 기본적으로 사용자 승인을 요구',
-          '커스텀 모드로 도구 접근·파일 권한·행동 지침을 묶어 팀 표준을 강제하는 전용 어시스턴트를 정의',
           '다만 에디터·커밋 이벤트에 스크립트를 걸는 훅이 공식 문서 전체에서 한 건도 확인되지 않는다 — 규칙은 프롬프트로 전달되며 코드로 차단되지 않는다',
         ],
         media: { src: 'assets/img/extensibility/bob.png', caption: 'Bob의 커스텀 규칙과 Skills' },
@@ -657,14 +745,14 @@ const FEATURES = [
     },
     verdict:
       '초안에서 이 축은 "사내 시스템 연동과 겹친다"는 이유로 빠져 있었지만 판단 근거가 다르므로 겹치지 않는다. ' +
-      '넣어 보면 Bob은 규칙·커맨드·Skills·모드를 갖춰 크게 뒤지지 않는다 — 즉 이 축을 뺀 것은 Bob에게 유리한 선택이 아니었다. ' +
+      '넣어 보면 Bob은 규칙·커맨드·Skills를 갖춰 크게 뒤지지 않는다 — 즉 이 축을 뺀 것은 Bob에게 유리한 선택이 아니었다. ' +
       '차이가 나는 지점은 훅 하나다. 나머지 셋은 규칙 위반을 스크립트로 차단할 수 있고 Bob은 규칙을 프롬프트로 전달한다. ' +
       '"조직 표준을 강제한다"가 도입 명분이라면 이 차이는 그 명분의 핵심에 걸리므로, Bob의 훅 지원 여부를 IBM에 확인해야 한다.',
   },
   {
     slug: 'embedding',
-    category: '도구 · 파이프라인',
-    name: '프로그래밍 임베딩',
+    category: '연동',
+    name: 'SDK',
     summary: '사내 도구나 파이프라인 안에 에이전트를 부품으로 넣을 수 있는지',
     why:
       '도구를 UI로만 쓸 수 있으면 자동화의 상한이 제품이 제공하는 기능까지로 고정된다. ' +
@@ -718,8 +806,8 @@ const FEATURES = [
   },
   {
     slug: 'delivery',
-    category: '도구 · 파이프라인',
-    name: '배포 · 파이프라인 연계',
+    category: '연동',
+    name: 'CI/CD',
     summary: '코드 작성 이후 CI/CD와 릴리스 과정까지 이어지는 자동화',
     why:
       '개발 도구의 생산성 이득은 대개 "코드가 작성된 시점"에서 측정되지만 실제 리드타임은 그 이후 구간에서 더 많이 소모된다. ' +
@@ -777,72 +865,11 @@ const FEATURES = [
       '실무에서 걸릴 지점이 하나 더 있다. 비대화형 세션은 IBMid가 아니라 API 키 인증을 요구하므로, ' +
       'CI에서 쓰려면 키 발급·보관·회전 절차를 따로 세워야 한다. 우리 CI 환경에서 실제로 돌려 보고 확정할 항목이다.',
   },
-  /* ===== C. 위임 · 도달 ============================================= */
-  {
-    slug: 'surfaces',
-    category: '위임 · 도달',
-    name: '실행 표면',
-    summary: '같은 도구를 어디서 띄울 수 있는지 — IDE, 터미널, 데스크톱, 웹, 모바일, 채팅',
-    why:
-      '표면 수는 제품 사양처럼 보이지만 실제로는 "언제 일을 맡길 수 있는가"를 정한다. IDE 안에서만 도는 도구는 개발자가 자리에 앉아 있는 시간에만 쓰인다. ' +
-      '판정 기준은 개발자 책상을 벗어난 표면(웹·모바일·채팅)이 있는지, 그리고 표면 사이로 작업을 이어받을 수 있는지로 잡았다.',
-    tools: {
-      bob: {
-        level: 'partial',
-        label: 'IDE + 터미널',
-        bullets: [
-          'Bob IDE는 독립 애플리케이션으로 설치된다 — macOS .pkg, Windows .exe, Debian·RedHat 패키지를 받아 설치하고 응용 프로그램 메뉴에서 실행',
-          'Bob Shell이 터미널 표면을 담당하며 두 환경에서 슬래시 커맨드가 동일하게 동작',
-          'bob.ibm.com 웹 포털은 있으나 용도가 관리·Bobalytics·다운로드이며 여기서 코딩 작업을 실행하지는 않음',
-          'JetBrains 플러그인, 웹 코딩 세션, 모바일 앱, Slack 연동은 공식 문서와 사이트맵 전체에서 확인되지 않음',
-        ],
-        media: { src: 'assets/img/surfaces/bob.png', caption: 'Bob IDE와 Bob Shell' },
-        source: SRC.bobInstall,
-      },
-      claude: {
-        level: 'full',
-        label: '터미널·IDE·데스크톱·웹·모바일',
-        bullets: [
-          '터미널, VS Code, JetBrains, 데스크톱 앱, 웹(claude.ai/code), 모바일(iOS·Android)에서 동일 엔진 사용',
-          'Slack 멘션으로 버그 리포트를 PR로 받고, GitHub Actions·GitLab CI에서 실행',
-          '표면 간 이동 지원 — /desktop, claude --cloud, --teleport, Remote Control로 세션을 옮김',
-          'CLAUDE.md·설정·MCP 서버가 모든 표면에서 그대로 동작',
-        ],
-        media: { src: 'assets/img/surfaces/claude.png', caption: 'Claude Code의 실행 표면' },
-        source: SRC.claude,
-      },
-      codex: {
-        level: 'full',
-        label: 'CLI·IDE·데스크톱·웹·모바일',
-        bullets: [
-          'CLI, IDE 확장, macOS·Windows 데스크톱 앱, 웹, GitHub, Slack, 모바일',
-          'Slack에서 @Codex 멘션으로 클라우드 작업을 생성하고 결과를 리뷰 가능한 diff로 받음',
-        ],
-        media: { src: 'assets/img/surfaces/codex.png', caption: 'Codex의 실행 표면' },
-        source: SRC.codex,
-      },
-      cursor: {
-        level: 'full',
-        label: 'IDE·웹·모바일·Slack·CLI',
-        bullets: [
-          'IDE, 웹 앱, 모바일 앱, Slack, CLI에서 접근',
-          'Slack에서 @Cursor 멘션으로 백그라운드 에이전트를 띄우고 대화를 벗어나지 않고 PR 생성',
-          'JetBrains는 ACP를 통해 지원',
-        ],
-        media: { src: 'assets/img/surfaces/cursor.png', caption: 'Cursor의 실행 표면' },
-        source: SRC.cursorSlack,
-      },
-    },
-    verdict:
-      'Bob이 가장 크게 뒤처지는 항목이다. 초안에서는 이 축이 "제품 사양이지 역량이 아니다"라는 이유로 빠져 있었으나, ' +
-      '표면은 작업을 맡길 수 있는 시점을 정하므로 역량으로 다뤄야 한다. ' +
-      '더 중요한 것은 이 결과가 앞의 주장과 충돌한다는 점이다. IBM은 Bob을 요구사항부터 유지보수까지 아우르는 조직 단위 SDLC 파트너로 제시하는데, ' +
-      '기획자·PM·QA가 접근할 수 있는 표면은 개발자용 IDE와 터미널뿐이다. SDLC 전체를 대상으로 한다는 주장과 개발자 도구라는 실물 사이의 간격이 이 행에서 드러난다.',
-  },
+  /* ===== 사용 범위 ============================================= */
   {
     slug: 'async',
-    category: '위임 · 도달',
-    name: '비동기 위임 · 클라우드 실행',
+    category: '사용 범위',
+    name: '백그라운드 실행',
     summary: '내 컴퓨터를 벗어난 곳에서 에이전트가 돌고, 끝나면 결과를 받아오는 방식',
     why:
       '오래 걸리는 작업을 로컬에서 돌리면 그 시간 동안 기계와 사람이 함께 묶인다. 클라우드에서 돌면 여러 작업을 동시에 던져 두고 결과만 확인하면 된다. ' +
@@ -899,8 +926,8 @@ const FEATURES = [
   },
   {
     slug: 'scheduling',
-    category: '위임 · 도달',
-    name: '예약 실행 · 무인 자동화',
+    category: '사용 범위',
+    name: '예약 실행',
     summary: '사람이 지시하지 않아도 정해진 시점이나 사건에 에이전트가 스스로 도는 구조',
     why:
       '반복 작업(야간 CI 실패 분석, 주간 의존성 점검, 문서 최신화)은 사람이 기억해서 실행하는 순간 누락된다. ' +
@@ -957,8 +984,8 @@ const FEATURES = [
   },
   {
     slug: 'teamwork',
-    category: '위임 · 도달',
-    name: '팀 협업 · 비개발자 위임',
+    category: '사용 범위',
+    name: '팀으로 쓰기',
     summary: '코드를 쓰지 않는 구성원이 같은 에이전트에 일을 맡길 수 있는지',
     why:
       '도입 규모가 개발조직을 넘어가는지를 가르는 항목이다. 개발자 도구로 남으면 좌석 수가 개발자 수로 묶이고, ' +
@@ -1014,11 +1041,11 @@ const FEATURES = [
       '확인된 접근 경로는 개발자용 IDE와 터미널뿐이다. 반면 Anthropic은 Cowork를 별도 제품으로 내어 비개발 업무를 정면으로 겨냥한다. ' +
       '도입 규모를 개발조직 밖으로 넓히는 것이 목표라면 이 행이 결론을 바꾼다. 개발자 도구로만 쓸 계획이라면 가중치가 낮다.',
   },
-  /* ===== D. 통제 ==================================================== */
+  /* ===== 통제 ================================================= */
   {
     slug: 'policy-control',
     category: '통제',
-    name: '정책 집행 · 권한 통제',
+    name: '권한',
     summary: '에이전트가 무엇을 할 수 있는지를 조직이 중앙에서 정하는 장치',
     why:
       '개인 개발자에게는 부가 기능이지만 규제 산업의 대규모 조직에서는 도입 가부를 가르는 요건이다. ' +
@@ -1083,7 +1110,7 @@ const FEATURES = [
   {
     slug: 'data-protection',
     category: '통제',
-    name: '데이터 보호 · 비밀정보 차단',
+    name: '데이터 보호',
     summary: '민감 정보가 프롬프트나 로그로 새어 나가는 것을 제품이 막아 주는지',
     why:
       '앞의 권한 통제가 "무엇을 할 수 있는가"라면 이 항목은 "무엇이 새어 나가는가"다. 판정 기준은 제품이 자동으로 탐지·차단하는지, ' +
@@ -1147,7 +1174,7 @@ const FEATURES = [
   {
     slug: 'sandboxing',
     category: '통제',
-    name: '샌드박스 · 실행 격리',
+    name: '실행 격리',
     summary: '에이전트가 명령을 실행할 때 OS·컨테이너 수준으로 격리되는지',
     why:
       '에이전트가 명령을 실행하는 순간의 위험은 승인 UI가 아니라 실행 환경이 막는다. 승인은 사람이 누르면 통과하고, 자동 승인 목록을 켜면 아예 사라진다. ' +
@@ -1209,7 +1236,7 @@ const FEATURES = [
   {
     slug: 'auditability',
     category: '통제',
-    name: '감사 추적 · 재현성',
+    name: '감사 기록',
     summary: '에이전트가 무엇을 왜 했는지 기록으로 남기고 같은 작업을 다시 돌릴 수 있는 능력',
     why:
       '규제 대응과 사고 조사에서 요구되는 것은 결과물이 아니라 경위다. 판정 기준은 제3자가 사후에 경위를 재구성할 수 있는 기록이 제품 기능으로 있는지다. ' +
@@ -1266,11 +1293,11 @@ const FEATURES = [
       '규제 대응에서 필요한 쪽은 대개 후자다. AI가 만든 코드에 문제가 생겼을 때 감사인이 묻는 것은 로그인 시각이 아니라 무엇이 실행됐는지이기 때문이다. ' +
       'IBM이 주장하는 BobShell 자기 문서화가 실제로 제품에 있고 반출 가능한 형식이라면 이 판정은 올라간다. IBM에 확인할 항목 목록에 이것을 넣어야 한다.',
   },
-  /* ===== E. 비용 ==================================================== */
+  /* ===== 비용 ================================================= */
   {
     slug: 'pricing',
     category: '비용',
-    name: '과금 구조',
+    name: '요금제',
     summary: '무엇을 단위로 돈이 나가는지 — 좌석인지, 사용량인지, 선불 크레딧인지',
     why:
       '이 항목은 어느 도구가 싼지를 가리지 않는다. 정가는 계약 조건에 따라 달라지고 네 도구 모두 대량 계약은 협상 대상이라 정가 비교는 오해만 만든다. ' +
@@ -1334,7 +1361,7 @@ const FEATURES = [
   {
     slug: 'model-choice',
     category: '비용',
-    name: '모델 라우팅 · 단가 최적화',
+    name: '모델 선택',
     summary: '작업마다 어느 모델을 쓸지 정해 품질을 지키면서 토큰 단가를 낮추는 구조',
     why:
       '모든 작업에 최상위 모델을 쓰면 비용이 감당되지 않고, 저가 모델만 쓰면 품질이 무너진다. ' +
@@ -1396,7 +1423,7 @@ const FEATURES = [
   {
     slug: 'cost-visibility',
     category: '비용',
-    name: '비용 가시성 · 통제',
+    name: '사용량·한도',
     summary: '누가 무엇에 얼마를 썼는지 조직이 보고, 새어 나가기 전에 막을 수 있는지',
     why:
       '사용량 기반 과금에서는 지출을 청구서로 확인하는 시점에 이미 늦다. 2026년 들어 토큰 비용이 경영 안건으로 올라온 이유가 이것이다. ' +
@@ -1456,11 +1483,11 @@ const FEATURES = [
       '유보는 셋이다. Enterprise 플랜 전용이고, 라우팅의 40% 절감 주장을 이 대시보드로 검증하려 해도 모델별 내역이 문서화돼 있지 않으며, ' +
       '대시보드가 있다는 것과 우리 부서별 배부 기준에 맞는다는 것은 다른 문제다. 파일럿에서 실제 정산에 쓸 수 있는 형태인지 확인해야 한다.',
   },
-  /* ===== F. 우리 환경 =============================================== */
+  /* ===== 도입 여건 ============================================= */
   {
     slug: 'deployment',
-    category: '우리 환경',
-    name: '배포 형태 · 데이터 위치',
+    category: '도입 여건',
+    name: '제공 형태',
     summary: '제품을 어디에서 돌릴 수 있는지, 코드가 어느 경계를 넘어가는지',
     why:
       '기능이 아무리 좋아도 이 항목에서 막히면 검토가 끝난다. 데이터 주권, 망 분리, 규제 요건이 있는 조직에서는 첫 번째 관문이며, ' +
@@ -1511,115 +1538,61 @@ const FEATURES = [
       '망 분리 환경이 대상이라면 온프렘 시점을 IBM에 먼저 확인하고, 그 답이 나온 뒤에 나머지 항목을 검토하는 것이 순서다.',
   },
   {
-    slug: 'modernization',
-    category: '우리 환경',
-    name: '레거시 현대화',
-    summary: '오래된 언어·프레임워크·런타임을 최신 버전으로 옮기는 대규모 일괄 작업',
+    slug: 'surfaces',
+    category: '도입 여건',
+    name: '클라이언트',
+    summary: '같은 도구를 IDE, 웹, 데스크톱, CLI에서 띄울 수 있는지',
     why:
-      '기술 부채는 대개 사람을 붙여 몇 달씩 태우는 방식으로 처리된다. 반복적이고 범위가 명확해 자동화 효과가 가장 크게 나오는 영역이며, ' +
-      '투자 대비 효과를 숫자로 제시하기도 쉽다. 우리 자산 구성에 COBOL·PL/I·RPG가 있다면 이 항목의 가중치가 가장 높다.',
+      '클라이언트가 IDE에만 있으면 개발자가 자리에 앉아 있는 시간에만 쓰인다. ' +
+      '판정 기준은 IDE, 웹, 데스크톱, CLI 중 어디에서 같은 작업을 이어갈 수 있는지로 잡았다. Slack·모바일로 일을 맡기는 경로는 팀으로 쓰기에서 본다.',
     tools: {
       bob: {
-        level: 'full',
-        label: '플랫폼별 전용 패키지',
+        level: 'partial',
+        label: 'IDE + 터미널',
         bullets: [
-          'Premium Package for Java에 네 개 워크플로가 문서화돼 있다 — Java 버전 업그레이드(AI 검증과 에이전트 수정 사이클), WebSphere→Liberty 리플랫포밍(IBM AMA 마이그레이션 플랜 기반), UI 현대화, 단위 테스트 생성',
-          'Z용(COBOL·PL/I·JCL)과 IBM i용(RPG·CL·DDS) 패키지를 따로 제공 — 타 도구에 대응물이 없는 영역',
-          '고객 사례: Blue Pearl이 Java 11→25 전환과 지원 종료 API 127개 해소를 30일 이상 → 약 3일로 단축. APIS IT가 .NET Core 3.1→8 전환을 4~5시간에 완료, 20년 된 EGL/CICS 문서화 10배 가속',
-          '단, Premium Package는 기본 구독에 포함되지 않는 별도 계약 대상',
+          'Bob IDE는 독립 애플리케이션으로 설치된다 — macOS .pkg, Windows .exe, Debian·RedHat 패키지를 받아 설치하고 응용 프로그램 메뉴에서 실행',
+          'Bob Shell이 터미널 표면을 담당하며 두 환경에서 슬래시 커맨드가 동일하게 동작',
+          'bob.ibm.com 웹 포털은 있으나 용도가 관리·Bobalytics·다운로드이며 여기서 코딩 작업을 실행하지는 않음',
+          'JetBrains 플러그인, 웹 코딩 세션은 공식 문서와 사이트맵 전체에서 확인되지 않음',
         ],
-        media: { src: 'assets/img/modernization/bob.png', caption: 'Bob의 현대화 워크플로' },
-        source: SRC.bobJavaWorkflows,
+        media: { src: 'assets/img/surfaces/bob.png', caption: 'Bob IDE와 Bob Shell' },
+        source: SRC.bobInstall,
       },
       claude: {
-        level: 'partial',
-        label: '범용 역량으로 수행',
-        bullets: ['대규모 마이그레이션을 수행할 수 있으나 전용 워크플로는 아님', '작업 분해와 검증 설계를 사용자가 맡음'],
-        media: { src: 'assets/img/modernization/claude.png', caption: 'Claude Code의 마이그레이션' },
+        level: 'full',
+        label: '터미널·IDE·데스크톱·웹',
+        bullets: [
+          '터미널, VS Code, JetBrains, 데스크톱 앱, 웹(claude.ai/code)에서 동일 엔진 사용',
+          '표면 간 이동 지원 — /desktop, claude --cloud, --teleport, Remote Control로 세션을 옮김',
+          'CLAUDE.md·설정·MCP 서버가 클라이언트 사이에서 그대로 동작',
+        ],
+        media: { src: 'assets/img/surfaces/claude.png', caption: 'Claude Code의 실행 표면' },
         source: SRC.claude,
       },
       codex: {
-        level: 'partial',
-        label: '범용 역량으로 수행',
-        bullets: ['병렬 클라우드 작업으로 대량 변경을 처리할 수 있음', '레거시 전용 자산은 제공하지 않음'],
-        media: { src: 'assets/img/modernization/codex.png', caption: 'Codex의 대량 변경' },
+        level: 'full',
+        label: 'CLI·IDE·데스크톱·웹',
+        bullets: [
+          'CLI, IDE 확장, macOS·Windows 데스크톱 앱, 웹',
+        ],
+        media: { src: 'assets/img/surfaces/codex.png', caption: 'Codex의 실행 표면' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: '범용 역량으로 수행',
-        bullets: ['다중 파일 편집과 클라우드 에이전트로 마이그레이션 수행 가능', '레거시 전용 자산은 제공하지 않음'],
-        media: { src: 'assets/img/modernization/cursor.png', caption: 'Cursor의 다중 파일 편집' },
-        source: SRC.cursor,
+        level: 'full',
+        label: 'IDE·웹·CLI',
+        bullets: [
+          'IDE, 웹 앱, CLI에서 접근',
+          'JetBrains는 ACP를 통해 지원',
+        ],
+        media: { src: 'assets/img/surfaces/cursor.png', caption: 'Cursor의 실행 표면' },
+        source: SRC.cursorSlack,
       },
     },
     verdict:
-      '네 도구 모두 마이그레이션을 "할 수는" 있다. 차이는 전용 워크플로와 검증 자산이 준비돼 있는지이며, ' +
-      'COBOL·PL/I·RPG처럼 범용 도구가 학습 데이터로만 아는 영역에서는 이 격차가 특히 크다. 이 표에서 Bob의 우위가 가장 확실한 항목이다. ' +
-      '다만 세 가지를 함께 봐야 한다. 인용된 수치는 IBM이 고른 성공 사례이고 대상 코드베이스의 상태에 크게 좌우된다. ' +
-      'Premium Package는 유료 애드온이므로 이 강점은 기본 구독 가격이 아니라 추가 비용을 전제로 계산해야 한다. ' +
-      '그리고 현대화는 일회성 프로젝트이므로, 이 항목 하나로 상시 개발 도구를 결정하면 프로젝트가 끝난 뒤의 판단 근거가 남지 않는다.',
-  },
-  {
-    slug: 'artifacts',
-    category: '우리 환경',
-    name: '산출물 · 문서 체계',
-    summary: '개발 단계마다 정해진 문서를 만들고 다음 단계가 그것을 근거로 삼게 하는 구조',
-    why:
-      '이 축은 "문서를 생성할 수 있는가"를 묻지 않는다. 그건 네 도구가 모두 한다. ' +
-      '판정 기준은 SDLC 단계별 산출물이 제품에 정의돼 있고, 뒤 단계가 앞 단계의 산출물을 참조하도록 강제되는지다. ' +
-      '산출물이 정해져 있으면 개발자 개인 편차가 줄고 온보딩과 지식 이전이 문서로 이뤄진다. 정해져 있지 않으면 문서는 만들 때마다 다른 모양이 된다.',
-    tools: {
-      bob: {
-        level: 'partial',
-        label: '직접 구성해야 함',
-        bullets: [
-          'Skills로 체크리스트·템플릿·참고 자료를 포함한 반복 워크플로를 정의하고 버전 관리로 팀에 공유',
-          '커스텀 모드로 도구 접근·파일 권한·행동 지침을 묶어 단계별 역할을 만들 수 있고, 감사 보고서·아키텍처 다이어그램 생성 튜토리얼을 제공',
-          '단, SDLC 단계별 산출물 목록이나 Phase gate는 제품이 정의하지 않는다 — 공식 문서에 요구사항 명세서(SRS)·설계 명세서(SDD)·의사결정 기록서·추적성이라는 개념이 등장하지 않음',
-          'Plan 모드의 문서화된 동작은 create-plan 스킬로 계획을 만들어 승인받는 것까지이며, 이는 경쟁 도구의 계획 모드와 같은 범위다',
-          '사내 발표자료는 단계별 산출물과 Phase gate를 제시하지만, 이는 커스텀 모드로 구현하는 방법론이며 내장 기능이 아니다',
-        ],
-        media: { src: 'assets/img/artifacts/bob.png', caption: 'Bob의 Skills와 커스텀 모드' },
-        source: SRC.bobSkills,
-      },
-      claude: {
-        level: 'partial',
-        label: '문서 생성은 가능',
-        bullets: [
-          '요구사항·설계·테스트 문서를 생성할 수 있고 CLAUDE.md와 Skills로 팀 표준과 템플릿을 커밋해 재사용 가능',
-          '다만 SDLC 단계별 산출물 목록이나 Phase gate가 제품에 정의돼 있지 않아 체계는 조직이 직접 설계해야 함',
-        ],
-        media: { src: 'assets/img/artifacts/claude.png', caption: 'Claude Code의 문서 생성' },
-        source: SRC.claudeSkills,
-      },
-      codex: {
-        level: 'partial',
-        label: '문서 생성은 가능',
-        bullets: [
-          'AGENTS.md로 저장소 규칙을 정의하고 문서를 생성할 수 있음',
-          '단계별 산출물 체계는 제품이 규정하지 않음',
-        ],
-        media: { src: 'assets/img/artifacts/codex.png', caption: 'Codex의 문서 생성' },
-        source: SRC.codex,
-      },
-      cursor: {
-        level: 'partial',
-        label: '문서 생성은 가능',
-        bullets: [
-          'Rules와 Team Rules로 조직 표준을 정의하고 문서를 생성할 수 있음',
-          '단계별 산출물 체계는 제품이 규정하지 않음',
-        ],
-        media: { src: 'assets/img/artifacts/cursor.png', caption: 'Cursor의 Rules' },
-        source: SRC.cursor,
-      },
-    },
-    verdict:
-      '이 자료에서 판정이 가장 크게 내려간 항목이다. 직전 판은 이 축을 "Bob이 가장 뚜렷하게 앞서는 항목"으로 적었는데, ' +
-      '근거가 IBM 발표자료뿐이었고 공식 문서를 확인하자 뒷받침되지 않았다. SRS·SDD·Phase gate·의사결정 기록서·추적성은 문서에 한 번도 등장하지 않는다. ' +
-      '발표자료의 단계별 산출물 체계는 제품 기능이 아니라 커스텀 모드로 구현하는 방법론이며, 그 방법론은 네 도구 모두에서 같은 방식으로 구현할 수 있다. ' +
-      '결과적으로 네 도구가 동일 수준이다 — 규칙·스킬·템플릿을 파일로 정의해 저장소에 커밋하는 수단은 넷 다 갖췄고, 단계 체계를 정의하는 일은 넷 다 조직 몫이다. ' +
-      '실무적 의미는 남는다. IBM이 방법론과 커스텀 모드 예시를 함께 제공한다면 착수 비용이 줄어들 수 있으므로, ' +
-      '파일럿에서 확인할 것은 "기능이 있는가"가 아니라 "IBM이 우리 산출물 표준에 맞춘 모드를 함께 만들어 주는가"다. 이건 제품 사양이 아니라 계약 조건 문제다.',
+      'Bob이 가장 크게 뒤처지는 항목이다. 초안에서는 이 축이 "제품 사양이지 역량이 아니다"라는 이유로 빠져 있었으나, ' +
+      '클라이언트는 작업을 이어갈 수 있는 자리를 정하므로 역량으로 다뤄야 한다. ' +
+      '더 중요한 것은 이 결과가 앞의 주장과 충돌한다는 점이다. IBM은 Bob을 요구사항부터 유지보수까지 아우르는 조직 단위 SDLC 파트너로 제시하는데, ' +
+      '확인된 클라이언트는 개발자용 IDE와 터미널뿐이다. SDLC 전체를 대상으로 한다는 주장과 개발자 도구라는 실물 사이의 간격이 이 행에서 드러난다.',
   },
 ];

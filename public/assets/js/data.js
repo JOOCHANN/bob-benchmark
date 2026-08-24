@@ -214,6 +214,10 @@ const SRC = {
   },
   claudeHooks: { text: 'Claude Code 문서 (Hooks)', url: 'https://code.claude.com/docs/en/hooks' },
   claudeSkills: { text: 'Claude Code 문서 (Skills)', url: 'https://code.claude.com/docs/en/skills' },
+  claudePerm: {
+    text: 'Claude Code 공식 문서 (권한 모드)',
+    url: 'https://code.claude.com/docs/en/permission-modes',
+  },
   claudeSandbox: { text: 'Claude Code 문서 (Sandboxing)', url: 'https://code.claude.com/docs/en/sandboxing' },
   claudeIam: { text: 'Claude Code 문서 (IAM·권한 관리)', url: 'https://code.claude.com/docs/en/iam' },
   claudeGha: {
@@ -256,6 +260,10 @@ const SRC = {
 
   /* ── Cursor ────────────────────────────────────────────────────── */
   cursor: { text: 'Cursor 문서', url: 'https://cursor.com/docs' },
+  cursorModes: {
+    text: 'Cursor 공식 문서 (Agent·모드)',
+    url: 'https://cursor.com/help/ai-features/agent',
+  },
   cursorCli: { text: 'Cursor CLI', url: 'https://cursor.com/cli' },
   cursorAuto: {
     text: 'Cursor 문서 (Automations · 클라우드 에이전트)',
@@ -276,41 +284,55 @@ const FEATURES = [
     slug: 'modes',
     category: '작업',
     name: '모드',
-    summary: 'Ask·Plan·Agent 같은 작업 모드와, 팀이 정의하는 커스텀 모드',
+    summary: '작업 방식(모드)과 추론 깊이(Effort)를 화면에서 나누는지',
     why:
-      '계획은 구현 전에 승인을 받는 단계이고, 규칙·스킬은 파일로 행동을 정하는 수단이다. 이 항목은 그 둘과 겹치지 않는다. ' +
-      '판정 기준은 내장 모드가 도구 접근을 다르게 나누는지, 그리고 팀이 그 묶음을 커스텀 모드로 만들 수 있는지다.',
+      '모드는 지금 구현할지, 계획만 할지, 질문만 받을지를 정한다. Effort는 같은 모드에서도 얼마나 깊게 생각할지를 정한다. ' +
+      '둘을 따로 조절할 수 있으면 일상 작업과 어려운 작업의 시간과 비용을 나눌 수 있다.',
     tools: {
       bob: {
-        level: 'full',
-        label: '내장 · 커스텀 모드',
+        level: 'partial',
+        label: '모드 있음 · Effort 없음',
         bullets: [
-          'Agent / Ask / Plan 세 모드를 내장 모드로 분리해 제공하고, 모드별로 사용 가능한 도구를 다르게 지정',
-          '커스텀 모드로 도구 접근·파일 권한·행동 지침을 묶어 팀 표준을 강제하는 전용 어시스턴트를 정의',
+          '드롭다운에 Agent, Plan, Ask가 있다. Agent는 구현, Plan은 설계, Ask는 코드 질문용이며 모드마다 쓸 수 있는 도구가 다르다',
+          '목록 아래 검색창으로 모드를 찾을 수 있고, 커스텀 모드로 역할·도구 권한·지침을 묶어 팀용 모드를 만들 수 있다',
+          'Effort 설정은 이 화면과 공식 문서에서 확인되지 않는다',
         ],
-        media: { src: 'assets/img/modes/bob.png', caption: 'Bob의 모드' },
+        media: { src: 'assets/img/modes/bob.png', caption: 'Bob 모드 선택' },
         source: SRC.bobModes,
       },
       claude: {
-        level: 'unknown',
-        label: null,
-        media: { src: 'assets/img/modes/claude.png', caption: 'Claude Code의 모드' },
-        source: null,
+        level: 'full',
+        label: '권한 모드 + Effort',
+        bullets: [
+          '모드는 할 일의 종류가 아니라 승인 범위다. Manual은 수정마다 묻고, Edit automatically는 파일을 바로 고치고, Plan은 코드를 본 뒤 계획을 내고, Auto는 안전검사를 통과한 작업만 진행한다',
+          'Shift+Tab으로 모드를 바꾼다',
+          '같은 메뉴 아래에 Effort 슬라이더가 있다. 화면은 High. 값을 낮추면 응답이 빠르고, 높이면 추론에 더 쓴다',
+        ],
+        media: { src: 'assets/img/modes/claude.png', caption: 'Claude Code 모드와 Effort' },
+        source: SRC.claudePerm,
       },
       codex: {
         level: 'unknown',
         label: null,
-        media: { src: 'assets/img/modes/codex.png', caption: 'Codex의 모드' },
+        media: null,
         source: null,
       },
       cursor: {
-        level: 'unknown',
-        label: null,
-        media: { src: 'assets/img/modes/cursor.png', caption: 'Cursor의 모드' },
-        source: null,
+        level: 'full',
+        label: '작업 모드 + Effort',
+        bullets: [
+          '목록에 Agent, Plan, Debug, Multitask, Ask가 있다. Agent·Plan·Ask는 Bob과 같은 축이고, Debug와 Multitask가 더 있다',
+          'Shift+Tab 또는 모드 선택 메뉴로 바꾼다',
+          'Effort는 이 메뉴에 없고 모델 선택에서 고른다. Low·Medium·High 등으로 어려운 작업에 추론 시간을 더 줄 수 있다',
+        ],
+        media: { src: 'assets/img/modes/cursor.png', caption: 'Cursor 모드 선택' },
+        source: SRC.cursorModes,
       },
     },
-    verdict: '',
+    verdict:
+      'Bob과 Cursor는 할 일의 종류로 모드를 나눈다. Agent·Plan·Ask가 같고, Cursor는 같은 목록에 Debug와 Multitask를 더 둔다. ' +
+      'Claude는 할 일이 아니라 승인 범위로 나눈다. 수정마다 물을지, 계획을 먼저 낼지, 안전검사를 통과하면 진행할지를 고른다. ' +
+      'Effort는 Claude와 Cursor에 있다. Claude는 모드 메뉴에서 슬라이더로 바로 바꾸고, Cursor는 모델 선택에서 고른다. Bob에는 없다. Codex는 아직 확인하지 않았다.',
   },
   {
     slug: 'plan-design',

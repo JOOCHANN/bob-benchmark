@@ -9,6 +9,6 @@ IBM Bob, Claude Code, OpenAI Codex, Cursor의 기능을 비교하는 사내 검�
 
 - 사용자에게 보이는 문장은 한국어, 비즈니스 톤으로 쓴다.
 - 배포는 `public/`뿐이다. `internal-src/`는 깃과 배포에 올리지 않는다.
-- 비교 데이터는 `public/assets/js/data.js`가 유일하다. HTML에 본문을 직접 쓰지 않는다.
+- 장표 데이터는 `public/assets/js/data.js`다. 상세 본문은 `public/assets/js/features/<slug>.js`다. HTML에 본문을 직접 쓰지 않는다.
 - 홈은 `index.html` 장표, 상세는 `detail.html?f=<slug>`다. 빌드 도구는 없다.
 - 요청한 것만 수정한다. 커밋·푸시는 요청이 있을 때만 한다.

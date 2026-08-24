@@ -28,7 +28,20 @@
     return;
   }
 
-  document.title = feature.name + ' — AI 코딩 도구 역량 비교';
+  function attachDetail(extra) {
+    if (!extra) return;
+    if (extra.why) feature.why = extra.why;
+    if (extra.verdict) feature.verdict = extra.verdict;
+    if (!extra.tools) return;
+    TOOLS.forEach(function (t) {
+      const more = extra.tools[t.id];
+      if (!more) return;
+      const cell = feature.tools[t.id] || (feature.tools[t.id] = { level: 'unknown' });
+      if (more.bullets) cell.bullets = more.bullets;
+      if (more.media !== undefined) cell.media = more.media;
+      if (more.source !== undefined) cell.source = more.source;
+    });
+  }
 
   /* --- 머리말 ---------------------------------------------------------- */
 
@@ -63,10 +76,7 @@
   }
 
   function renderMedia(card, tool, cell) {
-    if (!cell.media || !cell.media.src) {
-      card.appendChild(placeholder(null));
-      return;
-    }
+    if (!cell.media || !cell.media.src) return;
 
     const src = cell.media.src;
     const isVideo = /\.(mp4|webm)$/i.test(src);
@@ -155,16 +165,34 @@
   /* --- 정리 ------------------------------------------------------------- */
 
   function renderVerdict() {
-    if (!feature.verdict) return;
+    if (!feature.verdict || (Array.isArray(feature.verdict) && !feature.verdict.length)) return;
     const section = el('section', 'detail-section');
     section.appendChild(el('h2', 'section-title', '정리'));
-    section.appendChild(el('p', 'verdict', feature.verdict));
+    if (Array.isArray(feature.verdict)) {
+      const list = el('ul', 'verdict-list');
+      feature.verdict.forEach(function (line) {
+        list.appendChild(el('li', null, line));
+      });
+      section.appendChild(list);
+    } else {
+      section.appendChild(el('p', 'verdict', feature.verdict));
+    }
     content.appendChild(section);
   }
 
-  renderSideNav(nav, slug);
-  setupNavToggle(feature.name);
-  renderHeader();
-  renderCards();
-  renderVerdict();
+  function start() {
+    attachDetail(FEATURES_DETAIL[feature.slug]);
+    document.title = feature.name + ' — AI 코딩 도구 역량 비교';
+    renderSideNav(nav, slug);
+    setupNavToggle(feature.name);
+    renderHeader();
+    renderCards();
+    renderVerdict();
+  }
+
+  const script = document.createElement('script');
+  script.src = 'assets/js/features/' + encodeURIComponent(feature.slug) + '.js';
+  script.onload = start;
+  script.onerror = start;
+  document.head.appendChild(script);
 })();

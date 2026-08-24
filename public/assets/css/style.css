@@ -919,6 +919,18 @@ tr.is-parity .dot {
   line-height: 1.75;
   max-width: 80ch;
 }
+.verdict-list {
+  margin: 0;
+  padding: 20px 24px 20px 44px;
+  background: var(--layer);
+  border-left: 3px solid var(--bob-accent);
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 80ch;
+}
+.verdict-list li + li {
+  margin-top: 10px;
+}
 
 /* --------------------------------------------------------- 푸터 */
 

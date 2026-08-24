@@ -70,12 +70,12 @@ const LEVELS = {
 
 /* 카테고리별 의사결정 질문. 표에서 그룹 머리행에 함께 표시된다. */
 const CATEGORIES = {
-  'SDLC 커버리지': '어디까지 자동화되는가',
-  '엔지니어링 기반': '실제 개발에서 버티는가',
-  '작업 방식 · 도달 범위': '언제, 어디서 일을 맡길 수 있는가',
-  '엔터프라이즈 통제': '도입해도 안전한가',
-  '비용 구조': '얼마가, 어떻게 드는가',
-  '도입 조건': '우리 환경에서 쓸 수 있는가',
+  '에이전트 루프': '일을 맡기면 계획부터 검증까지 도는가',
+  '도구 · 파이프라인': '우리 도구와 빌드에 붙는가',
+  '위임 · 도달': '책상을 벗어나 맡길 수 있는가',
+  '통제': '도입해도 안전한가',
+  '비용': '얼마가, 어떻게 보이는가',
+  '우리 환경': '우리 제약에서 쓸 수 있는가',
 };
 
 /**
@@ -271,10 +271,10 @@ const SRC = {
 };
 
 const FEATURES = [
-  /* ===== A. SDLC 커버리지 =========================================== */
+  /* ===== A. 에이전트 루프 =========================================== */
   {
     slug: 'plan-design',
-    category: 'SDLC 커버리지',
+    category: '에이전트 루프',
     name: '계획 · 설계',
     summary: '코드를 건드리기 전에 작업 계획을 세우고 승인을 받는 단계',
     why:
@@ -328,73 +328,60 @@ const FEATURES = [
       'Bob 쪽에서 실제로 확인되는 차이는 두 가지로 작다. 계획 수립이 create-plan 스킬로 구현돼 있어 조직이 그 스킬을 수정할 수 있고, ' +
       '계획이 준비되면 모드를 스스로 Agent로 바꿔 이어간다. 도입 판단을 가를 만한 차이는 아니다.',
   },
-
   {
-    slug: 'artifacts',
-    category: 'SDLC 커버리지',
-    name: '산출물 · 문서 체계',
-    summary: '개발 단계마다 정해진 문서를 만들고 다음 단계가 그것을 근거로 삼게 하는 구조',
+    slug: 'codebase',
+    category: '에이전트 루프',
+    name: '코드베이스 이해 · 작성',
+    summary: '대규모 저장소를 탐색해 맥락을 파악하고 여러 파일을 함께 수정하는 기본 역량',
     why:
-      '이 축은 "문서를 생성할 수 있는가"를 묻지 않는다. 그건 네 도구가 모두 한다. ' +
-      '판정 기준은 SDLC 단계별 산출물이 제품에 정의돼 있고, 뒤 단계가 앞 단계의 산출물을 참조하도록 강제되는지다. ' +
-      '산출물이 정해져 있으면 개발자 개인 편차가 줄고 온보딩과 지식 이전이 문서로 이뤄진다. 정해져 있지 않으면 문서는 만들 때마다 다른 모양이 된다.',
+      '모든 AI 코딩 도구의 출발점이자 실사용에서 가장 자주 부딪히는 지점이다. 이 항목이 부족하면 나머지 기능은 의미가 없다. ' +
+      '반대로 여기서 변별력이 사라졌다면, 도구 선택 기준을 다른 축으로 옮겨야 한다는 신호다.',
     tools: {
       bob: {
-        level: 'partial',
-        label: '직접 구성해야 함',
+        level: 'full',
+        label: '생성·리팩터링·분석',
         bullets: [
-          'Skills로 체크리스트·템플릿·참고 자료를 포함한 반복 워크플로를 정의하고 버전 관리로 팀에 공유',
-          '커스텀 모드로 도구 접근·파일 권한·행동 지침을 묶어 단계별 역할을 만들 수 있고, 감사 보고서·아키텍처 다이어그램 생성 튜토리얼을 제공',
-          '단, SDLC 단계별 산출물 목록이나 Phase gate는 제품이 정의하지 않는다 — 공식 문서에 요구사항 명세서(SRS)·설계 명세서(SDD)·의사결정 기록서·추적성이라는 개념이 등장하지 않음',
-          'Plan 모드의 문서화된 동작은 create-plan 스킬로 계획을 만들어 승인받는 것까지이며, 이는 경쟁 도구의 계획 모드와 같은 범위다',
-          '사내 발표자료는 단계별 산출물과 Phase gate를 제시하지만, 이는 커스텀 모드로 구현하는 방법론이며 내장 기능이 아니다',
+          '코드 생성, 리팩터링, 디버깅, 코드베이스 질의응답을 기본 제공',
+          'Agent 모드가 Read·Edit·Execute·MCP·Skill·Todo·Subtask 도구를 모두 쓰며, 모드별로 도구 접근 범위가 다르게 지정됨',
+          'v2.0.0에서 컨텍스트 창을 200K → 270K로 확장하고 긴 작업의 자동 압축을 추가',
+          '.docx·.pdf·.xlsx 읽기와 구조화된 grep 결과 지원',
         ],
-        media: { src: 'assets/img/artifacts/bob.png', caption: 'Bob의 Skills와 커스텀 모드' },
-        source: SRC.bobSkills,
+        media: { src: 'assets/img/codebase/bob.png', caption: 'Bob의 코드베이스 분석' },
+        source: SRC.bobTools,
       },
       claude: {
-        level: 'partial',
-        label: '문서 생성은 가능',
+        level: 'full',
+        label: '대규모 저장소 탐색',
         bullets: [
-          '요구사항·설계·테스트 문서를 생성할 수 있고 CLAUDE.md와 Skills로 팀 표준과 템플릿을 커밋해 재사용 가능',
-          '다만 SDLC 단계별 산출물 목록이나 Phase gate가 제품에 정의돼 있지 않아 체계는 조직이 직접 설계해야 함',
+          '탐색·편집·명령 실행을 한 흐름에서 수행',
+          '긴 작업의 컨텍스트 관리 장치와 세션 간 자동 메모리 제공',
         ],
-        media: { src: 'assets/img/artifacts/claude.png', caption: 'Claude Code의 문서 생성' },
-        source: SRC.claudeSkills,
+        media: { src: 'assets/img/codebase/claude.png', caption: 'Claude Code의 탐색' },
+        source: SRC.claude,
       },
       codex: {
-        level: 'partial',
-        label: '문서 생성은 가능',
-        bullets: [
-          'AGENTS.md로 저장소 규칙을 정의하고 문서를 생성할 수 있음',
-          '단계별 산출물 체계는 제품이 규정하지 않음',
-        ],
-        media: { src: 'assets/img/artifacts/codex.png', caption: 'Codex의 문서 생성' },
+        level: 'full',
+        label: '저장소 단위 작업',
+        bullets: ['저장소 전체를 대상으로 변경 수행', '격리 환경에서 실행해 부작용을 제한'],
+        media: { src: 'assets/img/codebase/codex.png', caption: 'Codex의 저장소 작업' },
         source: SRC.codex,
       },
       cursor: {
-        level: 'partial',
-        label: '문서 생성은 가능',
-        bullets: [
-          'Rules와 Team Rules로 조직 표준을 정의하고 문서를 생성할 수 있음',
-          '단계별 산출물 체계는 제품이 규정하지 않음',
-        ],
-        media: { src: 'assets/img/artifacts/cursor.png', caption: 'Cursor의 Rules' },
+        level: 'full',
+        label: '인덱싱 기반 탐색',
+        bullets: ['코드베이스 인덱싱으로 관련 파일을 빠르게 찾음', '에디터와 밀착된 다중 파일 편집'],
+        media: { src: 'assets/img/codebase/cursor.png', caption: 'Cursor의 인덱싱' },
         source: SRC.cursor,
       },
     },
     verdict:
-      '이 자료에서 판정이 가장 크게 내려간 항목이다. 직전 판은 이 축을 "Bob이 가장 뚜렷하게 앞서는 항목"으로 적었는데, ' +
-      '근거가 IBM 발표자료뿐이었고 공식 문서를 확인하자 뒷받침되지 않았다. SRS·SDD·Phase gate·의사결정 기록서·추적성은 문서에 한 번도 등장하지 않는다. ' +
-      '발표자료의 단계별 산출물 체계는 제품 기능이 아니라 커스텀 모드로 구현하는 방법론이며, 그 방법론은 네 도구 모두에서 같은 방식으로 구현할 수 있다. ' +
-      '결과적으로 네 도구가 동일 수준이다 — 규칙·스킬·템플릿을 파일로 정의해 저장소에 커밋하는 수단은 넷 다 갖췄고, 단계 체계를 정의하는 일은 넷 다 조직 몫이다. ' +
-      '실무적 의미는 남는다. IBM이 방법론과 커스텀 모드 예시를 함께 제공한다면 착수 비용이 줄어들 수 있으므로, ' +
-      '파일럿에서 확인할 것은 "기능이 있는가"가 아니라 "IBM이 우리 산출물 표준에 맞춘 모드를 함께 만들어 주는가"다. 이건 제품 사양이 아니라 계약 조건 문제다.',
+      '네 도구가 동일한 수준이다. 2026년 기준으로 기본 역량은 상향 평준화됐다고 보는 편이 정확하다. ' +
+      'Bob이 프런티어 작업에 Claude를 호출한다는 점을 감안하면 이 결과는 당연하다 — 같은 모델이 같은 일을 한다. ' +
+      '따라서 "어느 도구가 코드를 더 잘 쓰는가"로 도입을 결정하려는 시도는 근거를 만들기 어렵고, 아래 통제·비용·작업 방식 항목으로 판단 축을 옮기는 것이 맞다.',
   },
-
   {
     slug: 'testing',
-    category: 'SDLC 커버리지',
+    category: '에이전트 루프',
     name: '테스트 생성 · 실행',
     summary: '테스트를 만들고 실행해 결과를 스스로 확인하는 루프',
     why:
@@ -442,10 +429,9 @@ const FEATURES = [
       '다만 커버리지 0→92% 같은 수치는 테스트가 아예 없던 레거시 코드베이스에서 나온 값이므로, ' +
       '이미 테스트가 있는 프로젝트의 기대치로 옮기면 과대평가가 된다.',
   },
-
   {
     slug: 'code-review',
-    category: 'SDLC 커버리지',
+    category: '에이전트 루프',
     name: '코드 리뷰 · 취약점 진단',
     summary: '작성된 코드에서 결함과 보안 취약점을 찾아내고 수정까지 잇는 단계',
     why:
@@ -508,176 +494,9 @@ const FEATURES = [
       'Bob의 위치는 "커밋 전 로컬 게이트"이고 경쟁 도구는 "머지 전 PR 게이트"다. 둘 다 필요한 조직이라면 Bob만으로는 후자가 비게 된다. ' +
       '진단 품질은 형태와 별개이며, 우리 코드베이스의 오탐률은 파일럿으로 직접 재야 한다.',
   },
-
-  {
-    slug: 'delivery',
-    category: 'SDLC 커버리지',
-    name: '배포 · 파이프라인 연계',
-    summary: '코드 작성 이후 CI/CD와 릴리스 과정까지 이어지는 자동화',
-    why:
-      '개발 도구의 생산성 이득은 대개 "코드가 작성된 시점"에서 측정되지만 실제 리드타임은 그 이후 구간에서 더 많이 소모된다. ' +
-      '판정 기준은 벤더가 관리하는 CI/CD 통합 경로가 제품 문서에 있는지로 잡았다. ' +
-      '"CLI를 스크립트에서 부를 수 있다"는 어느 CLI나 되는 얘기이므로 그것만으로는 기준을 넘지 못한다.',
-    tools: {
-      bob: {
-        level: 'partial',
-        label: 'Shell 비대화형 실행',
-        bullets: [
-          'Bob Shell의 비대화형 세션(bob -p)으로 스크립트·배치 처리에서 호출하고, 파이프 입력과 출력 리다이렉트를 지원',
-          '공식 문서가 Bob Shell의 용도로 "CI/CD 통합"을 명시',
-          '비대화형 세션은 IBMid가 아니라 API 키 인증을 써야 하고 최초 실행 전 라이선스 동의가 필요 — CI 구성 시 확인할 조건',
-          '다만 GitHub Actions·GitLab CI용 전용 통합이나 마켓플레이스 액션은 공식 문서에서 확인되지 않음',
-        ],
-        media: { src: 'assets/img/delivery/bob.png', caption: 'Bob Shell의 비대화형 실행' },
-        source: SRC.bobHeadless,
-      },
-      claude: {
-        level: 'full',
-        label: '전용 CI 통합',
-        bullets: [
-          'GitHub Actions와 GitLab CI/CD용 전용 통합을 공식 문서로 제공',
-          '비대화형 모드(claude -p)로 파이프에 끼워 넣거나 CI 단계로 실행',
-          'Routines의 API 트리거로 배포 파이프라인이 배포 후 검증을 호출하는 구성 가능',
-        ],
-        media: { src: 'assets/img/delivery/claude.png', caption: 'Claude Code의 CI 통합' },
-        source: SRC.claudeGha,
-      },
-      codex: {
-        level: 'full',
-        label: 'GitHub 연동 + 클라우드',
-        bullets: [
-          'GitHub 통합으로 이슈·PR 이벤트에서 클라우드 작업을 실행하고 변경분을 PR로 제출',
-          '릴리스 승인 자체를 조율하는 구조는 아님',
-        ],
-        media: { src: 'assets/img/delivery/codex.png', caption: 'Codex의 GitHub 연동' },
-        source: SRC.codex,
-      },
-      cursor: {
-        level: 'full',
-        label: 'CLI + GitHub Actions',
-        bullets: [
-          'Cursor CLI를 GitHub Actions에서 실행해 문서 갱신·보안 리뷰를 자동화',
-          'Automations로 파이프라인성 작업을 예약 실행',
-        ],
-        media: { src: 'assets/img/delivery/cursor.png', caption: 'Cursor CLI의 CI 실행' },
-        source: SRC.cursorCli,
-      },
-    },
-    verdict:
-      '초안에서 이 항목은 Bob이 앞서는 것으로 판정돼 있었으나 유지되지 않는다. ' +
-      'Bob도 공식 문서가 Bob Shell의 용도로 CI/CD 통합을 명시하므로 "못 한다"는 아니다. 차이는 성숙도다 — ' +
-      '나머지 셋은 벤더가 관리하는 액션·통합을 제공하고 Bob은 CLI를 직접 부르는 수준이다. ' +
-      '실무에서 걸릴 지점이 하나 더 있다. 비대화형 세션은 IBMid가 아니라 API 키 인증을 요구하므로, ' +
-      'CI에서 쓰려면 키 발급·보관·회전 절차를 따로 세워야 한다. 우리 CI 환경에서 실제로 돌려 보고 확정할 항목이다.',
-  },
-
-  {
-    slug: 'modernization',
-    category: 'SDLC 커버리지',
-    name: '레거시 현대화',
-    summary: '오래된 언어·프레임워크·런타임을 최신 버전으로 옮기는 대규모 일괄 작업',
-    why:
-      '기술 부채는 대개 사람을 붙여 몇 달씩 태우는 방식으로 처리된다. 반복적이고 범위가 명확해 자동화 효과가 가장 크게 나오는 영역이며, ' +
-      '투자 대비 효과를 숫자로 제시하기도 쉽다. 우리 자산 구성에 COBOL·PL/I·RPG가 있다면 이 항목의 가중치가 가장 높다.',
-    tools: {
-      bob: {
-        level: 'full',
-        label: '플랫폼별 전용 패키지',
-        bullets: [
-          'Premium Package for Java에 네 개 워크플로가 문서화돼 있다 — Java 버전 업그레이드(AI 검증과 에이전트 수정 사이클), WebSphere→Liberty 리플랫포밍(IBM AMA 마이그레이션 플랜 기반), UI 현대화, 단위 테스트 생성',
-          'Z용(COBOL·PL/I·JCL)과 IBM i용(RPG·CL·DDS) 패키지를 따로 제공 — 타 도구에 대응물이 없는 영역',
-          '고객 사례: Blue Pearl이 Java 11→25 전환과 지원 종료 API 127개 해소를 30일 이상 → 약 3일로 단축. APIS IT가 .NET Core 3.1→8 전환을 4~5시간에 완료, 20년 된 EGL/CICS 문서화 10배 가속',
-          '단, Premium Package는 기본 구독에 포함되지 않는 별도 계약 대상',
-        ],
-        media: { src: 'assets/img/modernization/bob.png', caption: 'Bob의 현대화 워크플로' },
-        source: SRC.bobJavaWorkflows,
-      },
-      claude: {
-        level: 'partial',
-        label: '범용 역량으로 수행',
-        bullets: ['대규모 마이그레이션을 수행할 수 있으나 전용 워크플로는 아님', '작업 분해와 검증 설계를 사용자가 맡음'],
-        media: { src: 'assets/img/modernization/claude.png', caption: 'Claude Code의 마이그레이션' },
-        source: SRC.claude,
-      },
-      codex: {
-        level: 'partial',
-        label: '범용 역량으로 수행',
-        bullets: ['병렬 클라우드 작업으로 대량 변경을 처리할 수 있음', '레거시 전용 자산은 제공하지 않음'],
-        media: { src: 'assets/img/modernization/codex.png', caption: 'Codex의 대량 변경' },
-        source: SRC.codex,
-      },
-      cursor: {
-        level: 'partial',
-        label: '범용 역량으로 수행',
-        bullets: ['다중 파일 편집과 클라우드 에이전트로 마이그레이션 수행 가능', '레거시 전용 자산은 제공하지 않음'],
-        media: { src: 'assets/img/modernization/cursor.png', caption: 'Cursor의 다중 파일 편집' },
-        source: SRC.cursor,
-      },
-    },
-    verdict:
-      '네 도구 모두 마이그레이션을 "할 수는" 있다. 차이는 전용 워크플로와 검증 자산이 준비돼 있는지이며, ' +
-      'COBOL·PL/I·RPG처럼 범용 도구가 학습 데이터로만 아는 영역에서는 이 격차가 특히 크다. 이 표에서 Bob의 우위가 가장 확실한 항목이다. ' +
-      '다만 세 가지를 함께 봐야 한다. 인용된 수치는 IBM이 고른 성공 사례이고 대상 코드베이스의 상태에 크게 좌우된다. ' +
-      'Premium Package는 유료 애드온이므로 이 강점은 기본 구독 가격이 아니라 추가 비용을 전제로 계산해야 한다. ' +
-      '그리고 현대화는 일회성 프로젝트이므로, 이 항목 하나로 상시 개발 도구를 결정하면 프로젝트가 끝난 뒤의 판단 근거가 남지 않는다.',
-  },
-
-  /* ===== B. 엔지니어링 기반 ========================================= */
-  {
-    slug: 'codebase',
-    category: '엔지니어링 기반',
-    name: '코드베이스 이해 · 작성',
-    summary: '대규모 저장소를 탐색해 맥락을 파악하고 여러 파일을 함께 수정하는 기본 역량',
-    why:
-      '모든 AI 코딩 도구의 출발점이자 실사용에서 가장 자주 부딪히는 지점이다. 이 항목이 부족하면 나머지 기능은 의미가 없다. ' +
-      '반대로 여기서 변별력이 사라졌다면, 도구 선택 기준을 다른 축으로 옮겨야 한다는 신호다.',
-    tools: {
-      bob: {
-        level: 'full',
-        label: '생성·리팩터링·분석',
-        bullets: [
-          '코드 생성, 리팩터링, 디버깅, 코드베이스 질의응답을 기본 제공',
-          'Agent 모드가 Read·Edit·Execute·MCP·Skill·Todo·Subtask 도구를 모두 쓰며, 모드별로 도구 접근 범위가 다르게 지정됨',
-          'v2.0.0에서 컨텍스트 창을 200K → 270K로 확장하고 긴 작업의 자동 압축을 추가',
-          '.docx·.pdf·.xlsx 읽기와 구조화된 grep 결과 지원',
-        ],
-        media: { src: 'assets/img/codebase/bob.png', caption: 'Bob의 코드베이스 분석' },
-        source: SRC.bobTools,
-      },
-      claude: {
-        level: 'full',
-        label: '대규모 저장소 탐색',
-        bullets: [
-          '탐색·편집·명령 실행을 한 흐름에서 수행',
-          '긴 작업의 컨텍스트 관리 장치와 세션 간 자동 메모리 제공',
-        ],
-        media: { src: 'assets/img/codebase/claude.png', caption: 'Claude Code의 탐색' },
-        source: SRC.claude,
-      },
-      codex: {
-        level: 'full',
-        label: '저장소 단위 작업',
-        bullets: ['저장소 전체를 대상으로 변경 수행', '격리 환경에서 실행해 부작용을 제한'],
-        media: { src: 'assets/img/codebase/codex.png', caption: 'Codex의 저장소 작업' },
-        source: SRC.codex,
-      },
-      cursor: {
-        level: 'full',
-        label: '인덱싱 기반 탐색',
-        bullets: ['코드베이스 인덱싱으로 관련 파일을 빠르게 찾음', '에디터와 밀착된 다중 파일 편집'],
-        media: { src: 'assets/img/codebase/cursor.png', caption: 'Cursor의 인덱싱' },
-        source: SRC.cursor,
-      },
-    },
-    verdict:
-      '네 도구가 동일한 수준이다. 2026년 기준으로 기본 역량은 상향 평준화됐다고 보는 편이 정확하다. ' +
-      'Bob이 프런티어 작업에 Claude를 호출한다는 점을 감안하면 이 결과는 당연하다 — 같은 모델이 같은 일을 한다. ' +
-      '따라서 "어느 도구가 코드를 더 잘 쓰는가"로 도입을 결정하려는 시도는 근거를 만들기 어렵고, 아래 통제·비용·작업 방식 항목으로 판단 축을 옮기는 것이 맞다.',
-  },
-
   {
     slug: 'orchestration',
-    category: '엔지니어링 기반',
+    category: '에이전트 루프',
     name: '병렬 에이전트 오케스트레이션',
     summary: '큰 작업을 여러 갈래로 나눠 독립된 에이전트가 동시에 처리하는 구조',
     why:
@@ -729,10 +548,10 @@ const FEATURES = [
       'Bob의 차이는 분기 단위를 SDLC 역할과 모드로 잡는다는 점이며, 앞의 산출물 체계와 묶일 때만 의미가 생긴다. ' +
       '기술적 병렬성만 필요하다면 이 항목은 Bob을 고를 이유가 되지 않는다.',
   },
-
+  /* ===== B. 도구 · 파이프라인 ======================================= */
   {
     slug: 'integration',
-    category: '엔지니어링 기반',
+    category: '도구 · 파이프라인',
     name: '사내 시스템 연동',
     summary: 'MCP로 사내 이슈 트래커·위키·배포 시스템을 에이전트에 연결하는 표준 확장',
     why:
@@ -780,10 +599,9 @@ const FEATURES = [
       '다만 이는 사내 연동 자산이 특정 도구에 묶이지 않는다는 뜻이므로, 도입 판단에서는 전환 위험을 낮추는 근거로 읽는 편이 맞다. ' +
       'Bob 쪽에서 실제 차이가 나는 부분은 MCP 자체가 아니라 IBM 제품군과의 기성 연동이며, 그 제품들을 이미 쓰는 조직에서만 값이 된다.',
   },
-
   {
     slug: 'extensibility',
-    category: '엔지니어링 기반',
+    category: '도구 · 파이프라인',
     name: '확장 · 커스터마이즈',
     summary: '조직의 규칙과 반복 작업을 파일로 정의해 저장소에 커밋하고 팀이 공유하는 구조',
     why:
@@ -843,10 +661,9 @@ const FEATURES = [
       '차이가 나는 지점은 훅 하나다. 나머지 셋은 규칙 위반을 스크립트로 차단할 수 있고 Bob은 규칙을 프롬프트로 전달한다. ' +
       '"조직 표준을 강제한다"가 도입 명분이라면 이 차이는 그 명분의 핵심에 걸리므로, Bob의 훅 지원 여부를 IBM에 확인해야 한다.',
   },
-
   {
     slug: 'embedding',
-    category: '엔지니어링 기반',
+    category: '도구 · 파이프라인',
     name: '프로그래밍 임베딩',
     summary: '사내 도구나 파이프라인 안에 에이전트를 부품으로 넣을 수 있는지',
     why:
@@ -899,11 +716,71 @@ const FEATURES = [
       'Bob은 CLI 호출까지이므로 자동화의 형태가 셸 스크립트로 제한된다. ' +
       '반대로 완성된 제품을 그대로 쓰는 것이 목표라면 이 축의 가중치는 낮다. 우리 조직의 계획이 어느 쪽인지에 따라 이 행은 무시해도 되는 항목이 된다.',
   },
-
-  /* ===== C. 작업 방식 · 도달 범위 =================================== */
+  {
+    slug: 'delivery',
+    category: '도구 · 파이프라인',
+    name: '배포 · 파이프라인 연계',
+    summary: '코드 작성 이후 CI/CD와 릴리스 과정까지 이어지는 자동화',
+    why:
+      '개발 도구의 생산성 이득은 대개 "코드가 작성된 시점"에서 측정되지만 실제 리드타임은 그 이후 구간에서 더 많이 소모된다. ' +
+      '판정 기준은 벤더가 관리하는 CI/CD 통합 경로가 제품 문서에 있는지로 잡았다. ' +
+      '"CLI를 스크립트에서 부를 수 있다"는 어느 CLI나 되는 얘기이므로 그것만으로는 기준을 넘지 못한다.',
+    tools: {
+      bob: {
+        level: 'partial',
+        label: 'Shell 비대화형 실행',
+        bullets: [
+          'Bob Shell의 비대화형 세션(bob -p)으로 스크립트·배치 처리에서 호출하고, 파이프 입력과 출력 리다이렉트를 지원',
+          '공식 문서가 Bob Shell의 용도로 "CI/CD 통합"을 명시',
+          '비대화형 세션은 IBMid가 아니라 API 키 인증을 써야 하고 최초 실행 전 라이선스 동의가 필요 — CI 구성 시 확인할 조건',
+          '다만 GitHub Actions·GitLab CI용 전용 통합이나 마켓플레이스 액션은 공식 문서에서 확인되지 않음',
+        ],
+        media: { src: 'assets/img/delivery/bob.png', caption: 'Bob Shell의 비대화형 실행' },
+        source: SRC.bobHeadless,
+      },
+      claude: {
+        level: 'full',
+        label: '전용 CI 통합',
+        bullets: [
+          'GitHub Actions와 GitLab CI/CD용 전용 통합을 공식 문서로 제공',
+          '비대화형 모드(claude -p)로 파이프에 끼워 넣거나 CI 단계로 실행',
+          'Routines의 API 트리거로 배포 파이프라인이 배포 후 검증을 호출하는 구성 가능',
+        ],
+        media: { src: 'assets/img/delivery/claude.png', caption: 'Claude Code의 CI 통합' },
+        source: SRC.claudeGha,
+      },
+      codex: {
+        level: 'full',
+        label: 'GitHub 연동 + 클라우드',
+        bullets: [
+          'GitHub 통합으로 이슈·PR 이벤트에서 클라우드 작업을 실행하고 변경분을 PR로 제출',
+          '릴리스 승인 자체를 조율하는 구조는 아님',
+        ],
+        media: { src: 'assets/img/delivery/codex.png', caption: 'Codex의 GitHub 연동' },
+        source: SRC.codex,
+      },
+      cursor: {
+        level: 'full',
+        label: 'CLI + GitHub Actions',
+        bullets: [
+          'Cursor CLI를 GitHub Actions에서 실행해 문서 갱신·보안 리뷰를 자동화',
+          'Automations로 파이프라인성 작업을 예약 실행',
+        ],
+        media: { src: 'assets/img/delivery/cursor.png', caption: 'Cursor CLI의 CI 실행' },
+        source: SRC.cursorCli,
+      },
+    },
+    verdict:
+      '초안에서 이 항목은 Bob이 앞서는 것으로 판정돼 있었으나 유지되지 않는다. ' +
+      'Bob도 공식 문서가 Bob Shell의 용도로 CI/CD 통합을 명시하므로 "못 한다"는 아니다. 차이는 성숙도다 — ' +
+      '나머지 셋은 벤더가 관리하는 액션·통합을 제공하고 Bob은 CLI를 직접 부르는 수준이다. ' +
+      '실무에서 걸릴 지점이 하나 더 있다. 비대화형 세션은 IBMid가 아니라 API 키 인증을 요구하므로, ' +
+      'CI에서 쓰려면 키 발급·보관·회전 절차를 따로 세워야 한다. 우리 CI 환경에서 실제로 돌려 보고 확정할 항목이다.',
+  },
+  /* ===== C. 위임 · 도달 ============================================= */
   {
     slug: 'surfaces',
-    category: '작업 방식 · 도달 범위',
+    category: '위임 · 도달',
     name: '실행 표면',
     summary: '같은 도구를 어디서 띄울 수 있는지 — IDE, 터미널, 데스크톱, 웹, 모바일, 채팅',
     why:
@@ -962,10 +839,9 @@ const FEATURES = [
       '더 중요한 것은 이 결과가 앞의 주장과 충돌한다는 점이다. IBM은 Bob을 요구사항부터 유지보수까지 아우르는 조직 단위 SDLC 파트너로 제시하는데, ' +
       '기획자·PM·QA가 접근할 수 있는 표면은 개발자용 IDE와 터미널뿐이다. SDLC 전체를 대상으로 한다는 주장과 개발자 도구라는 실물 사이의 간격이 이 행에서 드러난다.',
   },
-
   {
     slug: 'async',
-    category: '작업 방식 · 도달 범위',
+    category: '위임 · 도달',
     name: '비동기 위임 · 클라우드 실행',
     summary: '내 컴퓨터를 벗어난 곳에서 에이전트가 돌고, 끝나면 결과를 받아오는 방식',
     why:
@@ -1021,10 +897,9 @@ const FEATURES = [
       '실무 영향은 대규모 현대화에서 가장 크다 — 수십 개 모듈을 동시에 돌리려면 로컬 IDE 한 대가 병목이 된다. ' +
       'Bob의 강점인 현대화 시나리오에서 이 제약이 걸린다는 점을 함께 봐야 한다.',
   },
-
   {
     slug: 'scheduling',
-    category: '작업 방식 · 도달 범위',
+    category: '위임 · 도달',
     name: '예약 실행 · 무인 자동화',
     summary: '사람이 지시하지 않아도 정해진 시점이나 사건에 에이전트가 스스로 도는 구조',
     why:
@@ -1080,10 +955,9 @@ const FEATURES = [
       '경쟁 도구가 이를 야간 예약으로 돌리는 동안 Bob은 개발자가 /review를 실행할 때만 돈다. ' +
       '기능 목록 비교에서는 잘 드러나지 않지만 실제 운영에서는 격차가 누적되는 항목이다.',
   },
-
   {
     slug: 'teamwork',
-    category: '작업 방식 · 도달 범위',
+    category: '위임 · 도달',
     name: '팀 협업 · 비개발자 위임',
     summary: '코드를 쓰지 않는 구성원이 같은 에이전트에 일을 맡길 수 있는지',
     why:
@@ -1140,11 +1014,10 @@ const FEATURES = [
       '확인된 접근 경로는 개발자용 IDE와 터미널뿐이다. 반면 Anthropic은 Cowork를 별도 제품으로 내어 비개발 업무를 정면으로 겨냥한다. ' +
       '도입 규모를 개발조직 밖으로 넓히는 것이 목표라면 이 행이 결론을 바꾼다. 개발자 도구로만 쓸 계획이라면 가중치가 낮다.',
   },
-
-  /* ===== D. 엔터프라이즈 통제 ======================================= */
+  /* ===== D. 통제 ==================================================== */
   {
     slug: 'policy-control',
-    category: '엔터프라이즈 통제',
+    category: '통제',
     name: '정책 집행 · 권한 통제',
     summary: '에이전트가 무엇을 할 수 있는지를 조직이 중앙에서 정하는 장치',
     why:
@@ -1207,10 +1080,9 @@ const FEATURES = [
       '"Bob은 승인 체크포인트로 통제된다"는 주장은 개발자가 그 체크포인트를 켜 둔다는 가정 위에서만 성립한다. ' +
       '차선책은 프로젝트 `settings.json`을 표준화해 저장소에 커밋하는 것이며, 이는 강제가 아니라 합의에 의존한다.',
   },
-
   {
     slug: 'data-protection',
-    category: '엔터프라이즈 통제',
+    category: '통제',
     name: '데이터 보호 · 비밀정보 차단',
     summary: '민감 정보가 프롬프트나 로그로 새어 나가는 것을 제품이 막아 주는지',
     why:
@@ -1272,10 +1144,9 @@ const FEATURES = [
       '데이터 보호를 근거로 Bob을 선택한다면 파일럿에서 반드시 직접 뚫어 봐야 한다 — 테스트 비밀값을 심어 두고 스캔이 걸리는지, ' +
       '.bobignore로 막은 파일이 편집 도구로 덮이는지, 승인 장치가 프롬프트 인젝션으로 우회되는지를 확인해야 한다.',
   },
-
   {
     slug: 'sandboxing',
-    category: '엔터프라이즈 통제',
+    category: '통제',
     name: '샌드박스 · 실행 격리',
     summary: '에이전트가 명령을 실행할 때 OS·컨테이너 수준으로 격리되는지',
     why:
@@ -1335,10 +1206,9 @@ const FEATURES = [
       '따라서 파일럿에서 확인할 것은 "격리가 있는가"가 아니라 "우리 개발자들이 실제로 켠 상태로 쓰게 만들 수 있는가"다. ' +
       '프로젝트 `settings.json`으로 팀 전체에 강제할 수 있으므로 표준 설정에 넣는 것이 현실적인 방법이다.',
   },
-
   {
     slug: 'auditability',
-    category: '엔터프라이즈 통제',
+    category: '통제',
     name: '감사 추적 · 재현성',
     summary: '에이전트가 무엇을 왜 했는지 기록으로 남기고 같은 작업을 다시 돌릴 수 있는 능력',
     why:
@@ -1396,11 +1266,10 @@ const FEATURES = [
       '규제 대응에서 필요한 쪽은 대개 후자다. AI가 만든 코드에 문제가 생겼을 때 감사인이 묻는 것은 로그인 시각이 아니라 무엇이 실행됐는지이기 때문이다. ' +
       'IBM이 주장하는 BobShell 자기 문서화가 실제로 제품에 있고 반출 가능한 형식이라면 이 판정은 올라간다. IBM에 확인할 항목 목록에 이것을 넣어야 한다.',
   },
-
-  /* ===== E. 비용 구조 =============================================== */
+  /* ===== E. 비용 ==================================================== */
   {
     slug: 'pricing',
-    category: '비용 구조',
+    category: '비용',
     name: '과금 구조',
     summary: '무엇을 단위로 돈이 나가는지 — 좌석인지, 사용량인지, 선불 크레딧인지',
     why:
@@ -1462,10 +1331,9 @@ const FEATURES = [
       '여기에 지원 비용이 좌석마다 15% 수준으로 더 붙고, Premium Package가 별도 계약이므로 레거시 현대화를 노리고 도입할수록 총소유비용이 정가에서 멀어진다. ' +
       '실제 판단은 우리 계약 조건과 예상 작업량으로 다시 계산해야 하며, Bob의 비용 경쟁력은 이 표의 단가가 아니라 아래 두 항목에서 나온다.',
   },
-
   {
     slug: 'model-choice',
-    category: '비용 구조',
+    category: '비용',
     name: '모델 라우팅 · 단가 최적화',
     summary: '작업마다 어느 모델을 쓸지 정해 품질을 지키면서 토큰 단가를 낮추는 구조',
     why:
@@ -1525,10 +1393,9 @@ const FEATURES = [
       '문서가 침묵한다는 사실 자체가 판단 재료다. 개발자도 조직도 어느 모델이 쓰였는지 확인할 문서화된 수단이 없다는 뜻이고, 품질 회귀를 추적할 때 변수가 하나 늘어난다. ' +
       '그리고 Bob의 프런티어 모델이 Claude이므로 라우팅이 절감하는 것은 "Claude를 덜 쓰는 것"이다. 40%는 그 교환의 결과이며 품질 영향은 별도로 재야 한다.',
   },
-
   {
     slug: 'cost-visibility',
-    category: '비용 구조',
+    category: '비용',
     name: '비용 가시성 · 통제',
     summary: '누가 무엇에 얼마를 썼는지 조직이 보고, 새어 나가기 전에 막을 수 있는지',
     why:
@@ -1589,11 +1456,10 @@ const FEATURES = [
       '유보는 셋이다. Enterprise 플랜 전용이고, 라우팅의 40% 절감 주장을 이 대시보드로 검증하려 해도 모델별 내역이 문서화돼 있지 않으며, ' +
       '대시보드가 있다는 것과 우리 부서별 배부 기준에 맞는다는 것은 다른 문제다. 파일럿에서 실제 정산에 쓸 수 있는 형태인지 확인해야 한다.',
   },
-
-  /* ===== F. 도입 조건 =============================================== */
+  /* ===== F. 우리 환경 =============================================== */
   {
     slug: 'deployment',
-    category: '도입 조건',
+    category: '우리 환경',
     name: '배포 형태 · 데이터 위치',
     summary: '제품을 어디에서 돌릴 수 있는지, 코드가 어느 경계를 넘어가는지',
     why:
@@ -1643,5 +1509,117 @@ const FEATURES = [
       '주의할 것은 이 제약이 앞의 통제 항목들과 곱해진다는 점이다. 정책 집행과 감사 추적을 근거로 Bob을 고른다는 것은 ' +
       '"SaaS 경계를 받아들이되 그 안에서 통제를 강화한다"는 선택이며, 데이터가 밖으로 나가는 것 자체가 요건 위반인 조직에서는 성립하지 않는다. ' +
       '망 분리 환경이 대상이라면 온프렘 시점을 IBM에 먼저 확인하고, 그 답이 나온 뒤에 나머지 항목을 검토하는 것이 순서다.',
+  },
+  {
+    slug: 'modernization',
+    category: '우리 환경',
+    name: '레거시 현대화',
+    summary: '오래된 언어·프레임워크·런타임을 최신 버전으로 옮기는 대규모 일괄 작업',
+    why:
+      '기술 부채는 대개 사람을 붙여 몇 달씩 태우는 방식으로 처리된다. 반복적이고 범위가 명확해 자동화 효과가 가장 크게 나오는 영역이며, ' +
+      '투자 대비 효과를 숫자로 제시하기도 쉽다. 우리 자산 구성에 COBOL·PL/I·RPG가 있다면 이 항목의 가중치가 가장 높다.',
+    tools: {
+      bob: {
+        level: 'full',
+        label: '플랫폼별 전용 패키지',
+        bullets: [
+          'Premium Package for Java에 네 개 워크플로가 문서화돼 있다 — Java 버전 업그레이드(AI 검증과 에이전트 수정 사이클), WebSphere→Liberty 리플랫포밍(IBM AMA 마이그레이션 플랜 기반), UI 현대화, 단위 테스트 생성',
+          'Z용(COBOL·PL/I·JCL)과 IBM i용(RPG·CL·DDS) 패키지를 따로 제공 — 타 도구에 대응물이 없는 영역',
+          '고객 사례: Blue Pearl이 Java 11→25 전환과 지원 종료 API 127개 해소를 30일 이상 → 약 3일로 단축. APIS IT가 .NET Core 3.1→8 전환을 4~5시간에 완료, 20년 된 EGL/CICS 문서화 10배 가속',
+          '단, Premium Package는 기본 구독에 포함되지 않는 별도 계약 대상',
+        ],
+        media: { src: 'assets/img/modernization/bob.png', caption: 'Bob의 현대화 워크플로' },
+        source: SRC.bobJavaWorkflows,
+      },
+      claude: {
+        level: 'partial',
+        label: '범용 역량으로 수행',
+        bullets: ['대규모 마이그레이션을 수행할 수 있으나 전용 워크플로는 아님', '작업 분해와 검증 설계를 사용자가 맡음'],
+        media: { src: 'assets/img/modernization/claude.png', caption: 'Claude Code의 마이그레이션' },
+        source: SRC.claude,
+      },
+      codex: {
+        level: 'partial',
+        label: '범용 역량으로 수행',
+        bullets: ['병렬 클라우드 작업으로 대량 변경을 처리할 수 있음', '레거시 전용 자산은 제공하지 않음'],
+        media: { src: 'assets/img/modernization/codex.png', caption: 'Codex의 대량 변경' },
+        source: SRC.codex,
+      },
+      cursor: {
+        level: 'partial',
+        label: '범용 역량으로 수행',
+        bullets: ['다중 파일 편집과 클라우드 에이전트로 마이그레이션 수행 가능', '레거시 전용 자산은 제공하지 않음'],
+        media: { src: 'assets/img/modernization/cursor.png', caption: 'Cursor의 다중 파일 편집' },
+        source: SRC.cursor,
+      },
+    },
+    verdict:
+      '네 도구 모두 마이그레이션을 "할 수는" 있다. 차이는 전용 워크플로와 검증 자산이 준비돼 있는지이며, ' +
+      'COBOL·PL/I·RPG처럼 범용 도구가 학습 데이터로만 아는 영역에서는 이 격차가 특히 크다. 이 표에서 Bob의 우위가 가장 확실한 항목이다. ' +
+      '다만 세 가지를 함께 봐야 한다. 인용된 수치는 IBM이 고른 성공 사례이고 대상 코드베이스의 상태에 크게 좌우된다. ' +
+      'Premium Package는 유료 애드온이므로 이 강점은 기본 구독 가격이 아니라 추가 비용을 전제로 계산해야 한다. ' +
+      '그리고 현대화는 일회성 프로젝트이므로, 이 항목 하나로 상시 개발 도구를 결정하면 프로젝트가 끝난 뒤의 판단 근거가 남지 않는다.',
+  },
+  {
+    slug: 'artifacts',
+    category: '우리 환경',
+    name: '산출물 · 문서 체계',
+    summary: '개발 단계마다 정해진 문서를 만들고 다음 단계가 그것을 근거로 삼게 하는 구조',
+    why:
+      '이 축은 "문서를 생성할 수 있는가"를 묻지 않는다. 그건 네 도구가 모두 한다. ' +
+      '판정 기준은 SDLC 단계별 산출물이 제품에 정의돼 있고, 뒤 단계가 앞 단계의 산출물을 참조하도록 강제되는지다. ' +
+      '산출물이 정해져 있으면 개발자 개인 편차가 줄고 온보딩과 지식 이전이 문서로 이뤄진다. 정해져 있지 않으면 문서는 만들 때마다 다른 모양이 된다.',
+    tools: {
+      bob: {
+        level: 'partial',
+        label: '직접 구성해야 함',
+        bullets: [
+          'Skills로 체크리스트·템플릿·참고 자료를 포함한 반복 워크플로를 정의하고 버전 관리로 팀에 공유',
+          '커스텀 모드로 도구 접근·파일 권한·행동 지침을 묶어 단계별 역할을 만들 수 있고, 감사 보고서·아키텍처 다이어그램 생성 튜토리얼을 제공',
+          '단, SDLC 단계별 산출물 목록이나 Phase gate는 제품이 정의하지 않는다 — 공식 문서에 요구사항 명세서(SRS)·설계 명세서(SDD)·의사결정 기록서·추적성이라는 개념이 등장하지 않음',
+          'Plan 모드의 문서화된 동작은 create-plan 스킬로 계획을 만들어 승인받는 것까지이며, 이는 경쟁 도구의 계획 모드와 같은 범위다',
+          '사내 발표자료는 단계별 산출물과 Phase gate를 제시하지만, 이는 커스텀 모드로 구현하는 방법론이며 내장 기능이 아니다',
+        ],
+        media: { src: 'assets/img/artifacts/bob.png', caption: 'Bob의 Skills와 커스텀 모드' },
+        source: SRC.bobSkills,
+      },
+      claude: {
+        level: 'partial',
+        label: '문서 생성은 가능',
+        bullets: [
+          '요구사항·설계·테스트 문서를 생성할 수 있고 CLAUDE.md와 Skills로 팀 표준과 템플릿을 커밋해 재사용 가능',
+          '다만 SDLC 단계별 산출물 목록이나 Phase gate가 제품에 정의돼 있지 않아 체계는 조직이 직접 설계해야 함',
+        ],
+        media: { src: 'assets/img/artifacts/claude.png', caption: 'Claude Code의 문서 생성' },
+        source: SRC.claudeSkills,
+      },
+      codex: {
+        level: 'partial',
+        label: '문서 생성은 가능',
+        bullets: [
+          'AGENTS.md로 저장소 규칙을 정의하고 문서를 생성할 수 있음',
+          '단계별 산출물 체계는 제품이 규정하지 않음',
+        ],
+        media: { src: 'assets/img/artifacts/codex.png', caption: 'Codex의 문서 생성' },
+        source: SRC.codex,
+      },
+      cursor: {
+        level: 'partial',
+        label: '문서 생성은 가능',
+        bullets: [
+          'Rules와 Team Rules로 조직 표준을 정의하고 문서를 생성할 수 있음',
+          '단계별 산출물 체계는 제품이 규정하지 않음',
+        ],
+        media: { src: 'assets/img/artifacts/cursor.png', caption: 'Cursor의 Rules' },
+        source: SRC.cursor,
+      },
+    },
+    verdict:
+      '이 자료에서 판정이 가장 크게 내려간 항목이다. 직전 판은 이 축을 "Bob이 가장 뚜렷하게 앞서는 항목"으로 적었는데, ' +
+      '근거가 IBM 발표자료뿐이었고 공식 문서를 확인하자 뒷받침되지 않았다. SRS·SDD·Phase gate·의사결정 기록서·추적성은 문서에 한 번도 등장하지 않는다. ' +
+      '발표자료의 단계별 산출물 체계는 제품 기능이 아니라 커스텀 모드로 구현하는 방법론이며, 그 방법론은 네 도구 모두에서 같은 방식으로 구현할 수 있다. ' +
+      '결과적으로 네 도구가 동일 수준이다 — 규칙·스킬·템플릿을 파일로 정의해 저장소에 커밋하는 수단은 넷 다 갖췄고, 단계 체계를 정의하는 일은 넷 다 조직 몫이다. ' +
+      '실무적 의미는 남는다. IBM이 방법론과 커스텀 모드 예시를 함께 제공한다면 착수 비용이 줄어들 수 있으므로, ' +
+      '파일럿에서 확인할 것은 "기능이 있는가"가 아니라 "IBM이 우리 산출물 표준에 맞춘 모드를 함께 만들어 주는가"다. 이건 제품 사양이 아니라 계약 조건 문제다.',
   },
 ];

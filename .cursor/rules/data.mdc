@@ -11,7 +11,7 @@ alwaysApply: false
 ```js
 {
   slug: 'session-sharing',           // 영문 소문자·하이픈
-  category: '작업 방식 · 도달 범위', // CATEGORIES에 있는 값. 같은 값은 배열에서 연속
+  category: '위임 · 도달', // CATEGORIES에 있는 값. 같은 값은 배열에서 연속
   name: '세션 공유',
   summary: '장표용 한 줄',
   why: '왜 보는지 + 판정 기준',

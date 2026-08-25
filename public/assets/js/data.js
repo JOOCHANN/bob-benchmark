@@ -100,6 +100,10 @@ const SRC = {
     url: 'https://bob.ibm.com/docs/ide/getting-started/install',
   },
   bobModes: { text: 'IBM Bob 공식 문서 (모드)', url: 'https://bob.ibm.com/docs/ide/features/modes' },
+  bobPlanTutorial: {
+    text: 'IBM Bob 공식 문서 (복잡한 기능 계획)',
+    url: 'https://bob.ibm.com/docs/ide/tutorials/create-a-plan-and-implement-complex-features',
+  },
   bobCustomModes: {
     text: 'IBM Bob 공식 문서 (커스텀 모드)',
     url: 'https://bob.ibm.com/docs/ide/configuration/custom-modes',
@@ -265,6 +269,14 @@ const SRC = {
 
   /* ── Codex ─────────────────────────────────────────────────────── */
   codex: { text: 'OpenAI Codex 문서', url: 'https://learn.chatgpt.com/docs' },
+  codexPlan: {
+    text: 'OpenAI Codex 공식 문서 (베스트 프랙티스 · Plan)',
+    url: 'https://learn.chatgpt.com/guides/best-practices',
+  },
+  codexIdePlan: {
+    text: 'OpenAI Codex 공식 문서 (IDE 슬래시 커맨드)',
+    url: 'https://learn.chatgpt.com/docs/developer-commands?surface=ide',
+  },
   codexGov: {
     text: 'Codex 문서 (엔터프라이즈 거버넌스·감사 로그)',
     url: 'https://developers.openai.com/codex/enterprise/governance',
@@ -283,6 +295,18 @@ const SRC = {
   cursorModes: {
     text: 'Cursor 공식 문서 (Agent·모드)',
     url: 'https://cursor.com/help/ai-features/agent',
+  },
+  cursorPlan: {
+    text: 'Cursor 공식 문서 (Plan 모드)',
+    url: 'https://cursor.com/docs/agent/plan-mode',
+  },
+  cursorPlanHelp: {
+    text: 'Cursor 공식 문서 (Plan 모드 도움말)',
+    url: 'https://cursor.com/help/ai-features/plan-mode.md',
+  },
+  cursorPlanBlog: {
+    text: 'Cursor Plan 모드 출시 발표 (벤더 발표)',
+    url: 'https://cursor.com/blog/plan-mode',
   },
   cursorEffort: {
     text: 'Cursor 공식 문서 (Grok 4.6 · Effort)',
@@ -340,10 +364,10 @@ const FEATURES = [
     name: "계획",
     summary: "코드를 건드리기 전에 작업 계획을 세우고 승인을 받는 단계",
     tools: {
-      bob: { level: "unknown", label: null },
-      claude: { level: "unknown", label: null },
-      codex: { level: "unknown", label: null },
-      cursor: { level: "unknown", label: null }
+      bob: { level: "full", label: "create-plan" },
+      claude: { level: "full", label: "승인 전 차단" },
+      codex: { level: "partial", label: "Plan 모드" },
+      cursor: { level: "full", label: "계획 파일" }
     },
   },
   {

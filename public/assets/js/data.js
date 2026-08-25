@@ -323,10 +323,34 @@ const FEATURES = [
     },
   },
   {
+    slug: "indexing",
+    category: "작업",
+    name: "코드베이스 인덱싱",
+    summary: "저장소를 미리 색인해 관련 파일을 찾는지, 매 질의마다 검색에 의존하는지",
+    tools: {
+      bob: { level: "unknown", label: null },
+      claude: { level: "unknown", label: null },
+      codex: { level: "unknown", label: null },
+      cursor: { level: "unknown", label: null }
+    },
+  },
+  {
     slug: "codebase",
     category: "작업",
     name: "코드 이해·수정",
     summary: "대규모 저장소를 탐색해 맥락을 파악하고 여러 파일을 함께 수정하는 기본 역량",
+    tools: {
+      bob: { level: "unknown", label: null },
+      claude: { level: "unknown", label: null },
+      codex: { level: "unknown", label: null },
+      cursor: { level: "unknown", label: null }
+    },
+  },
+  {
+    slug: "design",
+    category: "작업",
+    name: "디자인",
+    summary: "화면 프로토타입·이미지를 만들고 디자인에서 코드로 이어가는 작업",
     tools: {
       bob: { level: "unknown", label: null },
       claude: { level: "unknown", label: null },

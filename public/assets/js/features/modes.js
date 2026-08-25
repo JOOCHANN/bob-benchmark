@@ -38,8 +38,7 @@ FEATURES_DETAIL['modes'] = {
   verdict: [
     { label: '공통', text: '셋 다 Plan이 있다. 계획을 세운 뒤 구현으로 넘어가는 흐름은 같다.' },
     { label: '작업 유형', text: 'Bob·Cursor만 할 일로 모드를 나눈다. Bob은 Agent·Plan·Ask, Cursor는 여기에 Debug가 더 있다. Claude의 모드는 이 축이 아니다.' },
-    { label: '전환', text: 'Bob은 에이전트가 스스로 바꾼다. Claude·Cursor는 사람이 바꿔줘야 한다.' },
     { label: '커스텀', text: 'Bob만 모드 자체를 정의한다. YAML로 역할과 도구 접근을 정하고 기본 모드를 수정할 수 있다. Claude·Cursor는 내장 모드가 고정이다.' },
-    { label: 'Effort', text: 'Claude·Cursor에 있고 Bob에는 없다. 레벨 이름은 캘리브레이션이 달라 제품 간 직접 비교가 안 된다. Codex는 확인이 필요하다.' },
+    { label: 'Effort', text: 'Claude·Cursor에 있고 Bob에는 없다. Codex는 확인이 필요하다.' },
   ],
 };

@@ -30,10 +30,9 @@ FEATURES_DETAIL['codebase'] = {
     },
     cursor: {
       bullets: [
-        "코드베이스 인덱싱으로 관련 파일을 빠르게 찾음",
         "에디터와 밀착된 다중 파일 편집"
       ],
-      media: { src: "assets/img/codebase/cursor.png", caption: "Cursor의 인덱싱" },
+      media: { src: "assets/img/codebase/cursor.png", caption: "Cursor의 다중 파일 편집" },
       source: SRC.cursor,
     }
   },

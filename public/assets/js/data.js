@@ -16,7 +16,7 @@
  */
 
 const META = {
-  checkedAt: '2026-07-29',
+  checkedAt: '2026-08-25',
   status: 'draft',
 };
 

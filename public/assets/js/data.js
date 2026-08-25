@@ -328,8 +328,8 @@ const FEATURES = [
     name: "추론 조절",
     summary: "모드가 정한 범위 안에서 추론에 얼마나 쓸지 — 깊이·속도·비용.",
     tools: {
-      bob: { level: "unknown", label: null },
-      claude: { level: "full", label: "Effort + Thinking" },
+      bob: { level: "none", label: null },
+      claude: { level: "full", label: "Effort + Thinking + Fast" },
       codex: { level: "unknown", label: null },
       cursor: { level: "full", label: "Effort + Fast" }
     },

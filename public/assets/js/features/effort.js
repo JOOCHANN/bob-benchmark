@@ -8,6 +8,7 @@ FEATURES_DETAIL['effort'] = {
     bob: {
       bullets: [
         'Effort: 지원하지 않는다.',
+        'Fast: 지원하지 않는다.',
       ],
       source: null,
     },

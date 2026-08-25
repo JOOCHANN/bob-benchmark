@@ -230,6 +230,14 @@ const SRC = {
     text: 'Claude Code 공식 문서 (모델·Effort)',
     url: 'https://code.claude.com/docs/en/model-config',
   },
+  claudeThinking: {
+    text: 'Claude Code 공식 문서 (VS Code · 확장 Thinking)',
+    url: 'https://code.claude.com/docs/en/vs-code',
+  },
+  claudeFast: {
+    text: 'Claude Code 공식 문서 (Fast 모드)',
+    url: 'https://code.claude.com/docs/en/fast-mode',
+  },
   claudeSandbox: { text: 'Claude Code 문서 (Sandboxing)', url: 'https://code.claude.com/docs/en/sandboxing' },
   claudeIam: { text: 'Claude Code 문서 (IAM·권한 관리)', url: 'https://code.claude.com/docs/en/iam' },
   claudeGha: {
@@ -280,6 +288,10 @@ const SRC = {
     text: 'Cursor 공식 문서 (Grok 4.6 · Effort)',
     url: 'https://cursor.com/help/models-and-usage/grok-4-6',
   },
+  cursorFast: {
+    text: 'Cursor 공식 문서 (모델·요금 · Fast)',
+    url: 'https://cursor.com/docs/models-and-pricing',
+  },
   cursorCli: { text: 'Cursor CLI', url: 'https://cursor.com/cli' },
   cursorAuto: {
     text: 'Cursor 문서 (Automations · 클라우드 에이전트)',
@@ -302,12 +314,24 @@ const FEATURES = [
     slug: "modes",
     category: "작업",
     name: "모드",
-    summary: "에이전트에게 허용하는 동작의 범위와 그 안에서 추론에 쓰는 양.",
+    summary: "에이전트에게 허용하는 동작의 범위.",
     tools: {
-      bob: { level: "full", label: "커스텀 모드 · Effort 없음" },
-      claude: { level: "full", label: "권한 모드 + Effort" },
+      bob: { level: "full", label: "커스텀 모드" },
+      claude: { level: "full", label: "권한 모드" },
       codex: { level: "unknown", label: null },
-      cursor: { level: "full", label: "작업 모드 + Effort" }
+      cursor: { level: "full", label: "작업 모드" }
+    },
+  },
+  {
+    slug: "effort",
+    category: "작업",
+    name: "추론 조절",
+    summary: "모드가 정한 범위 안에서 추론에 얼마나 쓸지 — 깊이·속도·비용.",
+    tools: {
+      bob: { level: "unknown", label: null },
+      claude: { level: "full", label: "Effort + Thinking" },
+      codex: { level: "unknown", label: null },
+      cursor: { level: "full", label: "Effort + Fast" }
     },
   },
   {
